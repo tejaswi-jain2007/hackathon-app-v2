@@ -114,7 +114,7 @@ class PostgresConnection:
 
 def get_db():
     if "db" not in g:
-        db_url = os.getenv("DATABASE_URL")
+        db_url = os.getenv("POSTGRES_URL_NON_POOLING") or os.getenv("DATABASE_URL")
         if not db_url:
             raise ValueError("DATABASE_URL not set in environment")
         g.db = PostgresConnection(psycopg2.connect(db_url, cursor_factory=DictCursor))
