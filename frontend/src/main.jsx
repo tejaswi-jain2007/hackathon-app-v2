@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
 
-const API_BASE = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
-  : import.meta.env.DEV
-    ? "http://localhost:5001/api"
-    : "https://hackmanage-api.vercel.app/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:5001/api" : "/api");
 const roleTabs = ["admin", "judge", "mentor", "team"];
 const emptyLogin = { email: "", password: "" };
 
