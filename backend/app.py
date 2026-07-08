@@ -187,8 +187,10 @@ def init_db() -> None:
             registered INTEGER NOT NULL DEFAULT 0,
             leader_email TEXT,
             disqualified INTEGER NOT NULL DEFAULT 0,
+            members TEXT,
             created_at TEXT NOT NULL
         );
+        ALTER TABLE teams ADD COLUMN IF NOT EXISTS members TEXT;
 
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -683,13 +685,58 @@ def register_routes(app: Flask) -> None:
         name = str(data.get("name", "")).strip()
         if not name:
             return json_error("Team name is required.")
+        db = get_db()
         try:
-            get_db().execute("INSERT INTO teams (name, created_at) VALUES (%s, %s)", (name, now_iso()))
-            get_db().commit()
+            db.execute("INSERT INTO teams (name, registered, leader_email, created_at) VALUES (%s, %s, %s, NOW())", (name, 0, ""))
+            db.commit()
             return jsonify(dashboard_payload(g.user)), 201
-        except IntegrityError:
-            get_db().rollback()
-            return json_error("This team already exists.")
+        except Exception as e:
+            db.rollback()
+            return json_error("Team name already exists.")
+
+    @app.post("/api/teams/bulk")
+    @login_required(("admin",))
+    def bulk_add_teams():
+        data = require_json()
+        teams = data.get("teams", [])
+        if not isinstance(teams, list) or not teams:
+            return json_error("A non-empty list of teams is required.")
+        
+        db = get_db()
+        added_count = 0
+        skipped_count = 0
+        import json
+
+        for t in teams:
+            name = str(t.get("name", "")).strip()
+            leader_email = str(t.get("leader_email", "")).strip()
+            leader_name = str(t.get("leader_name", "Team Leader")).strip()
+            members_list = t.get("members", [])
+            members_json = json.dumps(members_list) if members_list else None
+
+            if not name:
+                skipped_count += 1
+                continue
+
+            # Check if team exists
+            existing_team = query_one("SELECT id FROM teams WHERE name = %s", (name,))
+            if existing_team:
+                skipped_count += 1
+                continue
+            
+            try:
+                # Insert team with registered = 0 so they can register themselves later
+                db.execute(
+                    "INSERT INTO teams (name, registered, leader_email, members, created_at) VALUES (%s, %s, %s, %s, NOW())",
+                    (name, 0, leader_email, members_json)
+                )
+                db.commit()
+                added_count += 1
+            except Exception as e:
+                db.rollback()
+                skipped_count += 1
+
+        return jsonify({"message": f"Successfully added {added_count} teams. Skipped {skipped_count} (duplicates/invalid)." })
 
     @app.patch("/api/assignments")
     @login_required(("admin",))

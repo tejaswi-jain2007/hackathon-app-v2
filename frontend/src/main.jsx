@@ -455,6 +455,7 @@ function AdminPanel({ data, mutate, activeTab }) {
           {activeTab === "Teams" && (
             <>
               <AddTeamForm mutate={mutate} />
+              <BulkAddTeamForm mutate={mutate} />
               <TeamAdmin teams={data.teams} mutate={mutate} />
             </>
           )}
@@ -492,6 +493,88 @@ function AddTeamForm({ mutate }) {
         <Input label="Team name" value={name} onChange={setName} />
         <button className="btn primary" type="submit">Add team</button>
       </form>
+    </Panel>
+  );
+}
+
+function BulkAddTeamForm({ mutate }) {
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
+  async function handleFileUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    setLoading(true);
+    setMessage("");
+    
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const text = e.target.result;
+      const lines = text.split("\n").map(l => l.trim()).filter(l => l);
+      if (lines.length < 2) {
+        setMessage("File is empty or missing headers.");
+        setLoading(false);
+        return;
+      }
+      
+      const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+      const teams = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        let row = [];
+        let cur = "";
+        let inQuote = false;
+        for (let char of lines[i]) {
+          if (char === '"') inQuote = !inQuote;
+          else if (char === ',' && !inQuote) { row.push(cur); cur = ""; }
+          else cur += char;
+        }
+        row.push(cur);
+        row = row.map(c => c.trim().replace(/^"|"$/g, ''));
+        
+        let teamData = { name: "", leader_name: "", leader_email: "", members: [] };
+        
+        headers.forEach((header, idx) => {
+          if (!row[idx]) return;
+          if (header.includes("team name") || header === "team") teamData.name = row[idx];
+          else if (header.includes("leader name") || header === "leader") teamData.leader_name = row[idx];
+          else if (header.includes("email") || header.includes("address")) teamData.leader_email = row[idx];
+          else if (header.includes("member") || header.includes("teammate")) teamData.members.push(row[idx]);
+        });
+        
+        if (teamData.name) {
+          teams.push(teamData);
+        }
+      }
+      
+      try {
+        const resData = await apiRequest("/teams/bulk", {
+          method: "POST",
+          token: localStorage.getItem("hcr_token"),
+          body: { teams }
+        });
+        setMessage(resData.message || "Upload complete.");
+        mutate();
+      } catch (err) {
+        setMessage(err.message);
+      }
+      setLoading(false);
+      event.target.value = null; 
+    };
+    reader.readAsText(file);
+  }
+
+  return (
+    <Panel title="Bulk upload teams" meta="Upload a Google Forms CSV">
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <p style={{ fontSize: "14px", color: "var(--text-secondary)" }}>
+          CSV must contain headers like: <strong>Team Name, Leader Name, Email Address, Member 1...</strong>
+        </p>
+        <input type="file" accept=".csv" onChange={handleFileUpload} disabled={loading} style={{ padding: "8px", border: "1px solid var(--border)", borderRadius: "4px" }} />
+        {loading && <p>Uploading...</p>}
+        {message && <p className={message.includes("Successfully") ? "success" : "alert"} style={{ margin: 0 }}>{message}</p>}
+      </div>
     </Panel>
   );
 }
