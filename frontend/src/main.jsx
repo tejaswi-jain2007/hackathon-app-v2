@@ -803,22 +803,59 @@ function PeopleManager({ title, role, people, teams, mutate }) {
               </div>
               <span className="badge blue">{person.assignedTeamIds.length} assigned</span>
             </div>
-            <div className="checkbox-grid">
-              {teams.map((team) => (
-                <label key={team.id} className="check-pill">
-                  <input
-                    type="checkbox"
-                    checked={person.assignedTeamIds.includes(team.id)}
-                    onChange={(event) => toggleAssignment(person, team.id, event.target.checked)}
-                  />
-                  <span>{team.name}</span>
-                </label>
-              ))}
-            </div>
+            <TeamAssigner person={person} teams={teams} onToggle={toggleAssignment} />
           </article>
         ))}
       </div>
     </Panel>
+  );
+}
+
+function TeamAssigner({ person, teams, onToggle }) {
+  const [open, setOpen] = useState(false);
+  const [search, setSearch] = useState("");
+
+  const filteredTeams = teams.filter((t) => t.name.toLowerCase().includes(search.toLowerCase()));
+  const assignedTeams = teams.filter((t) => person.assignedTeamIds.includes(t.id));
+
+  return (
+    <div className="team-assigner">
+      <div className="assigned-chips">
+        {assignedTeams.map((t) => (
+          <span key={t.id} className="badge blue">
+            {t.name}
+            <button className="chip-remove" type="button" onClick={() => onToggle(person, t.id, false)}>&times;</button>
+          </span>
+        ))}
+        <button className="btn secondary tiny-btn" type="button" onClick={() => setOpen(!open)}>
+          {open ? "Close dropdown" : "+ Assign team"}
+        </button>
+      </div>
+      
+      {open && (
+        <div className="dropdown-panel">
+          <input
+            type="text"
+            placeholder="Search teams..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <div className="dropdown-list">
+            {filteredTeams.map((team) => (
+              <label key={team.id} className="check-pill">
+                <input
+                  type="checkbox"
+                  checked={person.assignedTeamIds.includes(team.id)}
+                  onChange={(e) => onToggle(person, team.id, e.target.checked)}
+                />
+                <span>{team.name}</span>
+              </label>
+            ))}
+            {filteredTeams.length === 0 && <div className="empty" style={{ minHeight: '60px' }}>No teams found</div>}
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
 
