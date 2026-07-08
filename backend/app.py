@@ -778,4 +778,5 @@ def register_routes(app: Flask) -> None:
 app = create_app()
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.getenv("PORT", 5001))
+    app.run(port=port, debug=True)
