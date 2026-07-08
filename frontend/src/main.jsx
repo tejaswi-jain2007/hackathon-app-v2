@@ -759,26 +759,38 @@ function AnnouncementForm({ mutate }) {
 
 function PeopleManager({ title, role, people, teams, mutate }) {
   const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [error, setError] = useState("");
 
   async function submit(event) {
     event.preventDefault();
-    await mutate("/people", { method: "POST", body: { ...form, role } });
-    setForm({ name: "", email: "", password: "" });
+    setError("");
+    try {
+      await mutate("/people", { method: "POST", body: { ...form, role } });
+      setForm({ name: "", email: "", password: "" });
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   async function toggleAssignment(person, teamId, checked) {
+    setError("");
     const teamIds = checked
       ? [...new Set([...person.assignedTeamIds, teamId])]
       : person.assignedTeamIds.filter((id) => id !== teamId);
-    await mutate("/assignments", { method: "PATCH", body: { role, personId: person.id, teamIds } });
+    try {
+      await mutate("/assignments", { method: "PATCH", body: { role, personId: person.id, teamIds } });
+    } catch (err) {
+      setError(err.message);
+    }
   }
 
   return (
     <Panel title={title} meta={`${people.length} registered`}>
+      {error && <div className="alert" style={{ marginBottom: "1rem" }}>{error}</div>}
       <form className="inline-form" onSubmit={submit}>
         <Input label="Name" value={form.name} onChange={(name) => setForm({ ...form, name })} />
         <Input label="Email" type="email" value={form.email} onChange={(email) => setForm({ ...form, email })} />
-        <Input label="Password" value={form.password} onChange={(password) => setForm({ ...form, password })} />
+        <Input label="Password" type="password" value={form.password} onChange={(password) => setForm({ ...form, password })} />
         <button className="btn primary" type="submit">Add {label(role)}</button>
       </form>
       <div className="card-list spacious">
