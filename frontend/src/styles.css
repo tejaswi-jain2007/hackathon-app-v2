@@ -384,8 +384,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--amber); box-shad
 }
 @media (max-width: 720px) {
   main.workspace, .auth-visual, .auth-panel { padding: 16px; }
-  .head-row h1, .auth-visual h1 { font-size: 28px; }
-  .role-tabs, .inline-form, .inline-form.compact, .score-form, .team-grid, .checkbox-grid { grid-template-columns: 1fr; }
+  .head-row h1, .auth-visual h1 { font-size: 26px; }
+  .role-tabs, .inline-form, .inline-form.compact, .score-form, .team-grid, .checkbox-grid, .signal-grid { grid-template-columns: 1fr; }
   .head-row, .panel-head, .row-between { flex-direction: column; align-items: stretch; gap: 10px; }
   .metric-grid { grid-template-columns: 1fr; }
   .metric-grid > .stat:nth-child(5) { grid-column: auto; }
