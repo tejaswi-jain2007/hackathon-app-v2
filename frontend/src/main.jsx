@@ -397,49 +397,73 @@ function DashboardShell({ user, data, onLogout, children, activeTab, setActiveTa
   }[user.role];
 
   return (
-    <main className="app-layout">
-      <aside className="side-nav">
-        <div className="logo-block">
-          <div className="logo">HC</div>
+    <div className="layout">
+      <div className="stars"></div>
+      <div className="scene">
+        <div className="nebula"></div>
+        <div className="petrova-arc"></div>
+        <div className="dying-sun"></div>
+        <svg className="ship-silhouette" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="140" cy="80" rx="120" ry="26" fill="#0c121b" stroke="#1d2735" strokeWidth="1.5"/>
+          <rect x="230" y="66" width="90" height="28" rx="10" fill="#0c121b" stroke="#1d2735" strokeWidth="1.5"/>
+          <circle cx="320" cy="80" r="16" fill="#0f1621" stroke="#7a5a26" strokeWidth="1.5"/>
+          <circle cx="320" cy="80" r="6" fill="#f2a53d" opacity=".7"/>
+          <rect x="70" y="40" width="18" height="80" rx="4" fill="#0f1621" stroke="#1d2735"/>
+          <rect x="150" y="30" width="18" height="100" rx="4" fill="#0f1621" stroke="#1d2735"/>
+          <rect x="200" y="40" width="18" height="80" rx="4" fill="#0f1621" stroke="#1d2735"/>
+        </svg>
+      </div>
+      <div className="sun-corner"></div>
+
+      <aside className="sidebar">
+        <div className="brand">
+          <div className="brand-mark"></div>
           <div>
-            <strong>Control Room</strong>
-            <span>Hackathon operations</span>
+            <div className="brand-name">Hail Mary</div>
+            <div className="brand-sub">Mission control deck</div>
           </div>
         </div>
-        <nav>
+        <nav className="sidebar-nav">
           {tabs.map((tab) => (
             <a
               key={tab}
-              className={activeTab === tab ? "selected" : ""}
+              className={activeTab === tab ? "active" : ""}
               onClick={() => setActiveTab(tab)}
-              style={{ cursor: "pointer" }}
             >
               {tab}
             </a>
           ))}
         </nav>
-        <div className="profile-card">
-          <span className="badge">{label(user.role)}</span>
-          <strong>{user.name}</strong>
-          <small>{user.email}</small>
+        <div className="sidebar-foot">
+          <div className="admin-card">
+            <span className="admin-badge">{label(user.role)}</span>
+            <div className="admin-name">{user.name}</div>
+            <div className="admin-email">{user.email}</div>
+          </div>
+          <button className="logout-btn" onClick={onLogout}>Log out</button>
         </div>
-        <button className="btn quiet" onClick={onLogout}>Log out</button>
       </aside>
-      <section className="workspace">
-        <header className="topbar">
+
+      <main className="workspace">
+        <div className="eyebrow">Ship computer · {label(user.role)} workspace</div>
+        <div className="head-row">
           <div>
-            <span className="eyebrow">{label(user.role)} workspace</span>
-            <h1>{user.role === "team" ? findTeam(data, user.team_id)?.name || "Team Dashboard" : `${label(user.role)} Dashboard`}</h1>
-            <p>{subtitle}</p>
+            <h1>{user.role === "team" ? findTeam(data, user.team_id)?.name || "Team Dashboard" : "Mission control"}</h1>
+            <p className="subtitle">{subtitle}</p>
           </div>
-          <div className="mini-stats">
-            <span>{data.teams.filter((team) => team.registered).length} registered</span>
-            <span>{data.leaderboard.filter((team) => !team.disqualified).length} active</span>
+          <div className="pill-row">
+            <span className="pill">{data.teams.filter((team) => team.registered).length} registered</span>
+            <span className="pill">{data.leaderboard.filter((team) => !team.disqualified).length} active</span>
           </div>
-        </header>
-        <div className="workspace-inner">{children}</div>
-      </section>
-    </main>
+        </div>
+
+        <div className="petrova">
+          <span className="petrova-label">petrova line · 96.86 MHz</span>
+        </div>
+
+        {children}
+      </main>
+    </div>
   );
 }
 
@@ -692,10 +716,22 @@ function MetricGrid({ data }) {
   const disqualified = data.teams.filter((team) => team.disqualified).length;
   return (
     <div className="metric-grid">
-      <Metric title="Registered teams" value={data.teams.filter((team) => team.registered).length} />
-      <Metric title="Judges" value={data.judges.length} />
-      <Metric title="Mentors" value={data.mentors.length} />
-      <Metric title="Disqualified" value={disqualified} />
+      <div className="stat">
+        <div className="stat-num">{data.teams.filter((team) => team.registered).length}</div>
+        <div className="stat-label">Registered teams</div>
+      </div>
+      <div className="stat">
+        <div className="stat-num">{data.judges.length}</div>
+        <div className="stat-label">Judges</div>
+      </div>
+      <div className="stat">
+        <div className="stat-num">{data.mentors.length}</div>
+        <div className="stat-label">Mentors</div>
+      </div>
+      <div className="stat">
+        <div className="stat-num danger">{disqualified}</div>
+        <div className="stat-label">Disqualified</div>
+      </div>
     </div>
   );
 }
@@ -951,8 +987,8 @@ function Panel({ title, meta, children }) {
   return (
     <section className="panel">
       <div className="panel-head">
-        <h2>{title}</h2>
-        {meta && <span>{meta}</span>}
+        <h2 className="panel-title">{title}</h2>
+        {meta && <span className="panel-tag">{meta}</span>}
       </div>
       {children}
     </section>
