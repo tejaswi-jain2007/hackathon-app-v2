@@ -796,10 +796,10 @@ function PeopleManager({ title, role, people, teams, mutate }) {
       <div className="card-list spacious">
         {people.map((person) => (
           <article className="assignment-card" key={person.id}>
-            <div className="row-between">
-              <div>
-                <strong>{person.name}</strong>
-                <small>{person.email}</small>
+            <div className="row-between" style={{ marginBottom: "8px" }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                <strong style={{ fontSize: "16px", color: "var(--text)" }}>{person.name}</strong>
+                <small style={{ color: "var(--muted)", fontSize: "12px", fontFamily: "var(--hud-font)" }}>{person.email}</small>
               </div>
               <span className="badge blue">{person.assignedTeamIds.length} assigned</span>
             </div>
