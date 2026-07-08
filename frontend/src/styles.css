@@ -232,6 +232,8 @@ main.workspace { flex: 1; padding: 32px 40px 60px; position: relative; min-width
   border: 1px solid var(--border); border-radius: 12px;
   background: var(--panel);
   padding: 18px 20px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 .panel + .panel { margin-top: 18px; }
 .panel-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
@@ -372,14 +374,26 @@ input:focus, select:focus, textarea:focus { border-color: var(--amber); box-shad
   .metric-grid > .stat:nth-child(5) { grid-column: 1 / -1; }
   .content-grid { grid-template-columns: 1fr; }
   .layout, .app-layout { flex-direction: column; }
-  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); }
+  .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border); padding: 16px; }
+  nav.sidebar-nav { flex-direction: row; overflow-x: auto; white-space: nowrap; padding-bottom: 8px; gap: 8px; }
+  nav.sidebar-nav a { flex: 0 0 auto; }
+  .sidebar-foot { margin-top: 16px; display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+  .admin-card { margin-bottom: 0; flex: 1; }
+  .logout-btn { width: auto; }
   .auth-layout { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
-  main.workspace, .auth-visual, .auth-panel { padding: 20px; }
-  .head-row h1, .auth-visual h1 { font-size: 32px; }
+  main.workspace, .auth-visual, .auth-panel { padding: 16px; }
+  .head-row h1, .auth-visual h1 { font-size: 28px; }
   .role-tabs, .inline-form, .inline-form.compact, .score-form, .team-grid, .checkbox-grid { grid-template-columns: 1fr; }
   .head-row, .panel-head, .row-between { flex-direction: column; align-items: stretch; gap: 10px; }
+  .metric-grid { grid-template-columns: 1fr; }
+  .metric-grid > .stat:nth-child(5) { grid-column: auto; }
+  .stat { min-height: 120px; padding: 16px; }
+  .stat-num { font-size: 28px; }
+  .pill-row { flex-wrap: wrap; }
+  .panel { padding: 14px; }
+  .dropdown-panel { position: static; box-shadow: none; margin-top: 8px; }
 }
 .team-assigner { position: relative; margin-top: 10px; }
 .assigned-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
