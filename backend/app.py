@@ -436,7 +436,7 @@ def leaderboard() -> list[dict[str, Any]]:
                 "disqualified": is_disqualified,
                 "rank": "-" if is_disqualified else rank,
                 "total": 0 if is_disqualified else row["total"],
-                "judgedBy": row["judgedBy"],
+                "judgedBy": row.get("judgedBy", row.get("judgedby")),
             }
         )
     return result
