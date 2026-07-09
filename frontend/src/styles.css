@@ -352,11 +352,12 @@ input:focus, select:focus, textarea:focus { border-color: var(--amber); box-shad
 }
 .auth-visual {
   padding: 42px; color: white; display: flex; flex-direction: column; justify-content: space-between; gap: 34px;
-  background: var(--void); border-right: 1px solid var(--border);
+  background: var(--void) url('/auth-bg.jpg') center center / cover no-repeat;
+  border-right: 1px solid var(--border);
   position: relative; overflow: hidden;
 }
 .auth-visual::before {
-  content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='100' viewBox='0 0 60 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0l25.98 15v30L30 60 4.02 45V15z' fill='none' stroke='%23f2a53d' stroke-width='1' stroke-opacity='0.08'/%3E%3C/svg%3E"); opacity: 0.5; z-index: 0;
+  content: ''; position: absolute; inset: 0; background: rgba(10, 10, 10, 0.6); z-index: 0;
 }
 .auth-visual > * { position: relative; z-index: 1; }
 .auth-visual h1 { margin: 0; max-width: 680px; font-size: 52px; line-height: 1.02; letter-spacing: 0; font-family: 'Space Grotesk', sans-serif; }
