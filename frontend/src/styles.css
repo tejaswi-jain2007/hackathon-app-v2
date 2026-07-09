@@ -62,6 +62,16 @@ body {
 }
 .scene { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
 
+@media (max-width: 720px) {
+  .scene {
+    background-image: url('/bg-mobile.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    opacity: 0.35;
+  }
+}
+
 @media (min-width: 721px) {
   .scene {
     background-image: url('/bg.jpg');
