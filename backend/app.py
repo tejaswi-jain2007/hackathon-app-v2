@@ -183,9 +183,9 @@ def init_db() -> None:
         """
         CREATE TABLE IF NOT EXISTS teams (
             id SERIAL PRIMARY KEY,
-            name TEXT NOT NULL UNIQUE,
+            name TEXT NOT NULL,
             registered INTEGER NOT NULL DEFAULT 0,
-            leader_email TEXT,
+            leader_email TEXT UNIQUE,
             disqualified INTEGER NOT NULL DEFAULT 0,
             members TEXT,
             domain TEXT,
@@ -193,6 +193,15 @@ def init_db() -> None:
         );
         ALTER TABLE teams ADD COLUMN IF NOT EXISTS members TEXT;
         ALTER TABLE teams ADD COLUMN IF NOT EXISTS domain TEXT;
+
+        try:
+            db.execute("ALTER TABLE teams DROP CONSTRAINT IF EXISTS teams_name_key;")
+        except Exception:
+            pass
+        try:
+            db.execute("ALTER TABLE teams ADD CONSTRAINT teams_leader_email_key UNIQUE (leader_email);")
+        except Exception:
+            pass
 
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
