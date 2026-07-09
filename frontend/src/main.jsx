@@ -556,15 +556,16 @@ function BulkAddTeamForm({ mutate }) {
         for (let row of rows) {
           let teamData = { name: "", leader_name: "", leader_email: "", domain: "", members: [] };
           for (const [key, val] of Object.entries(row)) {
-            const header = key.toLowerCase();
+            const header = key.toLowerCase().replace(/[^a-z0-9]/g, '');
             const strVal = String(val).trim();
             if (!strVal) continue;
 
-            if (header.includes("team name") || header === "team") teamData.name = strVal;
-            else if (header.includes("leader name") || header === "leader") teamData.leader_name = strVal;
-            else if (header.includes("email") || header.includes("address")) teamData.leader_email = strVal;
-            else if (header.includes("domain") || header.includes("theme")) teamData.domain = strVal;
-            else if (header.includes("member") || header.includes("teammate")) teamData.members.push(strVal);
+            if (header.includes("teamname") || (header.includes("team") && header.includes("name") && !header.includes("leader") && !header.includes("teammate"))) teamData.name = strVal;
+            else if (header.includes("leader") && header.includes("name")) teamData.leader_name = strVal;
+            else if (header.includes("leader") && (header.includes("email") || header.includes("mail"))) teamData.leader_email = strVal;
+            else if (header.includes("email") && !teamData.leader_email) teamData.leader_email = strVal; // Fallback to submitter email
+            else if (header.includes("domain") || header.includes("theme") || header.includes("track")) teamData.domain = strVal;
+            else if ((header.includes("teammate") || header.includes("member")) && header.includes("name")) teamData.members.push(strVal);
           }
 
           if (teamData.name) {
