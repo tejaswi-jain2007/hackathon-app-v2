@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
+import * as XLSX from "xlsx";
 import "./styles.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:5001/api" : "/api");
@@ -539,44 +540,37 @@ function BulkAddTeamForm({ mutate }) {
     
     const reader = new FileReader();
     reader.onload = async (e) => {
-      const text = e.target.result;
-      const lines = text.split("\n").map(l => l.trim()).filter(l => l);
-      if (lines.length < 2) {
-        setMessage("File is empty or missing headers.");
-        setLoading(false);
-        return;
-      }
-      
-      const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
-      const teams = [];
-      
-      for (let i = 1; i < lines.length; i++) {
-        let row = [];
-        let cur = "";
-        let inQuote = false;
-        for (let char of lines[i]) {
-          if (char === '"') inQuote = !inQuote;
-          else if (char === ',' && !inQuote) { row.push(cur); cur = ""; }
-          else cur += char;
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const rows = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+        if (!rows || rows.length === 0) {
+          setMessage("File is empty or missing data.");
+          setLoading(false);
+          return;
         }
-        row.push(cur);
-        row = row.map(c => c.trim().replace(/^"|"$/g, ''));
-        
-        let teamData = { name: "", leader_name: "", leader_email: "", domain: "", members: [] };
-        
-        headers.forEach((header, idx) => {
-          if (!row[idx]) return;
-          if (header.includes("team name") || header === "team") teamData.name = row[idx];
-          else if (header.includes("leader name") || header === "leader") teamData.leader_name = row[idx];
-          else if (header.includes("email") || header.includes("address")) teamData.leader_email = row[idx];
-          else if (header.includes("domain") || header.includes("theme")) teamData.domain = row[idx];
-          else if (header.includes("member") || header.includes("teammate")) teamData.members.push(row[idx]);
-        });
-        
-        if (teamData.name) {
-          teams.push(teamData);
+
+        const teams = [];
+        for (let row of rows) {
+          let teamData = { name: "", leader_name: "", leader_email: "", domain: "", members: [] };
+          for (const [key, val] of Object.entries(row)) {
+            const header = key.toLowerCase();
+            const strVal = String(val).trim();
+            if (!strVal) continue;
+
+            if (header.includes("team name") || header === "team") teamData.name = strVal;
+            else if (header.includes("leader name") || header === "leader") teamData.leader_name = strVal;
+            else if (header.includes("email") || header.includes("address")) teamData.leader_email = strVal;
+            else if (header.includes("domain") || header.includes("theme")) teamData.domain = strVal;
+            else if (header.includes("member") || header.includes("teammate")) teamData.members.push(strVal);
+          }
+
+          if (teamData.name) {
+            teams.push(teamData);
+          }
         }
-      }
       
       try {
         const resData = await apiRequest("/teams/bulk", {
@@ -587,21 +581,21 @@ function BulkAddTeamForm({ mutate }) {
         setMessage(resData.message || "Upload complete.");
         mutate();
       } catch (err) {
-        setMessage(err.message);
+        setMessage(err.message || "Error reading Excel file.");
       }
       setLoading(false);
       event.target.value = null; 
     };
-    reader.readAsText(file);
+    reader.readAsArrayBuffer(file);
   }
 
   return (
-    <Panel title="Bulk upload teams" meta="Upload a Google Forms CSV">
+    <Panel title="Bulk upload teams" meta="Upload the Excel file directly">
       <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
         <p style={{ fontSize: "14px", color: "var(--text-secondary)" }}>
-          CSV must contain headers like: <strong>Team Name, Leader Name, Email Address, Member 1...</strong>
+          Excel must contain headers like: <strong>Team Name, Leader Name, Email Address, Member 1...</strong>
         </p>
-        <input type="file" accept=".csv" onChange={handleFileUpload} disabled={loading} style={{ padding: "8px", border: "1px solid var(--border)", borderRadius: "4px" }} />
+        <input type="file" accept=".xlsx, .xls, .csv" onChange={handleFileUpload} disabled={loading} style={{ padding: "8px", border: "1px solid var(--border)", borderRadius: "4px" }} />
         {loading && <p>Uploading...</p>}
         {message && <p className={message.includes("Successfully") ? "success" : "alert"} style={{ margin: 0 }}>{message}</p>}
       </div>
