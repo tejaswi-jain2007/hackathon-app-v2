@@ -448,8 +448,13 @@ function DashboardShell({ user, data, onLogout, children, activeTab, setActiveTa
         <div className="eyebrow">Ship computer · {label(user.role)} workspace</div>
         <div className="head-row">
           <div>
-            <h1>{user.role === "team" ? findTeam(data, user.team_id)?.name || "Team Dashboard" : "Mission control"}</h1>
+            <h1>{user.role === "team" ? (findTeam(data, user.team_id)?.name || "Team Dashboard") : "Mission control"}</h1>
             <p className="subtitle">{subtitle}</p>
+            {user.role === "team" && findTeam(data, user.team_id)?.domain && (
+              <span className="badge blue" style={{ marginTop: '8px', display: 'inline-block' }}>
+                {findTeam(data, user.team_id)?.domain}
+              </span>
+            )}
           </div>
           <div className="pill-row">
             <span className="pill">{data.teams.filter((team) => team.registered).length} registered</span>
@@ -557,13 +562,14 @@ function BulkAddTeamForm({ mutate }) {
         row.push(cur);
         row = row.map(c => c.trim().replace(/^"|"$/g, ''));
         
-        let teamData = { name: "", leader_name: "", leader_email: "", members: [] };
+        let teamData = { name: "", leader_name: "", leader_email: "", domain: "", members: [] };
         
         headers.forEach((header, idx) => {
           if (!row[idx]) return;
           if (header.includes("team name") || header === "team") teamData.name = row[idx];
           else if (header.includes("leader name") || header === "leader") teamData.leader_name = row[idx];
           else if (header.includes("email") || header.includes("address")) teamData.leader_email = row[idx];
+          else if (header.includes("domain") || header.includes("theme")) teamData.domain = row[idx];
           else if (header.includes("member") || header.includes("teammate")) teamData.members.push(row[idx]);
         });
         
@@ -676,7 +682,18 @@ function TeamPanel({ data, user, mutate, activeTab }) {
         {team?.disqualified && <div className="danger-banner">Your team is currently disqualified. Please contact the event desk.</div>}
 
         {activeTab === "Overview" && (
-          <MetricGrid data={{ ...data, teams: data.teams.filter(t => t.id === team?.id) }} />
+          <>
+            {team?.member_names && team.member_names.length > 0 && (
+              <Panel title="Team Members" meta={team.domain || "No domain set"}>
+                <div className="pill-row" style={{ flexWrap: 'wrap', gap: '8px' }}>
+                  {team.member_names.map((name, i) => (
+                    <span key={i} className="pill" style={{ padding: '4px 12px', fontSize: '14px' }}>{name}</span>
+                  ))}
+                </div>
+              </Panel>
+            )}
+            <MetricGrid data={{ ...data, teams: data.teams.filter(t => t.id === team?.id) }} />
+          </>
         )}
         {activeTab === "Schedule" && <SchedulePanel data={data} mutate={mutate} isAdmin={false} />}
         {activeTab === "Feedback" && (
@@ -860,28 +877,61 @@ function TeamAssigner({ person, teams, onToggle }) {
 }
 
 function TeamAdmin({ teams, mutate }) {
+  const [selectedTeam, setSelectedTeam] = useState(null);
+
   return (
-    <Panel title="Teams" meta={`${teams.length} total`}>
-      <div className="team-grid">
-        {teams.map((team) => (
-          <article className="team-card" key={team.id}>
-            <div>
-              <strong>{team.name}</strong>
-              <small>{team.registered ? `${team.members.length} members` : "Registration open"}</small>
+    <>
+      <Panel title="Teams" meta={`${teams.length} total`}>
+        <div className="team-grid">
+          {teams.map((team) => (
+            <article className="team-card" key={team.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedTeam(team)}>
+              <div>
+                <strong>{team.name}</strong>
+                <small>{team.registered ? `${team.members.length} members (Registered)` : (team.member_names?.length ? `${team.member_names.length} members (CSV)` : "No members")}</small>
+              </div>
+              <span className={`badge ${team.disqualified ? "red" : team.registered ? "green" : "amber"}`}>
+                {team.disqualified ? "Disqualified" : team.registered ? "Registered" : "Open"}
+              </span>
+              <button
+                className={team.disqualified ? "btn secondary" : "btn danger"}
+                onClick={(e) => { e.stopPropagation(); mutate(`/teams/${team.id}/disqualification`, { method: "PATCH", body: { disqualified: !team.disqualified } }); }}
+              >
+                {team.disqualified ? "Restore" : "Disqualify"}
+              </button>
+            </article>
+          ))}
+        </div>
+      </Panel>
+
+      {selectedTeam && (
+        <div className="modal-overlay" onClick={() => setSelectedTeam(null)} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="panel" style={{ minWidth: '400px', maxWidth: '90vw', maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+            <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <h3 style={{ margin: 0 }}>{selectedTeam.name}</h3>
+                <span className="meta">{selectedTeam.domain || "No Domain"}</span>
+              </div>
+              <button className="btn secondary" onClick={() => setSelectedTeam(null)}>&times;</button>
             </div>
-            <span className={`badge ${team.disqualified ? "red" : team.registered ? "green" : "amber"}`}>
-              {team.disqualified ? "Disqualified" : team.registered ? "Registered" : "Open"}
-            </span>
-            <button
-              className={team.disqualified ? "btn secondary" : "btn danger"}
-              onClick={() => mutate(`/teams/${team.id}/disqualification`, { method: "PATCH", body: { disqualified: !team.disqualified } })}
-            >
-              {team.disqualified ? "Restore" : "Disqualify"}
-            </button>
-          </article>
-        ))}
-      </div>
-    </Panel>
+            <div style={{ marginTop: '16px' }}>
+              <p><strong>Leader Email:</strong> {selectedTeam.leaderEmail}</p>
+              <p><strong>Status:</strong> {selectedTeam.registered ? "Registered" : "Open"}</p>
+              
+              <h4 style={{ marginTop: '16px', marginBottom: '8px' }}>Members</h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {selectedTeam.member_names && selectedTeam.member_names.length > 0 ? (
+                  selectedTeam.member_names.map((m, i) => (
+                    <li key={i} style={{ padding: '8px', backgroundColor: 'var(--bg)', borderRadius: '4px', border: '1px solid var(--border)' }}>{m}</li>
+                  ))
+                ) : (
+                  <li style={{ color: 'var(--muted)' }}>No members found in CSV.</li>
+                )}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

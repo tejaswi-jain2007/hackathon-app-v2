@@ -188,9 +188,11 @@ def init_db() -> None:
             leader_email TEXT,
             disqualified INTEGER NOT NULL DEFAULT 0,
             members TEXT,
+            domain TEXT,
             created_at TEXT NOT NULL
         );
         ALTER TABLE teams ADD COLUMN IF NOT EXISTS members TEXT;
+        ALTER TABLE teams ADD COLUMN IF NOT EXISTS domain TEXT;
 
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -367,6 +369,14 @@ def serialize_team(row: dict[str, Any]) -> dict[str, Any]:
         "SELECT id, name, email FROM users WHERE role = 'team' AND team_id = %s ORDER BY id",
         (row["id"],),
     )
+    import json
+    members_list = []
+    if row.get("members"):
+        try:
+            members_list = json.loads(row["members"])
+        except Exception:
+            pass
+
     return {
         "id": row["id"],
         "name": row["name"],
@@ -374,6 +384,8 @@ def serialize_team(row: dict[str, Any]) -> dict[str, Any]:
         "leaderEmail": row["leader_email"],
         "disqualified": bool(row["disqualified"]),
         "members": members,
+        "member_names": members_list,
+        "domain": row.get("domain", "")
     }
 
 
@@ -714,6 +726,8 @@ def register_routes(app: Flask) -> None:
             members_list = t.get("members", [])
             members_json = json.dumps(members_list) if members_list else None
 
+            domain = str(t.get("domain", "")).strip()
+
             if not name:
                 skipped_count += 1
                 continue
@@ -727,8 +741,8 @@ def register_routes(app: Flask) -> None:
             try:
                 # Insert team with registered = 0 so they can register themselves later
                 db.execute(
-                    "INSERT INTO teams (name, registered, leader_email, members, created_at) VALUES (%s, %s, %s, %s, NOW())",
-                    (name, 0, leader_email, members_json)
+                    "INSERT INTO teams (name, registered, leader_email, members, domain, created_at) VALUES (%s, %s, %s, %s, %s, NOW())",
+                    (name, 0, leader_email, members_json, domain)
                 )
                 db.commit()
                 added_count += 1
