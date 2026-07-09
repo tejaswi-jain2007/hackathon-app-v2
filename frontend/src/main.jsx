@@ -569,11 +569,14 @@ function BulkAddTeamForm({ mutate }) {
           }
 
           if (teamData.name) {
+            // Include leader in members array if missing
+            if (teamData.leader_name && !teamData.members.includes(teamData.leader_name)) {
+              teamData.members.unshift(teamData.leader_name);
+            }
             teams.push(teamData);
           }
         }
       
-      try {
         const resData = await apiRequest("/teams/bulk", {
           method: "POST",
           token: localStorage.getItem("hcr_token"),
