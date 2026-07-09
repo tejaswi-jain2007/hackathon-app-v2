@@ -61,6 +61,16 @@ body {
   opacity: .6;
 }
 .scene { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+
+@media (min-width: 721px) {
+  .scene {
+    background-image: url('/bg.jpg');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    opacity: 0.35; /* Blends perfectly with the dark UI */
+  }
+}
 .nebula {
   position: absolute; inset: 0;
   background:
