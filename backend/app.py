@@ -740,8 +740,8 @@ def register_routes(app: Flask) -> None:
                 skipped_count += 1
                 continue
 
-            # Check if team exists
-            existing_team = query_one("SELECT id FROM teams WHERE name = %s", (name,))
+            # Check if team exists by leader_email
+            existing_team = query_one("SELECT id FROM teams WHERE leader_email = %s", (leader_email,))
             if existing_team:
                 skipped_count += 1
                 continue
