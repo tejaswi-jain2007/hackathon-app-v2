@@ -1,3 +1,4 @@
+import threading
 from __future__ import annotations
 
 import os
@@ -676,6 +677,21 @@ def register_routes(app: Flask) -> None:
             (title, body, now_iso()),
         )
         get_db().commit()
+        
+        # Trigger WhatsApp background notification
+        group_id = os.environ.get("WHATSAPP_GROUP_ID")
+        if group_id:
+            def send_whatsapp(g_id, text):
+                try:
+                    import pywhatkit
+                    # wait_time=15 gives browser time to load, tab_close=True closes it after 3s
+                    pywhatkit.sendwhatmsg_to_group_instantly(g_id, text, wait_time=15, tab_close=True, close_time=3)
+                except Exception as e:
+                    print(f"WhatsApp Error: {e}")
+            
+            message_text = f"*New Announcement: {title}*\n\n{body}"
+            threading.Thread(target=send_whatsapp, args=(group_id, message_text), daemon=True).start()
+
         return jsonify(dashboard_payload(g.user)), 201
 
     @app.post("/api/people")
