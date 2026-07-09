@@ -194,31 +194,20 @@ def init_db() -> None:
         ALTER TABLE teams ADD COLUMN IF NOT EXISTS members TEXT;
         ALTER TABLE teams ADD COLUMN IF NOT EXISTS domain TEXT;
 
-        try:
-            db.execute("ALTER TABLE teams DROP CONSTRAINT IF EXISTS teams_name_key;")
-        except Exception:
-            pass
-        try:
-            db.execute("ALTER TABLE teams ADD CONSTRAINT teams_leader_email_key UNIQUE (leader_email);")
-        except Exception:
-            pass
-
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
             name TEXT NOT NULL,
             email TEXT NOT NULL UNIQUE,
             password_hash TEXT NOT NULL,
             role TEXT NOT NULL CHECK(role IN ('admin','judge','mentor','team')),
-            team_id INTEGER,
-            created_at TEXT NOT NULL,
-            FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE
+            team_id INTEGER REFERENCES teams(id) ON DELETE SET NULL,
+            created_at TEXT NOT NULL
         );
 
         CREATE TABLE IF NOT EXISTS sessions (
             token TEXT PRIMARY KEY,
-            user_id INTEGER NOT NULL,
-            created_at TEXT NOT NULL,
-            FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            created_at TEXT NOT NULL
         );
 
         CREATE TABLE IF NOT EXISTS assignments (
@@ -282,6 +271,16 @@ def init_db() -> None:
         );
         """
     )
+    
+    try:
+        db.execute("ALTER TABLE teams DROP CONSTRAINT IF EXISTS teams_name_key CASCADE;")
+    except Exception:
+        pass
+    try:
+        db.execute("ALTER TABLE teams ADD CONSTRAINT teams_leader_email_key UNIQUE (leader_email);")
+    except Exception:
+        pass
+        
     db.commit()
 
 
