@@ -269,6 +269,14 @@ def init_db() -> None:
             end_time TEXT,
             created_at TEXT NOT NULL
         );
+
+        CREATE TABLE IF NOT EXISTS push_subscriptions (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            subscription_json TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            UNIQUE(user_id, subscription_json)
+        );
         """
     )
     
@@ -663,6 +671,26 @@ def register_routes(app: Flask) -> None:
         get_db().commit()
         return jsonify(dashboard_payload(g.user))
 
+    @app.get("/api/vapid_public_key")
+    def vapid_public_key():
+        return jsonify({"publicKey": "BFcfQYd2jLYbFm0kUZ21iXroX2YrmS7PZ70dSHZVbZiujgZWvfGjR4QA12Xife-ll_l7iSZRuEAzWfX22AdPWUY"})
+
+    @app.post("/api/subscribe")
+    @login_required()
+    def subscribe_push():
+        data = require_json()
+        sub_info = json.dumps(data)
+        try:
+            get_db().execute(
+                "INSERT INTO push_subscriptions (user_id, subscription_json, created_at) VALUES (%s, %s, %s) ON CONFLICT DO NOTHING",
+                (g.user["id"], sub_info, now_iso()),
+            )
+            get_db().commit()
+            return jsonify({"ok": True}), 201
+        except Exception as e:
+            get_db().rollback()
+            return json_error(str(e))
+
     @app.post("/api/announcements")
     @login_required(("admin",))
     def create_announcement():
@@ -676,6 +704,30 @@ def register_routes(app: Flask) -> None:
             (title, body, now_iso()),
         )
         get_db().commit()
+        
+        # Trigger Web Push background notification
+        def send_web_push(t, b):
+            try:
+                from pywebpush import webpush, WebPushException
+                subs = query_all("SELECT subscription_json FROM push_subscriptions")
+                for row in subs:
+                    try:
+                        sub = json.loads(row["subscription_json"])
+                        webpush(
+                            subscription_info=sub,
+                            data=json.dumps({"title": t, "body": b}),
+                            vapid_private_key="private_key.pem",
+                            vapid_claims={"sub": "mailto:admin@example.com"}
+                        )
+                    except WebPushException as ex:
+                        print("Web Push Failed:", ex)
+                    except Exception as e:
+                        print("Web Push JSON parse failed:", e)
+            except Exception as e:
+                print("Web Push setup failed:", e)
+                
+        threading.Thread(target=send_web_push, args=(title, body), daemon=True).start()
+
         return jsonify(dashboard_payload(g.user)), 201
 
     @app.post("/api/people")

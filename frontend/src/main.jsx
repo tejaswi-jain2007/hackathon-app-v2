@@ -70,6 +70,40 @@ function App() {
     return payload;
   }
 
+  async function subscribeToWebPush(token) {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+    try {
+      const sw = await navigator.serviceWorker.register('/sw.js');
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') return;
+      
+      const response = await fetch(`${API_BASE}/vapid_public_key`);
+      const { publicKey } = await response.json();
+      
+      const padding = '='.repeat((4 - publicKey.length % 4) % 4);
+      const base64 = (publicKey + padding).replace(/\-/g, '+').replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) outputArray[i] = rawData.charCodeAt(i);
+      
+      let subscription = await sw.pushManager.getSubscription();
+      if (!subscription) {
+        subscription = await sw.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: outputArray
+        });
+      }
+      
+      await fetch(`${API_BASE}/subscribe`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify(subscription)
+      });
+    } catch (e) {
+      console.log('Push setup failed', e);
+    }
+  }
+
   async function login(form) {
     setError("");
     const payload = await apiRequest("/auth/login", {
@@ -80,6 +114,7 @@ function App() {
     setToken(payload.token);
     setUser(payload.user);
     setData(payload.dashboard);
+    subscribeToWebPush(payload.token);
   }
 
   async function registerAdmin(form) {
