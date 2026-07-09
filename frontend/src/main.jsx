@@ -876,12 +876,37 @@ function TeamAssigner({ person, teams, onToggle }) {
 
 function TeamAdmin({ teams, mutate }) {
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 20;
+
+  const filteredTeams = teams.filter(t => 
+    t.name.toLowerCase().includes(search.toLowerCase()) || 
+    (t.domain && t.domain.toLowerCase().includes(search.toLowerCase())) ||
+    (t.leaderEmail && t.leaderEmail.toLowerCase().includes(search.toLowerCase()))
+  );
+  const totalPages = Math.max(1, Math.ceil(filteredTeams.length / itemsPerPage));
+  const paginatedTeams = filteredTeams.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+  // Reset page when search changes
+  React.useEffect(() => {
+    setPage(1);
+  }, [search]);
 
   return (
     <>
-      <Panel title="Teams" meta={`${teams.length} total`}>
+      <Panel title="Teams" meta={`${filteredTeams.length} total`}>
+        <div style={{ marginBottom: "16px" }}>
+          <input 
+            type="text" 
+            placeholder="Search teams by name, email, or domain..." 
+            value={search} 
+            onChange={e => setSearch(e.target.value)} 
+            style={{ padding: "8px", width: "100%", border: "1px solid var(--border)", borderRadius: "4px", backgroundColor: "var(--bg)", color: "var(--text)" }} 
+          />
+        </div>
         <div className="team-grid">
-          {teams.map((team) => (
+          {paginatedTeams.map((team) => (
             <article className="team-card" key={team.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedTeam(team)}>
               <div>
                 <strong>{team.name}</strong>
@@ -899,6 +924,14 @@ function TeamAdmin({ teams, mutate }) {
             </article>
           ))}
         </div>
+        
+        {totalPages > 1 && (
+          <div style={{ display: "flex", gap: "8px", marginTop: "24px", justifyContent: "center", alignItems: "center" }}>
+            <button className="btn secondary" disabled={page === 1} onClick={() => setPage(page - 1)}>Previous</button>
+            <span style={{ fontSize: "14px" }}>Page {page} of {totalPages}</span>
+            <button className="btn secondary" disabled={page === totalPages} onClick={() => setPage(page + 1)}>Next</button>
+          </div>
+        )}
       </Panel>
 
       {selectedTeam && (
