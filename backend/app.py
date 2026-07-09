@@ -705,12 +705,14 @@ def register_routes(app: Flask) -> None:
         )
         get_db().commit()
         
+        subs = query_all("SELECT subscription_json FROM push_subscriptions")
+        
         # Trigger Web Push background notification
-        def send_web_push(t, b):
+        def send_web_push(t, b, subscriptions):
             try:
                 from pywebpush import webpush, WebPushException
-                subs = query_all("SELECT subscription_json FROM push_subscriptions")
-                for row in subs:
+                import json
+                for row in subscriptions:
                     try:
                         sub = json.loads(row["subscription_json"])
                         webpush(
@@ -726,7 +728,8 @@ def register_routes(app: Flask) -> None:
             except Exception as e:
                 print("Web Push setup failed:", e)
                 
-        threading.Thread(target=send_web_push, args=(title, body), daemon=True).start()
+        import threading
+        threading.Thread(target=send_web_push, args=(title, body, subs), daemon=True).start()
 
         return jsonify(dashboard_payload(g.user)), 201
 
