@@ -107,7 +107,8 @@ function App() {
       });
       
       if (!subRes.ok) {
-        throw new Error('Failed to save subscription on server.');
+        const errData = await subRes.json().catch(() => ({}));
+        throw new Error(errData.error || 'Failed to save subscription on server.');
       }
       
       if (showSuccessAlert) alert('Notifications Enabled Successfully!');
