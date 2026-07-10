@@ -678,6 +678,7 @@ def register_routes(app: Flask) -> None:
     @app.post("/api/subscribe")
     @login_required()
     def subscribe_push():
+        import json
         data = require_json()
         sub_info = json.dumps(data)
         try:
