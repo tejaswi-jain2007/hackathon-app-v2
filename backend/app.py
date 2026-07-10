@@ -712,13 +712,15 @@ def register_routes(app: Flask) -> None:
         try:
             from pywebpush import webpush, WebPushException
             import json
+            import os
+            key_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "private_key.pem")
             for row in subs:
                 try:
                     sub = json.loads(row["subscription_json"])
                     webpush(
                         subscription_info=sub,
                         data=json.dumps({"title": title, "body": body}),
-                        vapid_private_key="private_key.pem",
+                        vapid_private_key=key_path,
                         vapid_claims={"sub": "mailto:admin@example.com"}
                     )
                 except WebPushException as ex:
