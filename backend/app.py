@@ -708,30 +708,26 @@ def register_routes(app: Flask) -> None:
         
         subs = query_all("SELECT subscription_json FROM push_subscriptions")
         
-        # Trigger Web Push background notification
-        def send_web_push(t, b, subscriptions):
-            try:
-                from pywebpush import webpush, WebPushException
-                import json
-                for row in subscriptions:
-                    try:
-                        sub = json.loads(row["subscription_json"])
-                        webpush(
-                            subscription_info=sub,
-                            data=json.dumps({"title": t, "body": b}),
-                            vapid_private_key="private_key.pem",
-                            vapid_claims={"sub": "mailto:admin@example.com"}
-                        )
-                    except WebPushException as ex:
-                        print("Web Push Failed:", ex)
-                    except Exception as e:
-                        print("Web Push JSON parse failed:", e)
-            except Exception as e:
-                print("Web Push setup failed:", e)
-                
-        import threading
-        threading.Thread(target=send_web_push, args=(title, body, subs), daemon=True).start()
-
+        # Send Web Push notification synchronously for Vercel
+        try:
+            from pywebpush import webpush, WebPushException
+            import json
+            for row in subs:
+                try:
+                    sub = json.loads(row["subscription_json"])
+                    webpush(
+                        subscription_info=sub,
+                        data=json.dumps({"title": title, "body": body}),
+                        vapid_private_key="private_key.pem",
+                        vapid_claims={"sub": "mailto:admin@example.com"}
+                    )
+                except WebPushException as ex:
+                    print("Web Push Failed:", ex)
+                except Exception as e:
+                    print("Web Push JSON parse failed:", e)
+        except Exception as e:
+            print("Web Push setup failed:", e)
+            
         return jsonify(dashboard_payload(g.user)), 201
 
     @app.post("/api/people")
