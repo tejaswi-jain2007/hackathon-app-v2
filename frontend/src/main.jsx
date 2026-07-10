@@ -805,8 +805,12 @@ function AnnouncementForm({ mutate }) {
   const [form, setForm] = useState({ title: "", body: "" });
   async function submit(event) {
     event.preventDefault();
-    await mutate("/announcements", { method: "POST", body: form });
-    setForm({ title: "", body: "" });
+    try {
+      await mutate("/announcements", { method: "POST", body: form });
+      setForm({ title: "", body: "" });
+    } catch (e) {
+      alert("Failed to publish announcement: " + e.message);
+    }
   }
   return (
     <Panel title="Send announcement" meta="Visible to all dashboards">
