@@ -70,12 +70,18 @@ function App() {
     return payload;
   }
 
-  async function subscribeToWebPush(token) {
-    if (!('serviceWorker' in navigator) || !('PushManager' in window)) return;
+  async function subscribeToWebPush(token, showSuccessAlert = false) {
+    if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+      if (showSuccessAlert) alert('Push notifications are not supported in your browser.');
+      return;
+    }
     try {
       const sw = await navigator.serviceWorker.register('/sw.js');
       const permission = await Notification.requestPermission();
-      if (permission !== 'granted') return;
+      if (permission !== 'granted') {
+        if (showSuccessAlert) alert('Notification permission was denied.');
+        return;
+      }
       
       const response = await fetch(`${API_BASE}/vapid_public_key`);
       const { publicKey } = await response.json();
@@ -94,13 +100,20 @@ function App() {
         });
       }
       
-      await fetch(`${API_BASE}/subscribe`, {
+      const subRes = await fetch(`${API_BASE}/subscribe`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(subscription)
       });
+      
+      if (!subRes.ok) {
+        throw new Error('Failed to save subscription on server.');
+      }
+      
+      if (showSuccessAlert) alert('Notifications Enabled Successfully!');
     } catch (e) {
       console.log('Push setup failed', e);
+      if (showSuccessAlert) alert('Push setup failed: ' + e.message);
     }
   }
 
@@ -181,7 +194,7 @@ function App() {
   }
 
   return (
-    <DashboardShell user={user} data={data} onLogout={logout} activeTab={activeTab} setActiveTab={setActiveTab}>
+    <DashboardShell user={user} data={data} onLogout={logout} onSubscribe={() => subscribeToWebPush(token, true)} activeTab={activeTab} setActiveTab={setActiveTab}>
       {error && <div className="alert">{error}</div>}
       {user.role === "admin" && <AdminPanel data={data} mutate={mutate} activeTab={activeTab} />}
       {user.role === "judge" && <JudgePanel data={data} user={user} mutate={mutate} activeTab={activeTab} />}
@@ -417,7 +430,7 @@ function TeamRegisterForm({ onRegisterTeam, setError }) {
   );
 }
 
-function DashboardShell({ user, data, onLogout, children, activeTab, setActiveTab }) {
+function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab, setActiveTab }) {
   const subtitle = {
     admin: "Manage people, assignments, announcements, disqualification, and leaderboard.",
     judge: "Score only the teams assigned by the admin.",
@@ -476,7 +489,8 @@ function DashboardShell({ user, data, onLogout, children, activeTab, setActiveTa
             <div className="admin-name">{user.name}</div>
             <div className="admin-email">{user.email}</div>
           </div>
-          <button className="logout-btn" onClick={onLogout}>Log out</button>
+          <button className="logout-btn" onClick={onLogout} style={{ marginBottom: "8px" }}>Log out</button>
+          <button className="logout-btn" onClick={onSubscribe} style={{ backgroundColor: "var(--accent)" }}>Enable Notifications</button>
         </div>
       </aside>
 
