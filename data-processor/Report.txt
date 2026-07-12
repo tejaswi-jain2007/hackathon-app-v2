@@ -1,0 +1,20 @@
+HACKATHON REGISTRATION REPORT
+=============================
+
+Total Entries (Before Deduplication): 137
+Total Unique Entries: 127
+Duplicates Removed: 10
+
+--- Year-wise Breakdown ---
+1st Year (I): 21 students/teams
+2nd Year (II): 73 students/teams
+3rd Year (III): 30 students/teams
+4th Year (IV): 3 students/teams
+
+--- Domain-wise Teams ---
+Agri-Tech: 20 teams
+Clean & Green Environment: 15 teams
+Cyber Safety for Infrastructure: 26 teams
+Disaster Management: 15 teams
+Health Care: 40 teams
+Space Technology: 11 teams
