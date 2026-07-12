@@ -39,6 +39,20 @@ function App() {
   const [error, setError] = useState("");
   const [adminConfigured, setAdminConfigured] = useState(true);
   const [activeTab, setActiveTab] = useState("Overview");
+  const [toast, setToast] = useState(null);
+
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      const handler = (event) => {
+        if (event.data && event.data.type === 'PUSH_NOTIFICATION') {
+          setToast(event.data.data);
+          setTimeout(() => setToast(null), 8000);
+        }
+      };
+      navigator.serviceWorker.addEventListener('message', handler);
+      return () => navigator.serviceWorker.removeEventListener('message', handler);
+    }
+  }, []);
 
   useEffect(() => {
     setActiveTab("Overview");
@@ -196,6 +210,17 @@ function App() {
 
   return (
     <DashboardShell user={user} data={data} onLogout={logout} onSubscribe={() => subscribeToWebPush(token, true)} activeTab={activeTab} setActiveTab={setActiveTab}>
+      {toast && (
+        <div className="toast-container">
+          <div className="toast">
+            <div className="toast-header">
+              <span className="toast-title">{toast.title}</span>
+              <button className="toast-close" onClick={() => setToast(null)}>&times;</button>
+            </div>
+            <div className="toast-body">{toast.body}</div>
+          </div>
+        </div>
+      )}
       {error && <div className="alert">{error}</div>}
       {user.role === "admin" && <AdminPanel data={data} mutate={mutate} activeTab={activeTab} />}
       {user.role === "judge" && <JudgePanel data={data} user={user} mutate={mutate} activeTab={activeTab} />}

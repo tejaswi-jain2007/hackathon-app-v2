@@ -14,7 +14,14 @@ self.addEventListener('push', function(event) {
   };
   
   event.waitUntil(
-    self.registration.showNotification(data.title, options)
+    Promise.all([
+      self.registration.showNotification(data.title, options),
+      clients.matchAll({ type: 'window', includeUncontrolled: true }).then(windowClients => {
+        windowClients.forEach(client => {
+          client.postMessage({ type: 'PUSH_NOTIFICATION', data });
+        });
+      })
+    ])
   );
 });
 
