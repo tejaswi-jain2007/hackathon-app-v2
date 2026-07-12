@@ -552,7 +552,12 @@ function AdminPanel({ data, mutate, activeTab }) {
     <>
       <div className="content-grid">
         <section className="left-column" style={{ minHeight: "60vh" }}>
-          {activeTab === "Overview" && <MetricGrid data={data} />}
+          {activeTab === "Overview" && (
+            <>
+              <MetricGrid data={data} />
+              <NoticeBoard announcements={data.announcements} />
+            </>
+          )}
           {activeTab === "Schedule" && <SchedulePanel data={data} mutate={mutate} isAdmin={true} />}
           {activeTab === "Judges" && <PeopleManager title="Judges" role="judge" people={data.judges} teams={data.teams} mutate={mutate} />}
           {activeTab === "Mentors" && <PeopleManager title="Mentors" role="mentor" people={data.mentors} teams={data.teams} mutate={mutate} />}
@@ -574,7 +579,7 @@ function AdminPanel({ data, mutate, activeTab }) {
         {activeTab !== "Leaderboard" && (
           <aside className="right-column">
             <Leaderboard data={data} />
-            {activeTab !== "Announcements" && <NoticeBoard announcements={data.announcements} />}
+            {activeTab !== "Announcements" && activeTab !== "Overview" && <NoticeBoard announcements={data.announcements} />}
           </aside>
         )}
       </div>
@@ -688,7 +693,10 @@ function JudgePanel({ data, user, mutate, activeTab }) {
     <div className="content-grid">
       <section className="left-column" style={{ minHeight: "60vh" }}>
         {activeTab === "Overview" && (
-          <div className="alert info">Welcome Judge! You have {teams.length} teams assigned. Select 'Scoring' from the sidebar to review them.</div>
+          <>
+            <div className="alert info" style={{ marginBottom: '16px' }}>Welcome Judge! You have {teams.length} teams assigned. Select 'Scoring' from the sidebar to review them.</div>
+            <NoticeBoard announcements={data.announcements} />
+          </>
         )}
         {activeTab === "Schedule" && <SchedulePanel data={data} mutate={mutate} isAdmin={false} />}
         {activeTab === "Scoring" && (
@@ -704,7 +712,7 @@ function JudgePanel({ data, user, mutate, activeTab }) {
       {activeTab !== "Leaderboard" && (
         <aside className="right-column">
           <Leaderboard data={data} />
-          <NoticeBoard announcements={data.announcements} />
+          {activeTab !== "Overview" && <NoticeBoard announcements={data.announcements} />}
         </aside>
       )}
     </div>
@@ -718,7 +726,10 @@ function MentorPanel({ data, user, mutate, activeTab }) {
     <div className="content-grid">
       <section className="left-column" style={{ minHeight: "60vh" }}>
         {activeTab === "Overview" && (
-          <div className="alert info">Welcome Mentor! You have {teams.length} teams assigned.</div>
+          <>
+            <div className="alert info" style={{ marginBottom: '16px' }}>Welcome Mentor! You have {teams.length} teams assigned.</div>
+            <NoticeBoard announcements={data.announcements} />
+          </>
         )}
         {activeTab === "Schedule" && <SchedulePanel data={data} mutate={mutate} isAdmin={false} />}
         {activeTab === "My Teams" && (
@@ -738,7 +749,7 @@ function MentorPanel({ data, user, mutate, activeTab }) {
         )}
       </section>
       <aside className="right-column">
-        <NoticeBoard announcements={data.announcements} />
+        {activeTab !== "Overview" && <NoticeBoard announcements={data.announcements} />}
       </aside>
     </div>
   );
@@ -765,6 +776,7 @@ function TeamPanel({ data, user, mutate, activeTab }) {
               </Panel>
             )}
             <MetricGrid data={{ ...data, teams: data.teams.filter(t => t.id === team?.id) }} />
+            <NoticeBoard announcements={data.announcements} />
           </>
         )}
         {activeTab === "Schedule" && <SchedulePanel data={data} mutate={mutate} isAdmin={false} />}
@@ -794,7 +806,7 @@ function TeamPanel({ data, user, mutate, activeTab }) {
       {activeTab !== "Leaderboard" && (
         <aside className="right-column">
           <Leaderboard data={data} highlightTeamId={user.team_id} />
-          <NoticeBoard announcements={data.announcements} />
+          {activeTab !== "Overview" && <NoticeBoard announcements={data.announcements} />}
         </aside>
       )}
     </div>
