@@ -59,6 +59,17 @@ function App() {
   }, [user?.role]);
 
   useEffect(() => {
+    if (!token) return;
+    const interval = setInterval(() => {
+      apiRequest("/dashboard", { token }).then(payload => {
+        setData(payload);
+        if (payload.user) setUser(payload.user);
+      }).catch(err => console.warn("Polling error:", err));
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [token]);
+
+  useEffect(() => {
     apiRequest("/auth/setup-status")
       .then((payload) => setAdminConfigured(payload.adminConfigured))
       .catch(() => setAdminConfigured(true));
