@@ -924,7 +924,7 @@ def register_routes(app: Flask) -> None:
         return jsonify(dashboard_payload(g.user)), 201
 
     @app.patch("/api/help-requests/<int:req_id>")
-    @login_required(("admin", "mentor"))
+    @login_required(("admin",))
     def resolve_help_request(req_id: int):
         req = query_one("SELECT * FROM help_requests WHERE id = %s", (req_id,))
         if not req:

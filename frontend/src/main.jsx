@@ -467,7 +467,7 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
   const tabs = {
     admin: ["Overview", "Schedule", "Judges", "Mentors", "Teams", "Announcements", "Help Queue", "Leaderboard"],
     judge: ["Overview", "Schedule", "Scoring", "Leaderboard"],
-    mentor: ["Overview", "Schedule", "My Teams", "Tasks", "Help Queue"],
+    mentor: ["Overview", "Schedule", "My Teams", "Tasks"],
     team: ["Overview", "Schedule", "Feedback", "Tasks", "Help", "Leaderboard"]
   }[user.role];
 
@@ -741,7 +741,6 @@ function MentorPanel({ data, user, mutate, activeTab }) {
             </div>
           </Panel>
         )}
-        {activeTab === "Help Queue" && <HelpQueue data={data} mutate={mutate} />}
         {activeTab === "Tasks" && (
           <Panel title="All Tasks">
             <div className="card-list">
