@@ -411,9 +411,25 @@ input:focus, select:focus, textarea:focus { border-color: var(--amber); box-shad
   .metric-grid > .stat:nth-child(5) { grid-column: auto; }
   .stat { min-height: 120px; padding: 16px; }
   .stat-num { font-size: 28px; }
-  .pill-row { flex-wrap: wrap; }
-  .panel { padding: 14px; }
+  .pill-row { flex-wrap: wrap; gap: 8px; }
+  .panel { padding: 16px; border-radius: 14px; margin-bottom: 24px; }
   .dropdown-panel { position: static; box-shadow: none; margin-top: 8px; }
+
+  /* Mobile Tables - force horizontal scroll instead of squeezing */
+  .table-head, .table-row { min-width: 500px; }
+  .panel { padding: 14px 10px; } /* Slightly less padding so scrolling is obvious */
+
+  /* Fix Top 3 Graph for Mobile */
+  .top3-graph { height: 160px; gap: 12px; margin-bottom: 24px; }
+  .bar-container { width: 65px; }
+  .bar-wrapper { height: 100px; }
+  .team-name { font-size: 11px; white-space: normal; line-height: 1.2; max-height: 26px; }
+  .score { font-size: 13px; }
+
+  /* Buttons and Inputs */
+  .btn { min-height: 48px; width: 100%; margin-top: 8px; } /* Larger touch targets on mobile */
+  .btn.tiny-btn { min-height: 36px; margin-top: 0; width: auto; }
+  input, select, textarea { min-height: 44px; }
 }
 .team-assigner { position: relative; margin-top: 10px; }
 .assigned-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }

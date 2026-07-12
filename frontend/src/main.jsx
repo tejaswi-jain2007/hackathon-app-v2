@@ -266,7 +266,7 @@ function AuthScreen({
   return (
     <main className="auth-layout">
       <section className="auth-visual">
-        <div className="brand-chip">Hackathon OS</div>
+        <div className="brand-chip">APRATIM SRIJAN KUMBH</div>
         <h1>ONE PLATFORM FOR THE TEAMS , JUDGES AND THE MENTORS</h1>
         <div className="signal-grid">
           <Signal title="" value="BE UNSTOPPABLE" />
@@ -494,8 +494,8 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
         <div className="brand">
           <div className="brand-mark"></div>
           <div>
-            <div className="brand-name">Hail Mary</div>
-            <div className="brand-sub">Mission control deck</div>
+            <div className="brand-name">APRATIM SRIJAN KUMBH</div>
+            <div className="brand-sub">APRATIM SRIJAN KUMBH</div>
           </div>
         </div>
         <nav className="sidebar-nav">
@@ -524,7 +524,7 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
         <div className="eyebrow">Ship computer · {label(user.role)} workspace</div>
         <div className="head-row">
           <div>
-            <h1>{user.role === "team" ? (findTeam(data, user.team_id)?.name || "Team Dashboard") : "Mission control"}</h1>
+            <h1>{user.role === "team" ? (findTeam(data, user.team_id)?.name || "Team Dashboard") : "APRATIM SRIJAN KUMBH"}</h1>
             <p className="subtitle">{subtitle}</p>
             {user.role === "team" && findTeam(data, user.team_id)?.domain && (
               <span className="badge blue" style={{ marginTop: '8px', display: 'inline-block' }}>
@@ -1167,7 +1167,7 @@ function Leaderboard({ data, highlightTeamId }) {
           <span>Judges</span>
           <span>Points</span>
         </div>
-        {data.leaderboard.map((team) => (
+        {data.leaderboard.slice(0, 10).map((team) => (
           <div key={team.id} className={`table-row ${team.id === highlightTeamId ? "highlight" : ""}`}>
             <span>{team.rank}</span>
             <strong>{team.name}</strong>
