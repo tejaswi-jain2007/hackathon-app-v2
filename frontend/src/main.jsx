@@ -1362,4 +1362,81 @@ function SchedulePanel({ data, mutate, isAdmin }) {
   );
 }
 
+function HelpQueue({ data, mutate }) {
+  const pendingRequests = data.helpRequests?.filter((req) => req.status === "pending") || [];
+  
+  async function resolveRequest(id) {
+    await mutate(`/help-requests/${id}`, { method: "PATCH" });
+  }
+
+  return (
+    <Panel title="Help Queue" meta={`${pendingRequests.length} pending`}>
+      <div className="card-list">
+        {pendingRequests.map((req) => {
+          const team = findTeam(data, req.team_id);
+          return (
+            <div key={req.id} className="card" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "16px" }}>
+              <div>
+                <div className="card-title">{team?.name || "Unknown Team"} (Location: {req.location})</div>
+                <div className="card-sub" style={{ marginTop: "4px" }}>{req.description}</div>
+                <div className="card-sub" style={{ fontSize: "12px", marginTop: "4px", opacity: 0.7 }}>Requested at: {new Date(req.created_at).toLocaleTimeString()}</div>
+              </div>
+              <button className="btn primary" onClick={() => resolveRequest(req.id)}>Resolve</button>
+            </div>
+          );
+        })}
+        {pendingRequests.length === 0 && <Empty text="No pending help requests. Good job!" />}
+      </div>
+    </Panel>
+  );
+}
+
+function TeamHelpSection({ data, mutate, teamId }) {
+  const [location, setLocation] = useState("");
+  const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const pendingRequest = data.helpRequests?.find((req) => req.team_id === teamId && req.status === "pending");
+
+  async function submitRequest(e) {
+    e.preventDefault();
+    if (!location) return alert("Location is required.");
+    setLoading(true);
+    await mutate("/help-requests", { method: "POST", body: { location, description } });
+    setLocation("");
+    setDescription("");
+    setLoading(false);
+  }
+
+  if (pendingRequest) {
+    return (
+      <Panel title="Help Request Active" meta="Pending">
+        <div className="alert info">
+          <strong>Help is on the way!</strong>
+          <p style={{ marginTop: "8px" }}>You requested help at <strong>{pendingRequest.location}</strong>: {pendingRequest.description}</p>
+          <p style={{ marginTop: "8px", opacity: 0.8, fontSize: "0.9em" }}>Please wait for a mentor or volunteer to arrive.</p>
+        </div>
+      </Panel>
+    );
+  }
+
+  return (
+    <Panel title="Request Help">
+      <form onSubmit={submitRequest} className="data-form">
+        <div className="form-group">
+          <label>Your Location (e.g., Table 5, Room 101) <span className="req">*</span></label>
+          <input type="text" value={location} onChange={e => setLocation(e.target.value)} required placeholder="Where are you seated?" />
+        </div>
+        <div className="form-group">
+          <label>What do you need help with?</label>
+          <textarea value={description} onChange={e => setDescription(e.target.value)} rows="3" placeholder="Briefly describe the issue..." />
+        </div>
+        <button type="submit" className="btn primary" disabled={loading} style={{ width: "100%" }}>
+          {loading ? "Submitting..." : "Call for Help"}
+        </button>
+      </form>
+    </Panel>
+  );
+}
+
 createRoot(document.getElementById("root")).render(<App />);
