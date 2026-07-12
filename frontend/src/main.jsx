@@ -465,10 +465,10 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
   }[user.role];
 
   const tabs = {
-    admin: ["Overview", "Schedule", "Judges", "Mentors", "Teams", "Announcements", "Leaderboard"],
+    admin: ["Overview", "Schedule", "Judges", "Mentors", "Teams", "Announcements", "Help Queue", "Leaderboard"],
     judge: ["Overview", "Schedule", "Scoring", "Leaderboard"],
-    mentor: ["Overview", "Schedule", "My Teams", "Tasks"],
-    team: ["Overview", "Schedule", "Feedback", "Tasks", "Leaderboard"]
+    mentor: ["Overview", "Schedule", "My Teams", "Tasks", "Help Queue"],
+    team: ["Overview", "Schedule", "Feedback", "Tasks", "Help", "Leaderboard"]
   }[user.role];
 
   return (
@@ -568,6 +568,7 @@ function AdminPanel({ data, mutate, activeTab }) {
               <TeamAdmin teams={data.teams} mutate={mutate} />
             </>
           )}
+          {activeTab === "Help Queue" && <HelpQueue data={data} mutate={mutate} />}
           {activeTab === "Announcements" && (
             <>
               <AnnouncementForm mutate={mutate} />
@@ -740,6 +741,7 @@ function MentorPanel({ data, user, mutate, activeTab }) {
             </div>
           </Panel>
         )}
+        {activeTab === "Help Queue" && <HelpQueue data={data} mutate={mutate} />}
         {activeTab === "Tasks" && (
           <Panel title="All Tasks">
             <div className="card-list">
@@ -800,6 +802,8 @@ function TeamPanel({ data, user, mutate, activeTab }) {
             </div>
           </Panel>
         )}
+
+        {activeTab === "Help" && <TeamHelpSection data={data} mutate={mutate} teamId={user.team_id} />}
 
         {activeTab === "Leaderboard" && <Leaderboard data={data} highlightTeamId={user.team_id} />}
       </section>

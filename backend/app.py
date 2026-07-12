@@ -423,6 +423,7 @@ def dashboard_payload(user: dict[str, Any]) -> dict[str, Any]:
     scores = query_all("SELECT * FROM scores ORDER BY updated_at DESC")
     tasks = query_all("SELECT * FROM tasks ORDER BY id DESC")
     schedule_events = query_all("SELECT * FROM schedule_events ORDER BY start_time ASC")
+    help_requests = query_all("SELECT * FROM help_requests ORDER BY created_at DESC")
     return {
         "user": user,
         "teams": teams,
@@ -432,6 +433,7 @@ def dashboard_payload(user: dict[str, Any]) -> dict[str, Any]:
         "scores": scores,
         "tasks": tasks,
         "scheduleEvents": schedule_events,
+        "helpRequests": help_requests,
         "leaderboard": leaderboard(),
     }
 
@@ -903,6 +905,34 @@ def register_routes(app: Flask) -> None:
         if not task or task["team_id"] != g.user["team_id"]:
             return json_error("Task not found for this team.", 404)
         get_db().execute("UPDATE tasks SET status = %s WHERE id = %s", (status, task_id))
+        get_db().commit()
+        return jsonify(dashboard_payload(g.user))
+
+    @app.post("/api/help-requests")
+    @login_required(("team",))
+    def create_help_request():
+        data = require_json()
+        location = str(data.get("location", "")).strip()
+        description = str(data.get("description", "")).strip()
+        if not location:
+            return json_error("Location is required.")
+        get_db().execute(
+            "INSERT INTO help_requests (team_id, location, description, status, created_at) VALUES (%s, %s, %s, 'pending', %s)",
+            (g.user["team_id"], location, description, now_iso())
+        )
+        get_db().commit()
+        return jsonify(dashboard_payload(g.user)), 201
+
+    @app.patch("/api/help-requests/<int:req_id>")
+    @login_required(("admin", "mentor"))
+    def resolve_help_request(req_id: int):
+        req = query_one("SELECT * FROM help_requests WHERE id = %s", (req_id,))
+        if not req:
+            return json_error("Help request not found.", 404)
+        get_db().execute(
+            "UPDATE help_requests SET status = 'resolved', resolved_by = %s, resolved_at = %s WHERE id = %s",
+            (g.user["id"], now_iso(), req_id)
+        )
         get_db().commit()
         return jsonify(dashboard_payload(g.user))
 
