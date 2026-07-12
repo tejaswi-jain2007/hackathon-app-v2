@@ -439,7 +439,23 @@ input:focus, select:focus, textarea:focus { border-color: var(--amber); box-shad
   .btn { min-height: 44px; width: 100%; margin-top: 4px; } 
   .btn.tiny-btn { min-height: 32px; margin-top: 0; width: auto; font-size: 11px; padding: 0 10px; }
   input, select, textarea { min-height: 44px; font-size: 14px; } /* 16px prevents iOS zoom, 14px is good */
+  
+  .iist-logo { height: 48px; padding: 4px 8px; margin-top: 4px; }
 }
+
+.brand-logo-container {
+  display: flex;
+  align-items: center;
+}
+.iist-logo {
+  height: 60px;
+  object-fit: contain;
+  background: white;
+  border-radius: 8px;
+  padding: 6px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
 .team-assigner { position: relative; margin-top: 10px; }
 .assigned-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .assigned-chips .badge { display: flex; align-items: center; gap: 6px; padding-right: 4px; }
