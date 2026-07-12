@@ -1209,19 +1209,17 @@ function NoticeBoard({ announcements }) {
       {totalPages > 1 && (
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', alignItems: 'center' }}>
           <button 
-            className="btn tiny-btn" 
+            className="btn secondary tiny-btn" 
             onClick={() => setPage(p => Math.max(0, p - 1))}
             disabled={page === 0}
-            style={{ background: 'transparent', border: '1px solid var(--border)' }}
           >
             Previous
           </button>
           <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>Page {page + 1} of {totalPages}</span>
           <button 
-            className="btn tiny-btn" 
+            className="btn secondary tiny-btn" 
             onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
             disabled={page === totalPages - 1}
-            style={{ background: 'transparent', border: '1px solid var(--border)' }}
           >
             Next
           </button>
