@@ -1192,13 +1192,41 @@ function Leaderboard({ data, highlightTeamId }) {
 }
 
 function NoticeBoard({ announcements }) {
+  const [page, setPage] = useState(0);
+  const itemsPerPage = 3;
+  const totalPages = Math.ceil(announcements.length / itemsPerPage);
+  
+  const currentItems = announcements.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+
   return (
     <Panel title="Notice board" meta={`${announcements.length} notices`}>
       <div className="card-list">
-        {announcements.map((item) => (
+        {currentItems.map((item) => (
           <InfoCard key={item.id} title={item.title} body={item.body} meta={formatDate(item.created_at)} />
         ))}
+        {announcements.length === 0 && <Empty text="No announcements yet." />}
       </div>
+      {totalPages > 1 && (
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '16px', alignItems: 'center' }}>
+          <button 
+            className="btn tiny-btn" 
+            onClick={() => setPage(p => Math.max(0, p - 1))}
+            disabled={page === 0}
+            style={{ background: 'transparent', border: '1px solid var(--border)' }}
+          >
+            Previous
+          </button>
+          <span style={{ fontSize: '12px', color: 'var(--text-dim)' }}>Page {page + 1} of {totalPages}</span>
+          <button 
+            className="btn tiny-btn" 
+            onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+            disabled={page === totalPages - 1}
+            style={{ background: 'transparent', border: '1px solid var(--border)' }}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </Panel>
   );
 }
