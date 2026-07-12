@@ -532,7 +532,8 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
               </span>
             )}
           </div>
-          <div className="pill-row">
+          <div className="pill-row" style={{ alignItems: 'center' }}>
+            <img src="/iist-logo.png" alt="IIST Logo" style={{ height: '42px', objectFit: 'contain', marginRight: '4px', background: 'white', borderRadius: '4px', padding: '2px 8px' }} />
             <span className="pill">{data.teams.filter((team) => team.registered).length} registered</span>
             <span className="pill">{data.leaderboard.filter((team) => !team.disqualified).length} active</span>
           </div>
