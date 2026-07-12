@@ -847,7 +847,7 @@ function PeopleManager({ title, role, people, teams, mutate }) {
       ? [...new Set([...person.assignedTeamIds, teamId])]
       : person.assignedTeamIds.filter((id) => id !== teamId);
     try {
-      await mutate("/assignments", { method: "PATCH", body: { role, personId: person.id, teamIds } });
+      await mutate("/assignments", { method: "POST", body: { role, personId: person.id, teamIds } });
     } catch (err) {
       setError(err.message);
     }
@@ -971,7 +971,7 @@ function TeamAdmin({ teams, mutate }) {
               </span>
               <button
                 className={team.disqualified ? "btn secondary" : "btn danger"}
-                onClick={(e) => { e.stopPropagation(); mutate(`/teams/${team.id}/disqualification`, { method: "PATCH", body: { disqualified: !team.disqualified } }); }}
+                onClick={(e) => { e.stopPropagation(); mutate(`/teams/${team.id}/disqualification`, { method: "POST", body: { disqualified: !team.disqualified } }); }}
               >
                 {team.disqualified ? "Restore" : "Disqualify"}
               </button>
@@ -1101,7 +1101,7 @@ function TeamTask({ task, mentors, mutate }) {
           <button
             key={status}
             className={task.status === status ? "selected" : ""}
-            onClick={() => mutate(`/tasks/${task.id}/status`, { method: "PATCH", body: { status } })}
+            onClick={() => mutate(`/tasks/${task.id}/status`, { method: "POST", body: { status } })}
           >
             {label(status)}
           </button>

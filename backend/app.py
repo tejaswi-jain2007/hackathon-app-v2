@@ -708,25 +708,33 @@ def register_routes(app: Flask) -> None:
         
         subs = query_all("SELECT subscription_json FROM push_subscriptions")
         
-        # Send Web Push notification synchronously for Vercel
+        # Send Web Push notifications concurrently to avoid Vercel timeouts
         try:
             from pywebpush import webpush, WebPushException
             import json
             import os
+            import concurrent.futures
+
             key_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "private_key.pem")
-            for row in subs:
+
+            def send_push(row):
                 try:
                     sub = json.loads(row["subscription_json"])
                     webpush(
                         subscription_info=sub,
                         data=json.dumps({"title": title, "body": body}),
                         vapid_private_key=key_path,
-                        vapid_claims={"sub": "mailto:admin@example.com"}
+                        vapid_claims={"sub": "mailto:admin@example.com"},
+                        timeout=5
                     )
                 except WebPushException as ex:
                     print("Web Push Failed:", ex)
                 except Exception as e:
                     print("Web Push JSON parse failed:", e)
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+                executor.map(send_push, subs)
+
         except Exception as e:
             print("Web Push setup failed:", e)
             
@@ -814,7 +822,7 @@ def register_routes(app: Flask) -> None:
 
         return jsonify({"message": f"Successfully added {added_count} teams. Skipped {skipped_count} (duplicates/invalid)." })
 
-    @app.patch("/api/assignments")
+    @app.post("/api/assignments")
     @login_required(("admin",))
     def update_assignments():
         data = require_json()
@@ -828,7 +836,7 @@ def register_routes(app: Flask) -> None:
         get_db().commit()
         return jsonify(dashboard_payload(g.user))
 
-    @app.patch("/api/teams/<int:team_id>/disqualification")
+    @app.post("/api/teams/<int:team_id>/disqualification")
     @login_required(("admin",))
     def toggle_disqualification(team_id: int):
         data = require_json()
@@ -884,7 +892,7 @@ def register_routes(app: Flask) -> None:
         get_db().commit()
         return jsonify(dashboard_payload(g.user)), 201
 
-    @app.patch("/api/tasks/<int:task_id>/status")
+    @app.post("/api/tasks/<int:task_id>/status")
     @login_required(("team",))
     def update_task_status(task_id: int):
         data = require_json()
