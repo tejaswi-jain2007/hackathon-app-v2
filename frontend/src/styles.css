@@ -412,8 +412,8 @@ input:focus, select:focus, textarea:focus { border-color: var(--amber); box-shad
   .pill-row { width: 100%; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
   .pill { font-size: 11.5px; padding: 6px 12px; }
   
-  .metric-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } /* Keep 2 columns on mobile! */
-  .stat { min-height: 100px; padding: 16px 14px; }
+  .metric-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; align-content: start; } /* Keep 2 columns on mobile, pack rows tightly! */
+  .stat { min-height: 100px; padding: 16px 14px; margin: 0; }
   .stat-num { font-size: 24px; }
   .stat-label { font-size: 10px; }
 
