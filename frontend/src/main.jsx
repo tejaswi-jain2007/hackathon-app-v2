@@ -405,7 +405,7 @@ function LoadingScreen() {
   return (
     <main className="loading-page">
       <div className="loader" />
-      <p>Loading control room...</p>
+      <p style={{ fontFamily: "'Space Grotesk', sans-serif", fontWeight: 600, fontSize: '15px', color: 'var(--muted)', letterSpacing: '.5px' }}>Initializing dashboard...</p>
     </main>
   );
 }
@@ -434,33 +434,38 @@ function AuthScreen({
     }
   }
 
+  const roleIcons = { admin: "⚙️", judge: "⚖️", mentor: "🧭", team: "👥" };
+
   return (
     <main className="auth-layout">
       <section className="auth-visual">
-        <div className="brand-chip">APRATIM SRIJAN KUMBH</div>
-        <h1>ONE PLATFORM FOR THE TEAMS , JUDGES AND THE MENTORS</h1>
-        <div className="signal-grid">
-          <Signal title="" value="BE UNSTOPPABLE" />
-          <Signal title="" value="24 HOURS" />
-          <Signal title="" value="THE UNBEATABLE SPIRIT" />
+        <div>
+          <div className="brand-chip">✦ APRATIM SRIJAN KUMBH</div>
+          <h1>Where Innovation<br/>Meets Execution</h1>
+          <p className="auth-hero-sub">The unified command center for teams, judges, mentors — all in one seamless experience.</p>
         </div>
-        <div className="demo-box">
-          <strong>STAY UPDATED</strong>
-          <span>EASY TO USE</span>
-          <span>FULL TRANSPARENCY</span>
+        <div className="signal-grid">
+          <div className="signal"><strong>24h</strong><span>Non-stop hacking</span></div>
+          <div className="signal"><strong>Live</strong><span>Real-time scoring</span></div>
+          <div className="signal"><strong>∞</strong><span>Unlimited potential</span></div>
+        </div>
+        <div className="auth-footer-bar">
+          <span>🔒 Encrypted</span>
+          <span>⚡ Real-time</span>
+          <span>📱 Mobile-ready</span>
         </div>
       </section>
       <section className="auth-panel">
         <div className="auth-card">
           <div className="section-title">
-            <span>{adminConfigured ? "Secure role login" : "First-time setup"}</span>
-            <h2>{adminConfigured ? `${label(role)} access` : "Register admin"}</h2>
+            <span className="section-eyebrow">{adminConfigured ? "Secure Access" : "First-time Setup"}</span>
+            <h2>{adminConfigured ? `${label(role)} Login` : "Create Admin Account"}</h2>
           </div>
           {adminConfigured && (
             <div className="role-tabs">
               {roleTabs.map((item) => (
                 <button key={item} className={role === item ? "active" : ""} onClick={() => setRole(item)}>
-                  {label(item)}
+                  <span className="role-icon">{roleIcons[item]}</span> {label(item)}
                 </button>
               ))}
             </div>
@@ -477,15 +482,15 @@ function AuthScreen({
               <form className="form-stack" onSubmit={submitLogin}>
                 <Input label="Email" type="email" value={loginForm.email} onChange={(email) => setLoginForm({ ...loginForm, email })} />
                 <Input label="Password" type="password" value={loginForm.password} onChange={(password) => setLoginForm({ ...loginForm, password })} />
-                <button className="btn primary" type="submit">Sign in</button>
+                <button className="btn primary" type="submit">Sign in →</button>
               </form>
               <div className="auth-actions">
-                <button className="link-btn" type="button" onClick={() => setAuthMode("forgot")}>Forgot password</button>
-                <button className="link-btn" type="button" onClick={() => setAuthMode("reset")}>Have reset token</button>
+                <button className="link-btn" type="button" onClick={() => setAuthMode("forgot")}>Forgot password?</button>
+                <button className="link-btn" type="button" onClick={() => setAuthMode("reset")}>Have a reset token?</button>
               </div>
               {role === "team" && (
                 <>
-                  <div className="divider" />
+                  <div className="auth-divider"><span>or register your team</span></div>
                   <TeamRegisterForm onRegisterTeam={onRegisterTeam} setError={setError} />
                 </>
               )}
@@ -629,10 +634,10 @@ function TeamRegisterForm({ onRegisterTeam, setError }) {
 
 function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab, setActiveTab }) {
   const subtitle = {
-    admin: "Manage people, assignments, announcements, disqualification, and leaderboard.",
-    judge: "Score only the teams assigned by the admin.",
-    mentor: "Assign tasks and monitor progress for your teams.",
-    team: "Track announcements, score feedback, tasks, and leaderboard rank."
+    admin: "Command center — manage teams, judges, mentors, scores, and everything in between.",
+    judge: "Review and score teams assigned to you by the admin.",
+    mentor: "Guide your teams, assign tasks, and track their progress.",
+    team: "Stay updated with scores, tasks, announcements, and your ranking."
   }[user.role];
 
   const tabs = {
@@ -642,6 +647,19 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
     team: ["Overview", "Schedule", "Feedback", "Tasks", "Help", "Leaderboard"]
   }[user.role];
 
+  const tabIcons = {
+    "Overview": "◎", "Schedule": "◷", "Judges": "⚖", "Mentors": "◈",
+    "Teams": "◫", "Announcements": "◆", "Help Queue": "◉", "Leaderboard": "▲",
+    "Scoring": "✦", "My Teams": "◫", "Tasks": "☐", "Feedback": "◇", "Help": "◉"
+  };
+
+  const greetings = {
+    admin: "Admin Dashboard",
+    judge: "Judge Dashboard",
+    mentor: "Mentor Dashboard",
+    team: findTeam(data, user.team_id)?.name || "Team Dashboard"
+  };
+
   return (
     <div className="layout">
       <div className="stars"></div>
@@ -650,24 +668,15 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
         <div className="nebula"></div>
         <div className="petrova-arc"></div>
         <div className="dying-sun"></div>
-        <svg className="ship-silhouette" viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="140" cy="80" rx="120" ry="26" fill="#0c121b" stroke="#1d2735" strokeWidth="1.5"/>
-          <rect x="230" y="66" width="90" height="28" rx="10" fill="#0c121b" stroke="#1d2735" strokeWidth="1.5"/>
-          <circle cx="320" cy="80" r="16" fill="#0f1621" stroke="#7a5a26" strokeWidth="1.5"/>
-          <circle cx="320" cy="80" r="6" fill="#f2a53d" opacity=".7"/>
-          <rect x="70" y="40" width="18" height="80" rx="4" fill="#0f1621" stroke="#1d2735"/>
-          <rect x="150" y="30" width="18" height="100" rx="4" fill="#0f1621" stroke="#1d2735"/>
-          <rect x="200" y="40" width="18" height="80" rx="4" fill="#0f1621" stroke="#1d2735"/>
-        </svg>
       </div>
       <div className="sun-corner"></div>
 
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-mark"></div>
+          <img src="/iist-logo.png" alt="Logo" className="brand-logo-img" />
           <div>
-            <div className="brand-name">APRATIM SRIJAN KUMBH</div>
-            <div className="brand-sub">APRATIM SRIJAN KUMBH</div>
+            <div className="brand-name">Apratim Srijan Kumbh</div>
+            <div className="brand-sub">Hackathon Control</div>
           </div>
         </div>
         <nav className="sidebar-nav">
@@ -677,30 +686,36 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
               className={activeTab === tab ? "active" : ""}
               onClick={() => setActiveTab(tab)}
             >
+              <span className="nav-icon">{tabIcons[tab] || "◦"}</span>
               {tab}
             </a>
           ))}
         </nav>
         <div className="sidebar-foot">
           <div className="admin-card">
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+              <div className="user-avatar">{user.name?.charAt(0)?.toUpperCase()}</div>
+              <div>
+                <div className="admin-name">{user.name}</div>
+                <div className="admin-email">{user.email}</div>
+              </div>
+            </div>
             <span className="admin-badge">{label(user.role)}</span>
-            <div className="admin-name">{user.name}</div>
-            <div className="admin-email">{user.email}</div>
           </div>
-          <button className="logout-btn" onClick={onLogout} style={{ marginBottom: "8px" }}>Log out</button>
-          <button className="logout-btn" onClick={onSubscribe} style={{ backgroundColor: "var(--accent)" }}>Enable Notifications</button>
+          <button className="logout-btn" onClick={onLogout} style={{ marginBottom: "8px" }}>↪ Sign Out</button>
+          <button className="logout-btn" onClick={onSubscribe}>🔔 Enable Notifications</button>
         </div>
       </aside>
 
       <main className="workspace">
         <ScrollReveal delay={0} direction="down">
-          <div className="eyebrow">Ship computer · {label(user.role)} workspace</div>
+          <div className="eyebrow">✦ {label(user.role)} Workspace</div>
           <div className="head-row">
             <div>
-              <h1>{user.role === "team" ? (findTeam(data, user.team_id)?.name || "Team Dashboard") : "APRATIM SRIJAN KUMBH"}</h1>
+              <h1>{greetings[user.role]}</h1>
               <p className="subtitle">{subtitle}</p>
               {user.role === "team" && findTeam(data, user.team_id)?.domain && (
-                <span className="badge blue" style={{ marginTop: '8px', display: 'inline-block' }}>
+                <span className="badge blue" style={{ marginTop: '10px', display: 'inline-block' }}>
                   {findTeam(data, user.team_id)?.domain}
                 </span>
               )}
@@ -712,7 +727,7 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
         </ScrollReveal>
 
         <div className="petrova">
-          <span className="petrova-label">petrova line · 96.86 MHz</span>
+          <span className="petrova-label">live · connected</span>
         </div>
 
         {children}
@@ -992,32 +1007,24 @@ function TeamPanel({ data, user, mutate, activeTab }) {
 
 function MetricGrid({ data }) {
   const disqualified = data.teams.filter((team) => team.disqualified).length;
+  const metrics = [
+    { value: data.teams.filter((t) => t.registered).length, label: "Teams Registered", icon: "👥", accent: "var(--amber)" },
+    { value: data.judges.length, label: "Active Judges", icon: "⚖️", accent: "var(--ice)" },
+    { value: data.mentors.length, label: "Mentors", icon: "🧭", accent: "var(--emerald, #68d391)" },
+    { value: disqualified, label: "Disqualified", icon: "⚠️", accent: "var(--danger)", isDanger: true },
+  ];
   return (
     <div className="metric-grid">
-      <ScrollReveal delay={0}>
-        <div className="stat">
-          <div className="stat-num">{data.teams.filter((team) => team.registered).length}</div>
-          <div className="stat-label">Registered teams</div>
-        </div>
-      </ScrollReveal>
-      <ScrollReveal delay={100}>
-        <div className="stat">
-          <div className="stat-num">{data.judges.length}</div>
-          <div className="stat-label">Judges</div>
-        </div>
-      </ScrollReveal>
-      <ScrollReveal delay={200}>
-        <div className="stat">
-          <div className="stat-num">{data.mentors.length}</div>
-          <div className="stat-label">Mentors</div>
-        </div>
-      </ScrollReveal>
-      <ScrollReveal delay={300}>
-        <div className="stat">
-          <div className="stat-num danger">{disqualified}</div>
-          <div className="stat-label">Disqualified</div>
-        </div>
-      </ScrollReveal>
+      {metrics.map((m, i) => (
+        <ScrollReveal key={m.label} delay={i * 80}>
+          <div className="stat" style={{ '--stat-accent': m.accent }}>
+            <div className="stat-icon">{m.icon}</div>
+            <div className={`stat-num${m.isDanger ? ' danger' : ''}`}>{m.value}</div>
+            <div className="stat-label">{m.label}</div>
+            <div className="stat-accent-line" />
+          </div>
+        </ScrollReveal>
+      ))}
     </div>
   );
 }
