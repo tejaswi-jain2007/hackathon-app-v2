@@ -11,6 +11,7 @@ from datetime import datetime, timedelta, timezone
 from functools import wraps
 from pathlib import Path
 from typing import Any, Callable
+import re
 
 from flask import Flask, g, jsonify, request, send_from_directory
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -52,7 +53,7 @@ def create_app() -> Flask:
 
 
     @app.after_request
-    def add_cors_headers(response):
+    def add_cors_and_security_headers(response):
         origin = request.headers.get("Origin")
         allowed = False
         if origin:
@@ -62,8 +63,22 @@ def create_app() -> Flask:
                 allowed = True
         response.headers["Access-Control-Allow-Origin"] = origin if allowed else app.config["FRONTEND_ORIGIN"]
         response.headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization"
-        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, OPTIONS"
+        response.headers["Access-Control-Allow-Methods"] = "GET, POST, PATCH, OPTIONS, DELETE"
         response.headers["Access-Control-Allow-Credentials"] = "true"
+        
+        # OWASP Security Headers
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "DENY"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "no-referrer-when-downgrade"
+        response.headers["Content-Security-Policy"] = (
+            "default-src 'self'; "
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval'; "
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
+            "font-src 'self' https://fonts.gstatic.com; "
+            "img-src 'self' data: https:; "
+            "connect-src 'self' *;"
+        )
         return response
 
     @app.before_request
@@ -90,6 +105,15 @@ def create_app() -> Flask:
 
 def now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+
+def sanitize_string(value: Any) -> str:
+    if value is None:
+        return ""
+    val_str = str(value).strip()
+    # Strip HTML and script tags
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', val_str).strip()
 
 
 class PostgresConnection:
@@ -331,8 +355,10 @@ def normalize_emails(values: list[str]) -> list[str]:
     clean: list[str] = []
     for value in values:
         for email in str(value or "").replace("\n", ",").split(","):
-            email = email.strip().lower()
+            email = sanitize_string(email).lower()
             if email and email not in clean:
+                if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+                    raise ValueError(f"Invalid email format: {email}")
                 clean.append(email)
     return clean
 
@@ -534,11 +560,13 @@ def register_routes(app: Flask) -> None:
         data = require_json()
         if query_one("SELECT id FROM users WHERE role = 'admin' LIMIT 1"):
             return json_error("Admin is already registered. Only one admin account is allowed.", 409)
-        name = str(data.get("name", "")).strip()
-        email = str(data.get("email", "")).strip().lower()
+        name = sanitize_string(data.get("name", ""))
+        email = sanitize_string(data.get("email", "")).lower()
         password = str(data.get("password", ""))
         if not name or not email or len(password) < 8:
             return json_error("Name, email, and an 8 character password are required.")
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return json_error("Invalid email address format.")
         try:
             user_id = create_user(name, email, password, "admin")
             token = secrets.token_urlsafe(32)
@@ -589,7 +617,9 @@ def register_routes(app: Flask) -> None:
         data = require_json()
         try:
             team_id = int(data.get("teamId"))
-            leader_email = str(data.get("leaderEmail", "")).strip()
+            leader_email = sanitize_string(data.get("leaderEmail", "")).lower()
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", leader_email):
+                return json_error("Invalid leader email format.")
             member_emails = normalize_emails(data.get("memberEmails", []))
             password = str(data.get("password", ""))
             if not leader_email or len(password) < 8:
@@ -653,10 +683,10 @@ def register_routes(app: Flask) -> None:
     @login_required(("admin",))
     def create_schedule_event():
         data = require_json()
-        title = str(data.get("title", "")).strip()
-        description = str(data.get("description", "")).strip()
-        start_time = str(data.get("startTime", "")).strip()
-        end_time = str(data.get("endTime", "")).strip()
+        title = sanitize_string(data.get("title", ""))
+        description = sanitize_string(data.get("description", ""))
+        start_time = sanitize_string(data.get("startTime", ""))
+        end_time = sanitize_string(data.get("endTime", ""))
         if not title or not start_time:
             return json_error("Title and start time are required.")
         get_db().execute(
@@ -698,8 +728,8 @@ def register_routes(app: Flask) -> None:
     @login_required(("admin",))
     def create_announcement():
         data = require_json()
-        title = str(data.get("title", "")).strip()
-        body = str(data.get("body", "")).strip()
+        title = sanitize_string(data.get("title", ""))
+        body = sanitize_string(data.get("body", ""))
         if not title or not body:
             return json_error("Title and message are required.")
         get_db().execute(
@@ -747,13 +777,15 @@ def register_routes(app: Flask) -> None:
     def create_person():
         data = require_json()
         role = str(data.get("role", "")).lower()
-        name = str(data.get("name", "")).strip()
-        email = str(data.get("email", "")).strip().lower()
+        name = sanitize_string(data.get("name", ""))
+        email = sanitize_string(data.get("email", "")).lower()
         password = str(data.get("password", ""))
         if role not in ("judge", "mentor"):
             return json_error("Only judges and mentors can be registered here.")
         if not name or not email or len(password) < 8:
             return json_error("Name, email, and a password of at least 8 characters are required.")
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+            return json_error("Invalid email address format.")
         try:
             create_user(name, email, password, role)
             get_db().commit()
@@ -766,7 +798,7 @@ def register_routes(app: Flask) -> None:
     @login_required(("admin",))
     def create_team():
         data = require_json()
-        name = str(data.get("name", "")).strip()
+        name = sanitize_string(data.get("name", ""))
         if not name:
             return json_error("Team name is required.")
         db = get_db()
@@ -792,15 +824,19 @@ def register_routes(app: Flask) -> None:
         import json
 
         for t in teams:
-            name = str(t.get("name", "")).strip()
-            leader_email = str(t.get("leader_email", "")).strip()
-            leader_name = str(t.get("leader_name", "Team Leader")).strip()
-            members_list = t.get("members", [])
+            name = sanitize_string(t.get("name", ""))
+            leader_email = sanitize_string(t.get("leader_email", "")).lower()
+            leader_name = sanitize_string(t.get("leader_name", "Team Leader"))
+            members_list = [sanitize_string(m) for m in t.get("members", [])]
             members_json = json.dumps(members_list) if members_list else None
 
-            domain = str(t.get("domain", "")).strip()
+            domain = sanitize_string(t.get("domain", ""))
 
             if not name:
+                skipped_count += 1
+                continue
+
+            if leader_email and not re.match(r"[^@]+@[^@]+\.[^@]+", leader_email):
                 skipped_count += 1
                 continue
 
@@ -851,9 +887,13 @@ def register_routes(app: Flask) -> None:
     @login_required(("judge",))
     def create_score():
         data = require_json()
-        team_id = int(data.get("teamId", 0))
-        points = int(data.get("points", -1))
-        feedback = str(data.get("feedback", "")).strip()
+        try:
+            team_id = int(data.get("teamId", 0))
+            points = int(data.get("points", -1))
+        except (ValueError, TypeError):
+            return json_error("Invalid teamId or points format.")
+            
+        feedback = sanitize_string(data.get("feedback", ""))
         team = query_one("SELECT disqualified FROM teams WHERE id = %s", (team_id,))
         if not team or team["disqualified"]:
             return json_error("This team cannot be scored.")
@@ -877,9 +917,13 @@ def register_routes(app: Flask) -> None:
     @login_required(("mentor",))
     def create_task():
         data = require_json()
-        team_id = int(data.get("teamId", 0))
-        title = str(data.get("title", "")).strip()
-        details = str(data.get("details", "")).strip()
+        try:
+            team_id = int(data.get("teamId", 0))
+        except (ValueError, TypeError):
+            return json_error("Invalid teamId format.")
+            
+        title = sanitize_string(data.get("title", ""))
+        details = sanitize_string(data.get("details", ""))
         team = query_one("SELECT disqualified FROM teams WHERE id = %s", (team_id,))
         if not team or team["disqualified"]:
             return json_error("This team cannot receive tasks.")
@@ -912,8 +956,8 @@ def register_routes(app: Flask) -> None:
     @login_required(("team",))
     def create_help_request():
         data = require_json()
-        location = str(data.get("location", "")).strip()
-        description = str(data.get("description", "")).strip()
+        location = sanitize_string(data.get("location", ""))
+        description = sanitize_string(data.get("description", ""))
         if not location:
             return json_error("Location is required.")
         get_db().execute(
