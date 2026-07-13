@@ -673,7 +673,7 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
 
       <aside className="sidebar">
         <div className="brand">
-          <img src="/iist-logo.png" alt="Logo" className="brand-logo-img" />
+          <img src="/hackathon-logo.png" alt="Logo" className="brand-logo-img" />
           <div>
             <div className="brand-name">Apratim Srijan Kumbh</div>
             <div className="brand-sub">Hackathon Control</div>
