@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { createRoot } from "react-dom/client";
 import * as XLSX from "xlsx";
 import "./styles.css";
@@ -6,6 +6,166 @@ import "./styles.css";
 const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:5001/api" : "/api");
 const roleTabs = ["admin", "judge", "mentor", "team"];
 const emptyLogin = { email: "", password: "" };
+
+/* ─── Scroll Reveal Hook ─── */
+function useScrollReveal(options = {}) {
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setIsVisible(true); observer.unobserve(el); } },
+      { threshold: options.threshold || 0.12, rootMargin: options.rootMargin || "0px 0px -40px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, isVisible];
+}
+
+/* ─── ScrollReveal Wrapper ─── */
+function ScrollReveal({ children, delay = 0, direction = "up", className = "", style = {} }) {
+  const [ref, isVisible] = useScrollReveal();
+  const transforms = {
+    up: "translateY(40px)",
+    down: "translateY(-40px)",
+    left: "translateX(50px)",
+    right: "translateX(-50px)",
+    scale: "scale(0.92)"
+  };
+  return (
+    <div
+      ref={ref}
+      className={`scroll-reveal ${isVisible ? "revealed" : ""} ${className}`}
+      style={{
+        ...style,
+        "--sr-delay": `${delay}ms`,
+        "--sr-transform": transforms[direction] || transforms.up,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+/* ─── Space Particles Canvas ─── */
+function SpaceParticles() {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    let animId;
+    let particles = [];
+    let shootingStars = [];
+    let lastShootingStar = 0;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener("resize", resize);
+
+    // Create floating particles
+    for (let i = 0; i < 80; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 1.8 + 0.3,
+        dx: (Math.random() - 0.5) * 0.15,
+        dy: (Math.random() - 0.5) * 0.1 - 0.05,
+        opacity: Math.random() * 0.6 + 0.2,
+        pulse: Math.random() * Math.PI * 2,
+        pulseSpeed: Math.random() * 0.02 + 0.005,
+      });
+    }
+
+    function draw(time) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw floating particles
+      for (const p of particles) {
+        p.x += p.dx;
+        p.y += p.dy;
+        p.pulse += p.pulseSpeed;
+        const glow = p.opacity * (0.6 + 0.4 * Math.sin(p.pulse));
+
+        if (p.x < -10) p.x = canvas.width + 10;
+        if (p.x > canvas.width + 10) p.x = -10;
+        if (p.y < -10) p.y = canvas.height + 10;
+        if (p.y > canvas.height + 10) p.y = -10;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(242, 165, 61, ${glow * 0.4})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 0.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${glow})`;
+        ctx.fill();
+      }
+
+      // Shooting stars
+      if (time - lastShootingStar > 4000 + Math.random() * 6000) {
+        lastShootingStar = time;
+        shootingStars.push({
+          x: Math.random() * canvas.width * 0.8,
+          y: Math.random() * canvas.height * 0.3,
+          len: 60 + Math.random() * 100,
+          speed: 6 + Math.random() * 6,
+          angle: Math.PI / 5 + Math.random() * 0.3,
+          life: 1,
+          decay: 0.012 + Math.random() * 0.008,
+        });
+      }
+
+      for (let i = shootingStars.length - 1; i >= 0; i--) {
+        const s = shootingStars[i];
+        s.x += Math.cos(s.angle) * s.speed;
+        s.y += Math.sin(s.angle) * s.speed;
+        s.life -= s.decay;
+
+        if (s.life <= 0) { shootingStars.splice(i, 1); continue; }
+
+        const tailX = s.x - Math.cos(s.angle) * s.len;
+        const tailY = s.y - Math.sin(s.angle) * s.len;
+
+        const grad = ctx.createLinearGradient(tailX, tailY, s.x, s.y);
+        grad.addColorStop(0, `rgba(242, 165, 61, 0)`);
+        grad.addColorStop(0.7, `rgba(255, 200, 100, ${s.life * 0.5})`);
+        grad.addColorStop(1, `rgba(255, 255, 255, ${s.life})`);
+
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(s.x, s.y);
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Head glow
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 255, 255, ${s.life})`;
+        ctx.fill();
+      }
+
+      animId = requestAnimationFrame(draw);
+    }
+
+    animId = requestAnimationFrame(draw);
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+    };
+  }, []);
+
+  return <canvas ref={canvasRef} className="space-particles" />;
+}
 
 async function apiRequest(path, { method = "GET", token, body } = {}) {
   const response = await fetch(`${API_BASE}${path}`, {
@@ -485,6 +645,7 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
   return (
     <div className="layout">
       <div className="stars"></div>
+      <SpaceParticles />
       <div className="scene">
         <div className="nebula"></div>
         <div className="petrova-arc"></div>
@@ -532,21 +693,23 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
       </aside>
 
       <main className="workspace">
-        <div className="eyebrow">Ship computer · {label(user.role)} workspace</div>
-        <div className="head-row">
-          <div>
-            <h1>{user.role === "team" ? (findTeam(data, user.team_id)?.name || "Team Dashboard") : "APRATIM SRIJAN KUMBH"}</h1>
-            <p className="subtitle">{subtitle}</p>
-            {user.role === "team" && findTeam(data, user.team_id)?.domain && (
-              <span className="badge blue" style={{ marginTop: '8px', display: 'inline-block' }}>
-                {findTeam(data, user.team_id)?.domain}
-              </span>
-            )}
+        <ScrollReveal delay={0} direction="down">
+          <div className="eyebrow">Ship computer · {label(user.role)} workspace</div>
+          <div className="head-row">
+            <div>
+              <h1>{user.role === "team" ? (findTeam(data, user.team_id)?.name || "Team Dashboard") : "APRATIM SRIJAN KUMBH"}</h1>
+              <p className="subtitle">{subtitle}</p>
+              {user.role === "team" && findTeam(data, user.team_id)?.domain && (
+                <span className="badge blue" style={{ marginTop: '8px', display: 'inline-block' }}>
+                  {findTeam(data, user.team_id)?.domain}
+                </span>
+              )}
+            </div>
+            <div className="brand-logo-container">
+              <img src="/iist-logo.png" alt="IIST Logo" className="iist-logo" />
+            </div>
           </div>
-          <div className="brand-logo-container">
-            <img src="/iist-logo.png" alt="IIST Logo" className="iist-logo" />
-          </div>
-        </div>
+        </ScrollReveal>
 
         <div className="petrova">
           <span className="petrova-label">petrova line · 96.86 MHz</span>
@@ -831,22 +994,30 @@ function MetricGrid({ data }) {
   const disqualified = data.teams.filter((team) => team.disqualified).length;
   return (
     <div className="metric-grid">
-      <div className="stat">
-        <div className="stat-num">{data.teams.filter((team) => team.registered).length}</div>
-        <div className="stat-label">Registered teams</div>
-      </div>
-      <div className="stat">
-        <div className="stat-num">{data.judges.length}</div>
-        <div className="stat-label">Judges</div>
-      </div>
-      <div className="stat">
-        <div className="stat-num">{data.mentors.length}</div>
-        <div className="stat-label">Mentors</div>
-      </div>
-      <div className="stat">
-        <div className="stat-num danger">{disqualified}</div>
-        <div className="stat-label">Disqualified</div>
-      </div>
+      <ScrollReveal delay={0}>
+        <div className="stat">
+          <div className="stat-num">{data.teams.filter((team) => team.registered).length}</div>
+          <div className="stat-label">Registered teams</div>
+        </div>
+      </ScrollReveal>
+      <ScrollReveal delay={100}>
+        <div className="stat">
+          <div className="stat-num">{data.judges.length}</div>
+          <div className="stat-label">Judges</div>
+        </div>
+      </ScrollReveal>
+      <ScrollReveal delay={200}>
+        <div className="stat">
+          <div className="stat-num">{data.mentors.length}</div>
+          <div className="stat-label">Mentors</div>
+        </div>
+      </ScrollReveal>
+      <ScrollReveal delay={300}>
+        <div className="stat">
+          <div className="stat-num danger">{disqualified}</div>
+          <div className="stat-label">Disqualified</div>
+        </div>
+      </ScrollReveal>
     </div>
   );
 }
@@ -1245,13 +1416,15 @@ function NoticeBoard({ announcements }) {
 
 function Panel({ title, meta, children }) {
   return (
-    <section className="panel">
-      <div className="panel-head">
-        <h2 className="panel-title">{title}</h2>
-        {meta && <span className="panel-tag">{meta}</span>}
-      </div>
-      {children}
-    </section>
+    <ScrollReveal>
+      <section className="panel">
+        <div className="panel-head">
+          <h2 className="panel-title">{title}</h2>
+          {meta && <span className="panel-tag">{meta}</span>}
+        </div>
+        {children}
+      </section>
+    </ScrollReveal>
   );
 }
 

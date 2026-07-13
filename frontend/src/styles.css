@@ -537,3 +537,177 @@ input:focus, select:focus, textarea:focus { border-color: var(--amber); box-shad
   from { transform: translateX(0); opacity: 1; }
   to { transform: translateX(120%); opacity: 0; }
 }
+
+/* ─── Space Particles Canvas ─── */
+.space-particles {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ─── Scroll Reveal System ─── */
+.scroll-reveal {
+  opacity: 0;
+  transform: var(--sr-transform, translateY(40px));
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--sr-delay, 0ms),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1) var(--sr-delay, 0ms);
+  will-change: opacity, transform;
+}
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) translateX(0) scale(1);
+}
+
+/* ─── Enhanced Star Twinkling ─── */
+.stars {
+  animation: starDrift 120s linear infinite;
+}
+.stars2 {
+  animation: starDrift 180s linear infinite reverse;
+  opacity: 0.4;
+}
+@keyframes starDrift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-200px); }
+}
+
+/* ─── Stat Card Hover Glow ─── */
+.stat {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.stat:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 30px rgba(242, 165, 61, 0.12), inset 0 0 20px rgba(242, 165, 61, 0.03);
+  border-color: var(--amber-dim);
+}
+
+/* ─── Panel Hover Glow ─── */
+.panel {
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.panel:hover {
+  box-shadow: 0 4px 24px rgba(242, 165, 61, 0.06);
+  border-color: rgba(242, 165, 61, 0.15);
+}
+
+/* ─── Number Count-Up Animation ─── */
+.stat-num {
+  transition: color 0.3s ease;
+}
+
+/* ─── Sidebar Nav Link Hover Glow ─── */
+nav.sidebar-nav a {
+  transition: all 0.25s ease;
+}
+nav.sidebar-nav a:hover:not(.active) {
+  color: var(--text);
+  text-shadow: 0 0 12px rgba(242, 165, 61, 0.3);
+}
+nav.sidebar-nav a.active {
+  transition: all 0.3s ease;
+  text-shadow: 0 0 8px rgba(242, 165, 61, 0.2);
+}
+
+/* ─── Team Card Hover ─── */
+.team-card, .info-card, .assignment-card, .review-card, .task-card {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.team-card:hover, .info-card:hover, .assignment-card:hover, .review-card:hover, .task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  border-color: rgba(242, 165, 61, 0.2);
+}
+
+/* ─── Timeline Animation ─── */
+.timeline-item {
+  transition: transform 0.25s ease;
+}
+.timeline-item:hover {
+  transform: translateX(4px);
+}
+.timeline-marker {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+.timeline-item:hover .timeline-marker {
+  box-shadow: 0 0 12px 3px rgba(242, 165, 61, 0.4);
+  transform: scale(1.2);
+}
+
+/* ─── Button Micro-Interactions ─── */
+.btn {
+  transition: all 0.2s ease;
+}
+.btn.primary:hover {
+  box-shadow: 0 4px 16px rgba(242, 165, 61, 0.35);
+  transform: translateY(-1px);
+}
+.btn.primary:active {
+  transform: translateY(1px);
+  box-shadow: 0 1px 4px rgba(242, 165, 61, 0.2);
+}
+
+/* ─── Badge Pulse ─── */
+.badge {
+  transition: all 0.25s ease;
+}
+.badge:hover {
+  transform: scale(1.05);
+}
+
+/* ─── Leaderboard Row Hover ─── */
+.table-row {
+  transition: all 0.2s ease;
+}
+.table-row:hover {
+  background: rgba(242, 165, 61, 0.04);
+  border-color: rgba(242, 165, 61, 0.15);
+  transform: translateX(2px);
+}
+
+/* ─── Auth Screen Enhanced Animations ─── */
+.auth-visual h1 {
+  animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+.brand-chip {
+  animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0s both;
+}
+.signal-grid {
+  animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+}
+.demo-box {
+  animation: heroFadeIn 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+.auth-card {
+  animation: heroFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Smooth page transition ─── */
+.workspace {
+  animation: pageIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes pageIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Reduce animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .stars, .stars2 { animation: none; }
+  .space-particles { display: none; }
+  .stat:hover, .panel:hover, .team-card:hover, .info-card:hover,
+  .timeline-item:hover, .btn.primary:hover, .table-row:hover {
+    transform: none;
+  }
+}
