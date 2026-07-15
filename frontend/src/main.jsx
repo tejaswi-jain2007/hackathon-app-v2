@@ -884,6 +884,8 @@ function BulkAddTeamForm({ mutate }) {
 function JudgePanel({ data, user, mutate, activeTab }) {
   const judge = data.judges.find((item) => item.id === user.id);
   const teams = data.teams.filter((team) => judge?.assignedTeamIds.includes(team.id));
+  const [activeScoreTeam, setActiveScoreTeam] = useState(null);
+
   return (
     <div className="content-grid">
       <section className="left-column" style={{ minHeight: "60vh" }}>
@@ -897,7 +899,31 @@ function JudgePanel({ data, user, mutate, activeTab }) {
         {activeTab === "Scoring" && (
           <Panel title="Assigned teams" meta={`${teams.length} teams`}>
             <div className="team-grid">
-              {teams.map((team) => <ScoreCard key={team.id} team={team} scores={data.scores} user={user} mutate={mutate} />)}
+              {teams.map((team) => {
+                const score = data.scores.find((s) => s.team_id === team.id && s.judge_id === user.id);
+                return (
+                  <article 
+                    className="team-card" 
+                    key={team.id} 
+                    style={{ cursor: 'pointer', minHeight: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }} 
+                    onClick={() => setActiveScoreTeam(team)}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+                      <div>
+                        <strong style={{ fontSize: '15px' }}>{team.name}</strong>
+                        <div style={{ marginTop: '4px' }}>
+                          <span className="badge blue" style={{ fontSize: '11px', padding: '2px 8px' }}>
+                            📍 {team.venue || "No Venue"}
+                          </span>
+                        </div>
+                      </div>
+                      <span className={`badge ${score ? "green" : "amber"}`}>
+                        {score ? `${score.points} pts` : "Not scored"}
+                      </span>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
             {!teams.length && <Empty text="Admin has not assigned any teams yet." />}
           </Panel>
@@ -909,6 +935,15 @@ function JudgePanel({ data, user, mutate, activeTab }) {
           <Leaderboard data={data} />
           {activeTab !== "Overview" && <NoticeBoard announcements={data.announcements} />}
         </aside>
+      )}
+      {activeScoreTeam && (
+        <ScoreModal 
+          team={activeScoreTeam} 
+          scores={data.scores} 
+          user={user} 
+          mutate={mutate} 
+          onClose={() => setActiveScoreTeam(null)} 
+        />
       )}
     </div>
   );
@@ -1274,8 +1309,11 @@ function TeamAdmin({ teams, mutate }) {
 }
 
 function ScoreCard({ team, scores, user, mutate }) {
+  return null;
+}
+
+function ScoreModal({ team, scores, user, mutate, onClose }) {
   const existing = scores.find((score) => score.team_id === team.id && score.judge_id === user.id);
-  const [openModal, setOpenModal] = useState(false);
   const [form, setForm] = useState({
     idea: existing?.idea_score !== undefined ? existing.idea_score : "",
     tech: existing?.tech_score !== undefined ? existing.tech_score : "",
@@ -1302,82 +1340,62 @@ function ScoreCard({ team, scores, user, mutate }) {
         feedback: form.feedback
       }
     });
-    setOpenModal(false);
+    onClose();
   }
 
   return (
-    <>
-      <article className="team-card" style={{ cursor: 'pointer', minHeight: '80px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }} onClick={() => setOpenModal(true)}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%' }}>
+    <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
+      <div className="panel" style={{ minWidth: '480px', maxWidth: '90vw', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 50px rgba(0,0,0,0.6)', border: '1px solid var(--border)' }} onClick={e => e.stopPropagation()}>
+        <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <strong style={{ fontSize: '15px' }}>{team.name}</strong>
-            <div style={{ marginTop: '4px' }}>
-              <span className="badge blue" style={{ fontSize: '11px', padding: '2px 8px' }}>
-                📍 {team.venue || "No Venue"}
-              </span>
-            </div>
+            <h3 style={{ margin: 0, fontSize: '20px' }}>Score Team: {team.name}</h3>
+            <span className="meta" style={{ fontSize: '13px', display: 'block', marginTop: '4px' }}>📍 {team.venue || "No Venue"}</span>
           </div>
-          <span className={`badge ${existing ? "green" : "amber"}`}>
-            {existing ? `${existing.points} pts` : "Not scored"}
-          </span>
+          <button className="btn secondary" onClick={onClose} style={{ minHeight: '36px', padding: '0 12px', fontSize: '20px' }}>&times;</button>
         </div>
-      </article>
-
-      {openModal && (
-        <div className="modal-overlay" onClick={() => setOpenModal(false)} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <div className="panel" style={{ minWidth: '460px', maxWidth: '90vw', maxHeight: '90vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
-            <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <div>
-                <h3 style={{ margin: 0 }}>Score Team: {team.name}</h3>
-                <span className="meta">📍 {team.venue || "No Venue"}</span>
-              </div>
-              <button className="btn secondary" onClick={() => setOpenModal(false)}>&times;</button>
-            </div>
-            
-            <form className="form-stack" onSubmit={submit} style={{ marginTop: '20px' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                <label className="field">
-                  <span>Idea & Innovation (0-10)</span>
-                  <input type="number" min="0" max="10" required value={form.idea} onChange={e => setForm({ ...form, idea: e.target.value })} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)' }} />
-                </label>
-                <label className="field">
-                  <span>Technical Execution (0-10)</span>
-                  <input type="number" min="0" max="10" required value={form.tech} onChange={e => setForm({ ...form, tech: e.target.value })} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)' }} />
-                </label>
-                <label className="field">
-                  <span>Prototype/MVP (0-10)</span>
-                  <input type="number" min="0" max="10" required value={form.prototype} onChange={e => setForm({ ...form, prototype: e.target.value })} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)' }} />
-                </label>
-                <label className="field">
-                  <span>Business Approach (0-10)</span>
-                  <input type="number" min="0" max="10" required value={form.business} onChange={e => setForm({ ...form, business: e.target.value })} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)' }} />
-                </label>
-              </div>
-              <div style={{ marginTop: '10px' }}>
-                <label className="field">
-                  <span>Presentation & Pitch (0-10)</span>
-                  <input type="number" min="0" max="10" required value={form.presentation} onChange={e => setForm({ ...form, presentation: e.target.value })} style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)' }} />
-                </label>
-              </div>
-
-              <div style={{ margin: '16px 0', padding: '12px', background: 'rgba(246,173,85,0.06)', border: '1px solid rgba(246,173,85,0.15)', borderRadius: '6px', textAlign: 'center' }}>
-                <strong style={{ fontSize: '15px', color: 'var(--text)' }}>Average Score: <span style={{ color: 'var(--amber)', fontSize: '17px' }}>{avg} / 10</span></strong>
-              </div>
-
-              <label className="field">
-                <span>Feedback & Suggestions</span>
-                <textarea value={form.feedback} onChange={(event) => setForm({ ...form, feedback: event.target.value })} required style={{ padding: '8px 12px', background: 'rgba(0,0,0,0.3)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', minHeight: '80px' }} />
-              </label>
-
-              <div style={{ display: 'flex', gap: '12px', marginTop: '20px' }}>
-                <button className="btn primary" style={{ flex: 1 }} type="submit" disabled={team.disqualified}>Submit Score</button>
-                <button className="btn secondary" type="button" onClick={() => setOpenModal(false)}>Cancel</button>
-              </div>
-            </form>
+        
+        <form className="form-stack" onSubmit={submit} style={{ marginTop: '20px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+            <label className="field">
+              <span>Idea & Innovation (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.idea} onChange={e => setForm({ ...form, idea: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+            </label>
+            <label className="field">
+              <span>Technical Execution (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.tech} onChange={e => setForm({ ...form, tech: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+            </label>
+            <label className="field">
+              <span>Prototype/MVP (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.prototype} onChange={e => setForm({ ...form, prototype: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+            </label>
+            <label className="field">
+              <span>Business Approach (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.business} onChange={e => setForm({ ...form, business: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+            </label>
           </div>
-        </div>
-      )}
-    </>
+          <div style={{ marginTop: '10px' }}>
+            <label className="field">
+              <span>Presentation & Pitch (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.presentation} onChange={e => setForm({ ...form, presentation: e.target.value })} style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+            </label>
+          </div>
+
+          <div style={{ margin: '20px 0', padding: '14px', background: 'rgba(246,173,85,0.08)', border: '1px solid rgba(246,173,85,0.2)', borderRadius: '6px', textAlign: 'center' }}>
+            <strong style={{ fontSize: '16px', color: 'var(--text)' }}>Average Score: <span style={{ color: 'var(--amber)', fontSize: '20px', marginLeft: '6px' }}>{avg} / 10</span></strong>
+          </div>
+
+          <label className="field">
+            <span>Feedback & Suggestions</span>
+            <textarea value={form.feedback} onChange={(event) => setForm({ ...form, feedback: event.target.value })} required style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', minHeight: '90px', outline: 'none', resize: 'vertical' }} />
+          </label>
+
+          <div style={{ display: 'flex', gap: '14px', marginTop: '24px' }}>
+            <button className="btn primary" style={{ flex: 1 }} type="submit" disabled={team.disqualified}>Submit Score</button>
+            <button className="btn secondary" type="button" onClick={onClose}>Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 }
 
