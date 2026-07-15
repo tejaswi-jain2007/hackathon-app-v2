@@ -256,13 +256,25 @@ def init_db() -> None:
             id SERIAL PRIMARY KEY,
             team_id INTEGER NOT NULL,
             judge_id INTEGER NOT NULL,
-            points INTEGER NOT NULL CHECK(points >= 0 AND points <= 100),
+            points NUMERIC(5,2) NOT NULL,
             feedback TEXT NOT NULL,
             updated_at TEXT NOT NULL,
+            idea_score INTEGER DEFAULT 0,
+            tech_score INTEGER DEFAULT 0,
+            prototype_score INTEGER DEFAULT 0,
+            business_score INTEGER DEFAULT 0,
+            presentation_score INTEGER DEFAULT 0,
             UNIQUE(team_id, judge_id),
             FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE,
             FOREIGN KEY(judge_id) REFERENCES users(id) ON DELETE CASCADE
         );
+        ALTER TABLE scores ALTER COLUMN points TYPE NUMERIC(5,2);
+        ALTER TABLE scores DROP CONSTRAINT IF EXISTS scores_points_check;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS idea_score INTEGER DEFAULT 0;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS tech_score INTEGER DEFAULT 0;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS prototype_score INTEGER DEFAULT 0;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS business_score INTEGER DEFAULT 0;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS presentation_score INTEGER DEFAULT 0;
 
         CREATE TABLE IF NOT EXISTS tasks (
             id SERIAL PRIMARY KEY,
@@ -448,7 +460,11 @@ def dashboard_payload(user: dict[str, Any]) -> dict[str, Any]:
     judges = [serialize_person(row) for row in query_all("SELECT * FROM users WHERE role = 'judge' ORDER BY name")]
     mentors = [serialize_person(row) for row in query_all("SELECT * FROM users WHERE role = 'mentor' ORDER BY name")]
     announcements = query_all("SELECT * FROM announcements ORDER BY id DESC")
-    scores = query_all("SELECT * FROM scores ORDER BY updated_at DESC")
+    scores = query_all("""
+        SELECT id, team_id, judge_id, points::FLOAT AS points, feedback, updated_at,
+               idea_score, tech_score, prototype_score, business_score, presentation_score
+        FROM scores ORDER BY updated_at DESC
+    """)
     tasks = query_all("SELECT * FROM tasks ORDER BY id DESC")
     schedule_events = query_all("SELECT * FROM schedule_events ORDER BY start_time ASC")
     help_requests = query_all("SELECT * FROM help_requests ORDER BY created_at DESC")
@@ -473,7 +489,7 @@ def leaderboard() -> list[dict[str, Any]]:
             teams.id,
             teams.name,
             teams.disqualified,
-            COALESCE(SUM(scores.points), 0) AS total,
+            COALESCE(SUM(scores.points), 0)::FLOAT AS total,
             COUNT(scores.id) AS judgedBy
         FROM teams
         LEFT JOIN scores ON scores.team_id = teams.id
@@ -891,9 +907,13 @@ def register_routes(app: Flask) -> None:
         data = require_json()
         try:
             team_id = int(data.get("teamId", 0))
-            points = int(data.get("points", -1))
+            idea = int(data.get("idea", 0))
+            tech = int(data.get("tech", 0))
+            prototype = int(data.get("prototype", 0))
+            business = int(data.get("business", 0))
+            presentation = int(data.get("presentation", 0))
         except (ValueError, TypeError):
-            return json_error("Invalid teamId or points format.")
+            return json_error("Invalid score parameters format.")
             
         feedback = sanitize_string(data.get("feedback", ""))
         team = query_one("SELECT disqualified FROM teams WHERE id = %s", (team_id,))
@@ -901,16 +921,37 @@ def register_routes(app: Flask) -> None:
             return json_error("This team cannot be scored.")
         if not person_is_assigned("judge", g.user["id"], team_id):
             return json_error("This team is not assigned to you.", 403)
-        if points < 0 or points > 100 or not feedback:
-            return json_error("Points must be 0-100 and feedback is required.")
+        
+        # Validation checks
+        for name, val in [("Idea", idea), ("Technical", tech), ("Prototype", prototype), ("Business", business), ("Presentation", presentation)]:
+            if val < 0 or val > 10:
+                return json_error(f"{name} score must be between 0 and 10.")
+        if not feedback:
+            return json_error("Feedback is required.")
+            
+        # Calculate average out of 10
+        points = round((idea + tech + prototype + business + presentation) / 5.0, 2)
+        
         get_db().execute(
             """
-            INSERT INTO scores (team_id, judge_id, points, feedback, updated_at)
-            VALUES (%s, %s, %s, %s, %s)
+            INSERT INTO scores (
+                team_id, judge_id, points, feedback, 
+                idea_score, tech_score, prototype_score, business_score, presentation_score, 
+                updated_at
+            )
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT(team_id, judge_id)
-            DO UPDATE SET points = excluded.points, feedback = excluded.feedback, updated_at = excluded.updated_at
+            DO UPDATE SET 
+                points = excluded.points, 
+                feedback = excluded.feedback, 
+                idea_score = excluded.idea_score,
+                tech_score = excluded.tech_score,
+                prototype_score = excluded.prototype_score,
+                business_score = excluded.business_score,
+                presentation_score = excluded.presentation_score,
+                updated_at = excluded.updated_at
             """,
-            (team_id, g.user["id"], points, feedback, now_iso()),
+            (team_id, g.user["id"], points, feedback, idea, tech, prototype, business, presentation, now_iso()),
         )
         get_db().commit()
         return jsonify(dashboard_payload(g.user))
