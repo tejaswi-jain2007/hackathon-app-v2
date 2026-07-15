@@ -938,7 +938,7 @@ function MentorPanel({ data, user, mutate, activeTab }) {
         {activeTab === "Tasks" && (
           <Panel title="All Tasks">
             <div className="card-list">
-              {data.tasks.map(task => <TeamTask key={task.id} task={task} mentors={data.mentors} mutate={mutate} />)}
+              {data.tasks.map(task => <TeamTask key={task.id} task={task} mentors={data.mentors} teams={data.teams} mutate={mutate} />)}
             </div>
           </Panel>
         )}
@@ -990,7 +990,7 @@ function TeamPanel({ data, user, mutate, activeTab }) {
         {activeTab === "Tasks" && (
           <Panel title="Mentor tasks" meta={`${tasks.length} tasks`}>
             <div className="card-list">
-              {tasks.map((task) => <TeamTask key={task.id} task={task} mentors={data.mentors} mutate={mutate} />)}
+              {tasks.map((task) => <TeamTask key={task.id} task={task} mentors={data.mentors} teams={data.teams} mutate={mutate} />)}
               {!tasks.length && <Empty text="No mentor tasks yet." />}
             </div>
           </Panel>
@@ -1343,13 +1343,18 @@ function MentorTeamCard({ team, tasks, mutate }) {
   );
 }
 
-function TeamTask({ task, mentors, mutate }) {
+function TeamTask({ task, mentors, teams = [], mutate }) {
   const mentor = mentors.find((item) => item.id === task.mentor_id);
+  const team = teams.find((item) => item.id === task.team_id);
   return (
     <article className="task-card">
       <div className="row-between">
         <div>
-          <strong>{task.title}</strong>
+          <strong style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            {task.title}
+            {team && <span className="badge blue" style={{ fontSize: '10px', padding: '2px 6px' }}>{team.name}</span>}
+            {team?.venue && <span className="badge green" style={{ fontSize: '10px', padding: '2px 6px' }}>{team.venue}</span>}
+          </strong>
           <small>Assigned by {mentor?.name || "Mentor"}</small>
         </div>
         <span className={`badge ${statusColor(task.status)}`}>{task.status}</span>
