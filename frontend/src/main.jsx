@@ -715,8 +715,13 @@ function DashboardShell({ user, data, onLogout, onSubscribe, children, activeTab
               <h1>{greetings[user.role]}</h1>
               <p className="subtitle">{subtitle}</p>
               {user.role === "team" && findTeam(data, user.team_id)?.domain && (
-                <span className="badge blue" style={{ marginTop: '10px', display: 'inline-block' }}>
+                <span className="badge blue" style={{ marginTop: '10px', display: 'inline-block', marginRight: '8px' }}>
                   {findTeam(data, user.team_id)?.domain}
+                </span>
+              )}
+              {user.role === "team" && findTeam(data, user.team_id)?.venue && (
+                <span className="badge green" style={{ marginTop: '10px', display: 'inline-block' }}>
+                  Venue: {findTeam(data, user.team_id)?.venue}
                 </span>
               )}
             </div>
@@ -1159,39 +1164,58 @@ function TeamAssigner({ person, teams, onToggle }) {
 function TeamAdmin({ teams, mutate }) {
   const [selectedTeam, setSelectedTeam] = useState(null);
   const [search, setSearch] = useState("");
+  const [selectedVenue, setSelectedVenue] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 20;
 
-  const filteredTeams = teams.filter(t => 
-    t.name.toLowerCase().includes(search.toLowerCase()) || 
-    (t.domain && t.domain.toLowerCase().includes(search.toLowerCase())) ||
-    (t.leaderEmail && t.leaderEmail.toLowerCase().includes(search.toLowerCase()))
-  );
+  const venues = Array.from(new Set(teams.map(t => t.venue).filter(Boolean))).sort();
+
+  const filteredTeams = teams.filter(t => {
+    const matchesSearch = t.name.toLowerCase().includes(search.toLowerCase()) || 
+      (t.domain && t.domain.toLowerCase().includes(search.toLowerCase())) ||
+      (t.leaderEmail && t.leaderEmail.toLowerCase().includes(search.toLowerCase())) ||
+      (t.venue && t.venue.toLowerCase().includes(search.toLowerCase()));
+    const matchesVenue = !selectedVenue || t.venue === selectedVenue;
+    return matchesSearch && matchesVenue;
+  });
   const totalPages = Math.max(1, Math.ceil(filteredTeams.length / itemsPerPage));
   const paginatedTeams = filteredTeams.slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
-  // Reset page when search changes
+  // Reset page when search or venue changes
   React.useEffect(() => {
     setPage(1);
-  }, [search]);
+  }, [search, selectedVenue]);
 
   return (
     <>
       <Panel title="Teams" meta={`${filteredTeams.length} total`}>
-        <div style={{ marginBottom: "16px" }}>
+        <div style={{ display: 'flex', gap: '12px', marginBottom: "16px", flexWrap: 'wrap' }}>
           <input 
             type="text" 
             placeholder="Search teams by name, email, or domain..." 
             value={search} 
             onChange={e => setSearch(e.target.value)} 
-            style={{ padding: "8px", width: "100%", border: "1px solid var(--border)", borderRadius: "4px", backgroundColor: "var(--bg)", color: "var(--text)" }} 
+            style={{ padding: "8px 12px", flex: 1, minWidth: '200px', border: "1px solid var(--border)", borderRadius: "4px", backgroundColor: "var(--bg)", color: "var(--text)" }} 
           />
+          <select
+            value={selectedVenue}
+            onChange={e => setSelectedVenue(e.target.value)}
+            style={{ padding: "8px 12px", minWidth: '150px', border: "1px solid var(--border)", borderRadius: "4px", backgroundColor: "var(--bg)", color: "var(--text)", cursor: 'pointer' }}
+          >
+            <option value="">All Venues</option>
+            {venues.map(v => (
+              <option key={v} value={v}>{v}</option>
+            ))}
+          </select>
         </div>
         <div className="team-grid">
           {paginatedTeams.map((team) => (
             <article className="team-card" key={team.id} style={{ cursor: 'pointer' }} onClick={() => setSelectedTeam(team)}>
               <div>
-                <strong>{team.name}</strong>
+                <strong style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  {team.name}
+                  {team.venue && <span className="badge blue" style={{ fontSize: '10px', padding: '2px 6px' }}>{team.venue}</span>}
+                </strong>
                 <small>{team.registered ? `${team.members.length} members (Registered)` : (team.member_names?.length ? `${team.member_names.length} members (CSV)` : "No members")}</small>
               </div>
               <span className={`badge ${team.disqualified ? "red" : team.registered ? "green" : "amber"}`}>
@@ -1227,6 +1251,7 @@ function TeamAdmin({ teams, mutate }) {
               <button className="btn secondary" onClick={() => setSelectedTeam(null)}>&times;</button>
             </div>
             <div style={{ marginTop: '16px' }}>
+              <p><strong>Venue:</strong> {selectedTeam.venue || "No Venue"}</p>
               <p><strong>Leader Email:</strong> {selectedTeam.leaderEmail}</p>
               <p><strong>Status:</strong> {selectedTeam.registered ? "Registered" : "Open"}</p>
               
@@ -1261,7 +1286,10 @@ function ScoreCard({ team, scores, user, mutate }) {
     <article className="review-card">
       <div className="row-between">
         <div>
-          <strong>{team.name}</strong>
+          <strong style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            {team.name}
+            {team.venue && <span className="badge green" style={{ fontSize: '11px', padding: '2px 8px' }}>{team.venue}</span>}
+          </strong>
           <small>{team.registered ? `${team.members.length} members` : "Not registered yet"}</small>
         </div>
         <span className={`badge ${team.disqualified ? "red" : "blue"}`}>{team.disqualified ? "DQ" : existing ? `${existing.points} pts` : "Not scored"}</span>
@@ -1292,7 +1320,10 @@ function MentorTeamCard({ team, tasks, mutate }) {
     <article className="review-card">
       <div className="row-between">
         <div>
-          <strong>{team.name}</strong>
+          <strong style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            {team.name}
+            {team.venue && <span className="badge green" style={{ fontSize: '11px', padding: '2px 8px' }}>{team.venue}</span>}
+          </strong>
           <small>{team.registered ? `${team.members.length} members` : "Not registered yet"}</small>
         </div>
         <span className={`badge ${team.disqualified ? "red" : "green"}`}>{team.disqualified ? "DQ" : `${teamTasks.length} tasks`}</span>

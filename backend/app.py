@@ -217,6 +217,7 @@ def init_db() -> None:
         );
         ALTER TABLE teams ADD COLUMN IF NOT EXISTS members TEXT;
         ALTER TABLE teams ADD COLUMN IF NOT EXISTS domain TEXT;
+        ALTER TABLE teams ADD COLUMN IF NOT EXISTS venue TEXT;
 
         CREATE TABLE IF NOT EXISTS users (
             id SERIAL PRIMARY KEY,
@@ -427,7 +428,8 @@ def serialize_team(row: dict[str, Any]) -> dict[str, Any]:
         "disqualified": bool(row["disqualified"]),
         "members": members,
         "member_names": members_list,
-        "domain": row.get("domain", "")
+        "domain": row.get("domain", ""),
+        "venue": row.get("venue", "")
     }
 
 
