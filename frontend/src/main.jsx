@@ -1345,8 +1345,8 @@ function ScoreModal({ team, scores, user, mutate, onClose }) {
   }
 
   return createPortal(
-    <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
-      <div className="panel" style={{ minWidth: '480px', maxWidth: '90vw', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 50px rgba(0,0,0,0.6)', border: '1px solid var(--border)' }} onClick={e => e.stopPropagation()}>
+    <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 99999, display: 'flex', justifyContent: 'center', alignItems: 'flex-start', padding: '40px 20px', overflowY: 'auto', backdropFilter: 'blur(8px)' }}>
+      <div className="panel" style={{ minWidth: '480px', maxWidth: '90vw', boxShadow: '0 20px 50px rgba(0,0,0,0.6)', border: '1px solid var(--border)', margin: '0 auto' }} onClick={e => e.stopPropagation()}>
         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <h3 style={{ margin: 0, fontSize: '20px' }}>Score Team: {team.name}</h3>
