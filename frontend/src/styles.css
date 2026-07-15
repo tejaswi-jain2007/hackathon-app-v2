@@ -1057,3 +1057,36 @@ nav.sidebar-nav a::before { display: none; } /* Remove old dots */
   background: radial-gradient(circle at top right, rgba(246,173,85,0.04) 0%, transparent 60%);
   pointer-events: none;
 }
+
+/* Custom Styled Select Dropdowns */
+.venue-select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23f6ad55' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 14px center !important;
+  background-size: 14px !important;
+  padding-right: 40px !important;
+  cursor: pointer;
+  min-width: 160px;
+  background-color: rgba(0, 0, 0, 0.45) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--text) !important;
+  font-family: var(--hud-font) !important;
+  font-weight: 600;
+  font-size: 13px !important;
+  transition: all 0.25s ease;
+}
+.venue-select:hover {
+  border-color: var(--amber) !important;
+  box-shadow: 0 0 10px rgba(246,173,85,0.1);
+}
+.venue-select option {
+  background-color: #0c121b !important;
+  color: var(--text) !important;
+  padding: 12px !important;
+  font-family: var(--hud-font) !important;
+}
+

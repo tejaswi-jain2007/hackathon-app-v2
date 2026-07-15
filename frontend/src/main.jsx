@@ -1195,12 +1195,12 @@ function TeamAdmin({ teams, mutate }) {
             placeholder="Search teams by name, email, or domain..." 
             value={search} 
             onChange={e => setSearch(e.target.value)} 
-            style={{ padding: "8px 12px", flex: 1, minWidth: '200px', border: "1px solid var(--border)", borderRadius: "4px", backgroundColor: "var(--bg)", color: "var(--text)" }} 
+            style={{ flex: 1, minWidth: '200px' }} 
           />
           <select
             value={selectedVenue}
             onChange={e => setSelectedVenue(e.target.value)}
-            style={{ padding: "8px 12px", minWidth: '150px', border: "1px solid var(--border)", borderRadius: "4px", backgroundColor: "var(--bg)", color: "var(--text)", cursor: 'pointer' }}
+            className="venue-select"
           >
             <option value="">All Venues</option>
             {venues.map(v => (
