@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { createRoot } from "react-dom/client";
+import { createPortal } from "react-dom";
 import * as XLSX from "xlsx";
 import "./styles.css";
 
@@ -1343,7 +1344,7 @@ function ScoreModal({ team, scores, user, mutate, onClose }) {
     onClose();
   }
 
-  return (
+  return createPortal(
     <div className="modal-overlay" onClick={onClose} style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 99999, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
       <div className="panel" style={{ minWidth: '480px', maxWidth: '90vw', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 20px 50px rgba(0,0,0,0.6)', border: '1px solid var(--border)' }} onClick={e => e.stopPropagation()}>
         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -1395,7 +1396,8 @@ function ScoreModal({ team, scores, user, mutate, onClose }) {
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
