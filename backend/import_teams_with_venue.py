@@ -11,7 +11,7 @@ from datetime import datetime, timezone
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 load_dotenv(os.path.join(backend_dir, ".env"))
 
-filepath = r"c:\Users\tejas\Downloads\1.HACKATHON 2026 Attendance Sheet.xlsx"
+filepath = r"c:\Users\tejas\Downloads\1.HACKATHON 2026 Attendance Sheet (1).xlsx"
 if not os.path.exists(filepath):
     print(f"Error: {filepath} not found.")
     exit(1)
