@@ -6,10 +6,10 @@ with app.app_context():
     
     print("Seeding demo accounts...")
     
-    # Check if admin demo exists
-    if not db.execute("SELECT id FROM users WHERE email='admin@hack.local'").fetchone():
-        create_user("Demo Admin", "admin@hack.local", "admin123", "admin")
-        print("Created demo Admin.")
+    # Check if admin exists
+    if not db.execute("SELECT id FROM users WHERE email='nishant.vijayvargiya@indoreinstitute.com'").fetchone():
+        create_user("Nishant Vijayvargiya", "nishant.vijayvargiya@indoreinstitute.com", "iistapratim@srijan2026", "admin")
+        print("Created Admin.")
 
     # Check if judge exists
     if not db.execute("SELECT id FROM users WHERE email='judge1@hack.local'").fetchone():
