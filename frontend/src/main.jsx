@@ -208,12 +208,18 @@ function App() {
         if (event.data && event.data.type === 'PUSH_NOTIFICATION') {
           setToast(event.data.data);
           setTimeout(() => setToast(null), 8000);
+          if (token) {
+            apiRequest("/dashboard", { token }).then(payload => {
+              setData(payload);
+              if (payload.user) setUser(payload.user);
+            }).catch(err => console.warn("Push refresh error:", err));
+          }
         }
       };
       navigator.serviceWorker.addEventListener('message', handler);
       return () => navigator.serviceWorker.removeEventListener('message', handler);
     }
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     setActiveTab("Overview");
@@ -221,14 +227,16 @@ function App() {
 
   useEffect(() => {
     if (!token) return;
+    const isPowerUser = user?.role === "admin" || user?.role === "mentor";
+    const intervalTime = isPowerUser ? 3000 : 10000;
     const interval = setInterval(() => {
       apiRequest("/dashboard", { token }).then(payload => {
         setData(payload);
         if (payload.user) setUser(payload.user);
       }).catch(err => console.warn("Polling error:", err));
-    }, 10000);
+    }, intervalTime);
     return () => clearInterval(interval);
-  }, [token]);
+  }, [token, user?.role]);
 
   useEffect(() => {
     apiRequest("/auth/setup-status")
