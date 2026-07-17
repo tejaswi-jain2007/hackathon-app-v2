@@ -698,23 +698,7 @@ def register_routes(app: Flask) -> None:
                 get_db().rollback()
                 return json_error(str(e))
         else:
-            email = str(data.get("email", "")).strip().lower()
-            if not email:
-                return json_error("Email is required.")
-            user = query_one("SELECT id FROM users WHERE email = %s AND role = %s", (email, role))
-            if not user:
-                return json_error("User with this email not found.", 404)
-            try:
-                get_db().execute(
-                    "UPDATE users SET password_hash = %s WHERE id = %s",
-                    (generate_password_hash(new_password), user["id"]),
-                )
-                get_db().execute("DELETE FROM sessions WHERE user_id = %s", (user["id"],))
-                get_db().commit()
-                return jsonify({"ok": True, "message": "Password reset successfully! You can now sign in."})
-            except Exception as e:
-                get_db().rollback()
-                return json_error(str(e))
+            return json_error("Password reset is only allowed for teams.", 403)
 
     @app.post("/api/auth/reset-password")
     def reset_password():

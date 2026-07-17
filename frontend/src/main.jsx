@@ -493,10 +493,11 @@ function AuthScreen({
                 <Input label="Password" type="password" value={loginForm.password} onChange={(password) => setLoginForm({ ...loginForm, password })} />
                 <button className="btn primary" type="submit">Sign in →</button>
               </form>
-              <div className="auth-actions">
-                <button className="link-btn" type="button" onClick={() => setAuthMode("forgot")}>Forgot password?</button>
-                <button className="link-btn" type="button" onClick={() => setAuthMode("reset")}>Have a reset token?</button>
-              </div>
+              {role === "team" && (
+                <div className="auth-actions">
+                  <button className="link-btn" type="button" onClick={() => setAuthMode("forgot")}>Forgot password?</button>
+                </div>
+              )}
               {role === "team" && (
                 <>
                   <div className="auth-divider"><span>or register your team</span></div>
