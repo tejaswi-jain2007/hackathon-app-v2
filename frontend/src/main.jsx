@@ -535,13 +535,15 @@ function AdminSetupForm({ onRegisterAdmin, setError }) {
 
 function ForgotPasswordForm({ role, setAuthMode, onForgotPassword, setError }) {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
   async function submit(event) {
     event.preventDefault();
     try {
-      const payload = await onForgotPassword({ role, email });
+      const payload = await onForgotPassword({ role, email, password });
       setMessage(payload.message);
+      setPassword("");
     } catch (err) {
       setError(err.message);
     }
@@ -550,8 +552,9 @@ function ForgotPasswordForm({ role, setAuthMode, onForgotPassword, setError }) {
   return (
     <form className="form-stack" onSubmit={submit}>
       {message && <div className="success">{message}</div>}
-      <Input label={`${label(role)} email`} type="email" value={email} onChange={setEmail} />
-      <button className="btn primary" type="submit">Request reset</button>
+      <Input label={`${label(role)} email`} type="email" value={email} onChange={setEmail} required />
+      <Input label="New password" type="password" value={password} onChange={setPassword} required />
+      <button className="btn primary" type="submit">Reset Password</button>
       <button className="btn secondary" type="button" onClick={() => setAuthMode("login")}>Back to login</button>
     </form>
   );

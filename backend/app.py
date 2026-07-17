@@ -133,6 +133,9 @@ class PostgresConnection:
     def commit(self):
         self.conn.commit()
 
+    def rollback(self):
+        self.conn.rollback()
+
     def close(self):
         self.conn.close()
 
@@ -319,14 +322,14 @@ def init_db() -> None:
     
     try:
         db.execute("ALTER TABLE teams DROP CONSTRAINT IF EXISTS teams_name_key CASCADE;")
+        db.commit()
     except Exception:
-        pass
+        db.rollback()
     try:
         db.execute("ALTER TABLE teams ADD CONSTRAINT teams_leader_email_key UNIQUE (leader_email);")
+        db.commit()
     except Exception:
-        pass
-        
-    db.commit()
+        db.rollback()
 
 
 def create_user(name: str, email: str, password: str, role: str, team_id: int | None = None) -> int:
@@ -581,8 +584,8 @@ def register_routes(app: Flask) -> None:
         name = sanitize_string(data.get("name", ""))
         email = sanitize_string(data.get("email", "")).lower()
         password = str(data.get("password", ""))
-        if not name or not email or len(password) < 8:
-            return json_error("Name, email, and an 8 character password are required.")
+        if not name or not email or not password:
+            return json_error("Name, email, and password are required.")
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return json_error("Invalid email address format.")
         try:
@@ -595,9 +598,10 @@ def register_routes(app: Flask) -> None:
             get_db().commit()
             user = query_one("SELECT id, name, email, role, team_id FROM users WHERE id = %s", (user_id,))
             return jsonify({"token": token, "user": user, "dashboard": dashboard_payload(user)}), 201
-        except IntegrityError:
+        except Exception as e:
             get_db().rollback()
-            return json_error("This email is already registered.")
+            msg = "This email is already registered." if "unique" in str(e).lower() or "duplicate" in str(e).lower() else str(e)
+            return json_error(msg)
 
     @app.post("/api/auth/login")
     def login():
@@ -606,9 +610,9 @@ def register_routes(app: Flask) -> None:
         role = str(data.get("role", "")).lower()
         email = str(data.get("email", "")).strip().lower()
         password = str(data.get("password", ""))
-        if role == "admin" and not query_one("SELECT id FROM users WHERE role = 'admin' LIMIT 1"):
+        if not query_one("SELECT id FROM users WHERE role = 'admin' LIMIT 1"):
             return json_error("No admin account exists yet. Register the first admin first.", 404)
-        user = query_one("SELECT * FROM users WHERE email = %s AND role = %s", (email, role))
+        user = query_one("SELECT * FROM users WHERE email = %s", (email,))
         if not user or not check_password_hash(user["password_hash"], password):
             return json_error("Invalid email, password, or role.", 401)
 
@@ -640,12 +644,12 @@ def register_routes(app: Flask) -> None:
                 return json_error("Invalid leader email format.")
             member_emails = normalize_emails(data.get("memberEmails", []))
             password = str(data.get("password", ""))
-            if not leader_email or len(password) < 8:
-                return json_error("Leader email and an 8 character password are required.")
+            if not leader_email or not password:
+                return json_error("Leader email and password are required.")
             register_team_accounts(team_id, leader_email, member_emails, password)
             get_db().commit()
             return jsonify({"ok": True})
-        except (TypeError, ValueError) as error:
+        except Exception as error:
             get_db().rollback()
             return json_error(str(error))
 
@@ -653,18 +657,27 @@ def register_routes(app: Flask) -> None:
     def forgot_password():
         init_db()
         data = require_json()
-        role = str(data.get("role", "")).lower()
         email = str(data.get("email", "")).strip().lower()
-        user = query_one("SELECT id FROM users WHERE email = %s AND role = %s", (email, role))
-        if user:
-            create_reset_token(user["id"])
+        new_password = str(data.get("password", ""))
+        if not email or not new_password:
+            return json_error("Email and new password are required.")
+            
+        user = query_one("SELECT id FROM users WHERE email = %s", (email,))
+        if not user:
+            return json_error("User with this email not found.", 404)
+            
+        try:
+            get_db().execute(
+                "UPDATE users SET password_hash = %s WHERE id = %s",
+                (generate_password_hash(new_password), user["id"]),
+            )
+            # Delete active sessions for security
+            get_db().execute("DELETE FROM sessions WHERE user_id = %s", (user["id"],))
             get_db().commit()
-        return jsonify(
-            {
-                "ok": True,
-                "message": "If the account exists, a reset token has been generated in backend/instance/password_resets.log.",
-            }
-        )
+            return jsonify({"ok": True, "message": "Password reset successfully! You can now sign in with your new password."})
+        except Exception as e:
+            get_db().rollback()
+            return json_error(str(e))
 
     @app.post("/api/auth/reset-password")
     def reset_password():
@@ -672,8 +685,8 @@ def register_routes(app: Flask) -> None:
         data = require_json()
         token = str(data.get("token", "")).strip()
         password = str(data.get("password", ""))
-        if len(password) < 8:
-            return json_error("New password must be at least 8 characters.")
+        if not password:
+            return json_error("New password is required.")
         reset = query_one(
             """
             SELECT * FROM password_resets
@@ -800,17 +813,18 @@ def register_routes(app: Flask) -> None:
         password = str(data.get("password", ""))
         if role not in ("judge", "mentor"):
             return json_error("Only judges and mentors can be registered here.")
-        if not name or not email or len(password) < 8:
-            return json_error("Name, email, and a password of at least 8 characters are required.")
+        if not name or not email or not password:
+            return json_error("Name, email, and password are required.")
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return json_error("Invalid email address format.")
         try:
             create_user(name, email, password, role)
             get_db().commit()
             return jsonify(dashboard_payload(g.user)), 201
-        except IntegrityError:
+        except Exception as e:
             get_db().rollback()
-            return json_error("This email is already registered.")
+            msg = "This email is already registered." if "unique" in str(e).lower() or "duplicate" in str(e).lower() else str(e)
+            return json_error(msg)
 
     @app.post("/api/teams")
     @login_required(("admin",))
