@@ -534,16 +534,28 @@ function AdminSetupForm({ onRegisterAdmin, setError }) {
 }
 
 function ForgotPasswordForm({ role, setAuthMode, onForgotPassword, setError }) {
+  const [teams, setTeams] = useState([]);
+  const [teamId, setTeamId] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    if (role === "team") {
+      apiRequest("/public/registered-teams")
+        .then((payload) => setTeams(payload.teams))
+        .catch(() => setTeams([]));
+    }
+  }, [role]);
+
   async function submit(event) {
     event.preventDefault();
     try {
-      const payload = await onForgotPassword({ role, email, password });
+      const payload = await onForgotPassword({ role, email, teamId, password });
       setMessage(payload.message);
       setPassword("");
+      setTeamId("");
+      setEmail("");
     } catch (err) {
       setError(err.message);
     }
@@ -552,7 +564,21 @@ function ForgotPasswordForm({ role, setAuthMode, onForgotPassword, setError }) {
   return (
     <form className="form-stack" onSubmit={submit}>
       {message && <div className="success">{message}</div>}
-      <Input label={`${label(role)} email`} type="email" value={email} onChange={setEmail} required />
+      
+      {role === "team" ? (
+        <label className="field">
+          <span>Choose team</span>
+          <select value={teamId} onChange={(event) => setTeamId(event.target.value)} required>
+            <option value="">Select registered team</option>
+            {teams.map((t) => (
+              <option key={t.id} value={t.id}>{t.name}</option>
+            ))}
+          </select>
+        </label>
+      ) : (
+        <Input label={`${label(role)} email`} type="email" value={email} onChange={setEmail} required />
+      )}
+
       <Input label="New password" type="password" value={password} onChange={setPassword} required />
       <button className="btn primary" type="submit">Reset Password</button>
       <button className="btn secondary" type="button" onClick={() => setAuthMode("login")}>Back to login</button>

@@ -569,6 +569,14 @@ def register_routes(app: Flask) -> None:
         )
         return jsonify({"teams": teams})
 
+    @app.get("/api/public/registered-teams")
+    def public_registered_teams():
+        init_db()
+        teams = query_all(
+            "SELECT id, name FROM teams WHERE registered = 1 AND disqualified = 0 ORDER BY name"
+        )
+        return jsonify({"teams": teams})
+
     @app.get("/api/auth/setup-status")
     def setup_status():
         init_db()
@@ -657,27 +665,56 @@ def register_routes(app: Flask) -> None:
     def forgot_password():
         init_db()
         data = require_json()
-        email = str(data.get("email", "")).strip().lower()
+        role = str(data.get("role", "")).lower()
         new_password = str(data.get("password", ""))
-        if not email or not new_password:
-            return json_error("Email and new password are required.")
+        
+        if not new_password:
+            return json_error("New password is required.")
             
-        user = query_one("SELECT id FROM users WHERE email = %s", (email,))
-        if not user:
-            return json_error("User with this email not found.", 404)
+        if role == "team":
+            try:
+                team_id = int(data.get("teamId"))
+            except (TypeError, ValueError):
+                return json_error("Invalid team selected.")
             
-        try:
-            get_db().execute(
-                "UPDATE users SET password_hash = %s WHERE id = %s",
-                (generate_password_hash(new_password), user["id"]),
-            )
-            # Delete active sessions for security
-            get_db().execute("DELETE FROM sessions WHERE user_id = %s", (user["id"],))
-            get_db().commit()
-            return jsonify({"ok": True, "message": "Password reset successfully! You can now sign in with your new password."})
-        except Exception as e:
-            get_db().rollback()
-            return json_error(str(e))
+            team = query_one("SELECT id, name, registered FROM teams WHERE id = %s", (team_id,))
+            if not team or not team["registered"]:
+                return json_error("Team not found or not registered yet.", 404)
+                
+            try:
+                # Update password for all users belonging to this team
+                get_db().execute(
+                    "UPDATE users SET password_hash = %s WHERE team_id = %s",
+                    (generate_password_hash(new_password), team_id),
+                )
+                # Clear all active sessions for this team's users
+                get_db().execute(
+                    "DELETE FROM sessions WHERE user_id IN (SELECT id FROM users WHERE team_id = %s)",
+                    (team_id,),
+                )
+                get_db().commit()
+                return jsonify({"ok": True, "message": f"Password for team '{team['name']}' reset successfully! You can now sign in."})
+            except Exception as e:
+                get_db().rollback()
+                return json_error(str(e))
+        else:
+            email = str(data.get("email", "")).strip().lower()
+            if not email:
+                return json_error("Email is required.")
+            user = query_one("SELECT id FROM users WHERE email = %s AND role = %s", (email, role))
+            if not user:
+                return json_error("User with this email not found.", 404)
+            try:
+                get_db().execute(
+                    "UPDATE users SET password_hash = %s WHERE id = %s",
+                    (generate_password_hash(new_password), user["id"]),
+                )
+                get_db().execute("DELETE FROM sessions WHERE user_id = %s", (user["id"],))
+                get_db().commit()
+                return jsonify({"ok": True, "message": "Password reset successfully! You can now sign in."})
+            except Exception as e:
+                get_db().rollback()
+                return json_error(str(e))
 
     @app.post("/api/auth/reset-password")
     def reset_password():
