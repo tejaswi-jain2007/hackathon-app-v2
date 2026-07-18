@@ -5,7 +5,7 @@ import * as XLSX from "xlsx";
 import "./styles.css";
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? "http://localhost:5001/api" : "/api");
-const roleTabs = ["admin", "judge", "mentor", "team"];
+const roleTabs = ["admin", "judge", "mentor"];
 const emptyLogin = { email: "", password: "" };
 
 /* ─── Scroll Reveal Hook ─── */
@@ -443,7 +443,7 @@ function AuthScreen({
     }
   }
 
-  const roleIcons = { admin: "⚙️", judge: "⚖️", mentor: "🧭", team: "👥" };
+  const roleIcons = { admin: "⚙️", judge: "⚖️", mentor: "🧭" };
 
   return (
     <main className="auth-layout">
@@ -1278,6 +1278,31 @@ function TeamAdmin({ teams, mutate }) {
     setPage(1);
   }, [search, selectedVenue]);
 
+  const downloadCSV = () => {
+    const headers = ["Team ID", "Team Name", "Leader Email", "Domain", "Venue", "Judged By", "Total Score (Out of 30)"];
+    const rows = filteredTeams.map(t => [
+      t.id, 
+      t.name, 
+      t.leaderEmail || "", 
+      t.domain || "", 
+      t.venue || "", 
+      t.judgedBy || 0, 
+      t.total || 0
+    ]);
+    
+    let csvContent = "data:text/csv;charset=utf-8," 
+      + headers.join(",") + "\n"
+      + rows.map(e => e.map(item => `"${String(item).replace(/"/g, '""')}"`).join(",")).join("\n");
+      
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "team_scores.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <>
       <Panel title="Teams" meta={`${filteredTeams.length} total`}>
@@ -1299,6 +1324,7 @@ function TeamAdmin({ teams, mutate }) {
               <option key={v} value={v}>{v}</option>
             ))}
           </select>
+          <button className="btn secondary" onClick={downloadCSV}>Download Scores (CSV)</button>
         </div>
         <div className="team-grid">
           {paginatedTeams.map((team) => (
