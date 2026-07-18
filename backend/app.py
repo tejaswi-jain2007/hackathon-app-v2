@@ -267,6 +267,9 @@ def init_db() -> None:
             prototype_score INTEGER DEFAULT 0,
             business_score INTEGER DEFAULT 0,
             presentation_score INTEGER DEFAULT 0,
+            relevance_score INTEGER DEFAULT 0,
+            feasibility_score INTEGER DEFAULT 0,
+            uniqueness_score INTEGER DEFAULT 0,
             UNIQUE(team_id, judge_id),
             FOREIGN KEY(team_id) REFERENCES teams(id) ON DELETE CASCADE,
             FOREIGN KEY(judge_id) REFERENCES users(id) ON DELETE CASCADE
@@ -278,6 +281,9 @@ def init_db() -> None:
         ALTER TABLE scores ADD COLUMN IF NOT EXISTS prototype_score INTEGER DEFAULT 0;
         ALTER TABLE scores ADD COLUMN IF NOT EXISTS business_score INTEGER DEFAULT 0;
         ALTER TABLE scores ADD COLUMN IF NOT EXISTS presentation_score INTEGER DEFAULT 0;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS relevance_score INTEGER DEFAULT 0;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS feasibility_score INTEGER DEFAULT 0;
+        ALTER TABLE scores ADD COLUMN IF NOT EXISTS uniqueness_score INTEGER DEFAULT 0;
 
         CREATE TABLE IF NOT EXISTS tasks (
             id SERIAL PRIMARY KEY,
@@ -465,7 +471,8 @@ def dashboard_payload(user: dict[str, Any]) -> dict[str, Any]:
     announcements = query_all("SELECT * FROM announcements ORDER BY id DESC")
     scores = query_all("""
         SELECT id, team_id, judge_id, points::FLOAT AS points, feedback, updated_at,
-               idea_score, tech_score, prototype_score, business_score, presentation_score
+               idea_score, tech_score, prototype_score, business_score, presentation_score,
+               relevance_score, feasibility_score, uniqueness_score
         FROM scores ORDER BY updated_at DESC
     """)
     tasks = query_all("SELECT * FROM tasks ORDER BY id DESC")
@@ -492,7 +499,7 @@ def leaderboard() -> list[dict[str, Any]]:
             teams.id,
             teams.name,
             teams.disqualified,
-            COALESCE(SUM(scores.points), 0)::FLOAT AS total,
+            ROUND(COALESCE(AVG(scores.points), 0)::NUMERIC, 2)::FLOAT AS total,
             COUNT(scores.id) AS judgedBy
         FROM teams
         LEFT JOIN scores ON scores.team_id = teams.id
@@ -942,6 +949,11 @@ def register_routes(app: Flask) -> None:
         data = require_json()
         try:
             team_id = int(data.get("teamId", 0))
+            relevance = int(data.get("relevance", 0))
+            feasibility = int(data.get("feasibility", 0))
+            uniqueness = int(data.get("uniqueness", 0))
+            
+            # Old parameters fallback
             idea = int(data.get("idea", 0))
             tech = int(data.get("tech", 0))
             prototype = int(data.get("prototype", 0))
@@ -958,23 +970,29 @@ def register_routes(app: Flask) -> None:
             return json_error("This team is not assigned to you.", 403)
         
         # Validation checks
-        for name, val in [("Idea", idea), ("Technical", tech), ("Prototype", prototype), ("Business", business), ("Presentation", presentation)]:
-            if val < 0 or val > 10:
-                return json_error(f"{name} score must be between 0 and 10.")
+        if "relevance" in data or "feasibility" in data or "uniqueness" in data:
+            for name, val in [("Relevance", relevance), ("Feasibility", feasibility), ("Uniqueness", uniqueness)]:
+                if val < 0 or val > 10:
+                    return json_error(f"{name} score must be between 0 and 10.")
+            points = round(float(relevance + feasibility + uniqueness), 2)
+        else:
+            for name, val in [("Idea", idea), ("Technical", tech), ("Prototype", prototype), ("Business", business), ("Presentation", presentation)]:
+                if val < 0 or val > 10:
+                    return json_error(f"{name} score must be between 0 and 10.")
+            points = round((idea + tech + prototype + business + presentation) / 5.0, 2)
+            
         if not feedback:
             return json_error("Feedback is required.")
             
-        # Calculate average out of 10
-        points = round((idea + tech + prototype + business + presentation) / 5.0, 2)
-        
         get_db().execute(
             """
             INSERT INTO scores (
                 team_id, judge_id, points, feedback, 
                 idea_score, tech_score, prototype_score, business_score, presentation_score, 
+                relevance_score, feasibility_score, uniqueness_score,
                 updated_at
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             ON CONFLICT(team_id, judge_id)
             DO UPDATE SET 
                 points = excluded.points, 
@@ -984,9 +1002,12 @@ def register_routes(app: Flask) -> None:
                 prototype_score = excluded.prototype_score,
                 business_score = excluded.business_score,
                 presentation_score = excluded.presentation_score,
+                relevance_score = excluded.relevance_score,
+                feasibility_score = excluded.feasibility_score,
+                uniqueness_score = excluded.uniqueness_score,
                 updated_at = excluded.updated_at
             """,
-            (team_id, g.user["id"], points, feedback, idea, tech, prototype, business, presentation, now_iso()),
+            (team_id, g.user["id"], points, feedback, idea, tech, prototype, business, presentation, relevance, feasibility, uniqueness, now_iso()),
         )
         get_db().commit()
         return jsonify(dashboard_payload(g.user))

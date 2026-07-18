@@ -1054,7 +1054,25 @@ function TeamPanel({ data, user, mutate, activeTab }) {
             <div className="card-list">
               {scores.map((score) => {
                 const judge = data.judges.find((item) => item.id === score.judge_id);
-                return <InfoCard key={score.id} title={judge?.name || "Judge"} meta={`${score.points} points`} body={score.feedback} />;
+                return (
+                  <InfoCard 
+                    key={score.id} 
+                    title={judge?.name || "Judge"} 
+                    meta={`${score.points} points`} 
+                    body={
+                      <div>
+                        {score.relevance_score !== undefined && (
+                          <div style={{ fontSize: '13px', display: 'flex', gap: '16px', color: 'var(--text-dim)', marginBottom: '8px', flexWrap: 'wrap' }}>
+                            <span>🎯 Relevance: <strong>{score.relevance_score}/10</strong></span>
+                            <span>⚙️ Feasibility: <strong>{score.feasibility_score}/10</strong></span>
+                            <span>💡 Uniqueness: <strong>{score.uniqueness_score}/10</strong></span>
+                          </div>
+                        )}
+                        <p style={{ margin: 0 }}>{score.feedback}</p>
+                      </div>
+                    } 
+                  />
+                );
               })}
               {!scores.length && <Empty text="No judge feedback yet." />}
             </div>
@@ -1354,16 +1372,14 @@ function ScoreCard({ team, scores, user, mutate }) {
 function ScoreModal({ team, scores, user, mutate, onClose }) {
   const existing = scores.find((score) => score.team_id === team.id && score.judge_id === user.id);
   const [form, setForm] = useState({
-    idea: existing?.idea_score !== undefined ? existing.idea_score : "",
-    tech: existing?.tech_score !== undefined ? existing.tech_score : "",
-    prototype: existing?.prototype_score !== undefined ? existing.prototype_score : "",
-    business: existing?.business_score !== undefined ? existing.business_score : "",
-    presentation: existing?.presentation_score !== undefined ? existing.presentation_score : "",
+    relevance: existing?.relevance_score !== undefined ? existing.relevance_score : "",
+    feasibility: existing?.feasibility_score !== undefined ? existing.feasibility_score : "",
+    uniqueness: existing?.uniqueness_score !== undefined ? existing.uniqueness_score : "",
     feedback: existing?.feedback || ""
   });
 
-  const scores_array = [Number(form.idea), Number(form.tech), Number(form.prototype), Number(form.business), Number(form.presentation)].filter(val => !isNaN(val) && val >= 0 && val <= 10);
-  const avg = scores_array.length === 5 ? (scores_array.reduce((a, b) => a + b, 0) / 5).toFixed(2) : "0.00";
+  const scores_array = [Number(form.relevance), Number(form.feasibility), Number(form.uniqueness)].filter(val => !isNaN(val) && val >= 0 && val <= 10);
+  const totalPoints = scores_array.length === 3 ? (scores_array.reduce((a, b) => a + b, 0)) : 0;
 
   async function submit(event) {
     event.preventDefault();
@@ -1371,11 +1387,9 @@ function ScoreModal({ team, scores, user, mutate, onClose }) {
       method: "POST",
       body: {
         teamId: team.id,
-        idea: Number(form.idea),
-        tech: Number(form.tech),
-        prototype: Number(form.prototype),
-        business: Number(form.business),
-        presentation: Number(form.presentation),
+        relevance: Number(form.relevance),
+        feasibility: Number(form.feasibility),
+        uniqueness: Number(form.uniqueness),
         feedback: form.feedback
       }
     });
@@ -1394,33 +1408,23 @@ function ScoreModal({ team, scores, user, mutate, onClose }) {
         </div>
         
         <form className="form-stack" onSubmit={submit} style={{ marginTop: '20px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '14px' }}>
             <label className="field">
-              <span>Idea & Innovation (0-10)</span>
-              <input type="number" min="0" max="10" required value={form.idea} onChange={e => setForm({ ...form, idea: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+              <span>Relevance of Problem and Solution (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.relevance} onChange={e => setForm({ ...form, relevance: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
             </label>
             <label className="field">
-              <span>Technical Execution (0-10)</span>
-              <input type="number" min="0" max="10" required value={form.tech} onChange={e => setForm({ ...form, tech: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+              <span>Feasibility of Solution (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.feasibility} onChange={e => setForm({ ...form, feasibility: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
             </label>
             <label className="field">
-              <span>Prototype/MVP (0-10)</span>
-              <input type="number" min="0" max="10" required value={form.prototype} onChange={e => setForm({ ...form, prototype: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
-            </label>
-            <label className="field">
-              <span>Business Approach (0-10)</span>
-              <input type="number" min="0" max="10" required value={form.business} onChange={e => setForm({ ...form, business: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
-            </label>
-          </div>
-          <div style={{ marginTop: '10px' }}>
-            <label className="field">
-              <span>Presentation & Pitch (0-10)</span>
-              <input type="number" min="0" max="10" required value={form.presentation} onChange={e => setForm({ ...form, presentation: e.target.value })} style={{ width: '100%', padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
+              <span>Uniqueness of Solution (0-10)</span>
+              <input type="number" min="0" max="10" required value={form.uniqueness} onChange={e => setForm({ ...form, uniqueness: e.target.value })} style={{ padding: '10px 14px', background: 'rgba(0,0,0,0.4)', border: '1px solid var(--border)', borderRadius: '4px', color: 'var(--text)', outline: 'none' }} />
             </label>
           </div>
 
           <div style={{ margin: '20px 0', padding: '14px', background: 'rgba(246,173,85,0.08)', border: '1px solid rgba(246,173,85,0.2)', borderRadius: '6px', textAlign: 'center' }}>
-            <strong style={{ fontSize: '16px', color: 'var(--text)' }}>Average Score: <span style={{ color: 'var(--amber)', fontSize: '20px', marginLeft: '6px' }}>{avg} / 10</span></strong>
+            <strong style={{ fontSize: '16px', color: 'var(--text)' }}>Total Score: <span style={{ color: 'var(--amber)', fontSize: '20px', marginLeft: '6px' }}>{totalPoints} / 30</span></strong>
           </div>
 
           <label className="field">
@@ -1510,7 +1514,7 @@ function TeamTask({ task, mentors, teams = [], mutate }) {
 
 function Leaderboard({ data, highlightTeamId }) {
   const top3 = data.leaderboard.slice(0, 3);
-  const maxScore = Math.max(...top3.map(t => t.total), 100); // Minimum scale of 100
+  const maxScore = Math.max(...top3.map(t => t.total), 30); // Minimum scale of 30
 
   return (
     <Panel title="Leaderboard" meta={`${data.leaderboard.length} teams`}>
@@ -1611,7 +1615,7 @@ function InfoCard({ title, meta, body }) {
         <strong>{title}</strong>
         {meta && <span className="tiny">{meta}</span>}
       </div>
-      <p>{body}</p>
+      <div style={{ marginTop: '8px', fontSize: '14px', color: 'var(--text-dim)' }}>{body}</div>
     </article>
   );
 }

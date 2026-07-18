@@ -1,0 +1,512 @@
+User ID,Name,Email,Role,Team ID,Created At
+5,Kavish Mehta,judge.kavish.mehta@iist.com,judge,,2026-07-15T20:12:06.921703+00:00
+6,Pradeep Raghuwanshi,judge.pradeep.raghuwanshi@iist.com,judge,,2026-07-15T20:12:07.859555+00:00
+7,Pawan Patidar,judge.pawan.patidar@iist.com,judge,,2026-07-15T20:12:08.551491+00:00
+8,Darshan Joshi,judge.darshan.joshi@iist.com,judge,,2026-07-15T20:12:09.224710+00:00
+9,Ashish Dave,judge.ashish.dave@iist.com,judge,,2026-07-15T20:12:09.908428+00:00
+10,Pavan Jain,judge.pavan.jain@iist.com,judge,,2026-07-15T20:12:10.590890+00:00
+11,Jitendra Gupta,judge.jitendra.gupta@iist.com,judge,,2026-07-15T20:12:11.254876+00:00
+12,Suyash Heda,judge.suyash.heda@iist.com,judge,,2026-07-15T20:12:11.925765+00:00
+13,Nitish Tongia,judge.nitish.tongia@iist.com,judge,,2026-07-15T20:12:12.617514+00:00
+14,Rasesh Tongia,judge.rasesh.tongia@iist.com,judge,,2026-07-15T20:12:13.315015+00:00
+15,Praveen Kushwah,judge.praveen.kushwah@iist.com,judge,,2026-07-15T20:12:14.039847+00:00
+16,Nandkishore Patidar,judge.nandkishore.patidar@iist.com,judge,,2026-07-15T20:12:14.709422+00:00
+17,Gaurav Sharma,mentor.gaurav.sharma@iist.com,mentor,,2026-07-15T20:12:42.755908+00:00
+18,Sakshi Prajapat,mentor.sakshi.prajapat@iist.com,mentor,,2026-07-15T20:12:43.659761+00:00
+19,Rakshit Sharma,mentor.rakshit.sharma@iist.com,mentor,,2026-07-15T20:12:44.301063+00:00
+20,Yogita Patidar,mentor.yogita.patidar@iist.com,mentor,,2026-07-15T20:12:44.959500+00:00
+21,Kunal Thakur,mentor.kunal.thakur@iist.com,mentor,,2026-07-15T20:12:45.658610+00:00
+22,Aarti Jethhaniya,mentor.aarti.jethhaniya@iist.com,mentor,,2026-07-15T20:12:46.307217+00:00
+23,Tarun Kumar Makode,mentor.tarun.kumar@iist.com,mentor,,2026-07-15T20:12:46.994032+00:00
+24,Ajit Rawat,mentor.ajit.rawat@iist.com,mentor,,2026-07-15T20:12:47.653249+00:00
+25,Yogesh Panchole,mentor.yogesh.panchole@iist.com,mentor,,2026-07-15T20:12:48.322622+00:00
+26,Vaibhav Jain,mentor.vaibhav.jain@iist.com,mentor,,2026-07-15T20:12:49.071648+00:00
+28,Nishant Vijayvargiya,nishant.vijayvargiya@indoreinstitute.com,admin,,2026-07-16T15:53:08.611774+00:00
+29,Yukti Leader,avadheshpandit31@gmail.com,team,519,2026-07-17T10:17:31.297101+00:00
+30,Yukti Member 1,gyanshi.singhec2024@indoreinstitute.com,team,519,2026-07-17T10:17:31.411812+00:00
+31,Yukti Member 2,vansh.mandloiec2024@indoreinstitute.com,team,519,2026-07-17T10:17:31.521085+00:00
+32,Yukti Member 3,purvi.sanodiyacs2025@indoreinstitute.com,team,519,2026-07-17T10:17:31.631306+00:00
+33,Yukti Member 4,ram.shuklaec2023@indoreinstitute.com,team,519,2026-07-17T10:17:31.742828+00:00
+34,Yukti Member 5,saharsh.chattarcs2025@indoreinstitute.com,team,519,2026-07-17T10:17:31.862045+00:00
+35,PraxisCode X Leader,vssksn1919@gmail.com,team,565,2026-07-17T10:24:34.722478+00:00
+36,PraxisCode X Member 1,saigadwe369@gmail.com,team,565,2026-07-17T10:24:34.838369+00:00
+37,PraxisCode X Member 2,varun.vermaaiml2024@indoreinstitute.com,team,565,2026-07-17T10:24:34.949609+00:00
+38,PraxisCode X Member 3,sakshi.patilaiml2024@indoreinstitute.com,team,565,2026-07-17T10:24:35.058930+00:00
+39,PraxisCode X Member 4,sejal.mankaraiml2024@indoreinstitute.com,team,565,2026-07-17T10:24:35.167871+00:00
+40,PraxisCode X Member 5,vishakha.nagaraiml2024@indoreinstitute.com,team,565,2026-07-17T10:24:35.277125+00:00
+41,Team Synergy Leader,dhawal.sharmaec2025@indoreinstitute.com,team,621,2026-07-17T10:24:35.683961+00:00
+42,Team Synergy Member 1,daksh.redaec2025@indoreinstitute.com,team,621,2026-07-17T10:24:35.795223+00:00
+43,Team Synergy Member 2,devesh.bariec2025@indoreinstitute.com,team,621,2026-07-17T10:24:35.908516+00:00
+44,Team Synergy Member 3,durgansh.balpandeec2025@indoreinstitute.com,team,621,2026-07-17T10:24:36.022758+00:00
+45,Team Synergy Member 4,priyanka.guptaec2025@indoreinstitute.com,team,621,2026-07-17T10:24:36.135194+00:00
+46,Team Synergy Member 5,shrashti.gautamec2025@indoreinstitute.com,team,621,2026-07-17T10:24:36.247843+00:00
+47,Vision Crafters Leader,krish.makhijacse2024@indoreinstitute.com,team,559,2026-07-17T10:27:10.478218+00:00
+48,Vision Crafters Member 1,mahima.patidarcse2024@indoreinstitute.com,team,559,2026-07-17T10:27:10.586840+00:00
+49,Vision Crafters Member 2,koushal.fandcse2024@indoreinstitute.com,team,559,2026-07-17T10:27:10.693978+00:00
+50,Vision Crafters Member 3,muskan.sultaniyacse2024@indoreinstitute.com,team,559,2026-07-17T10:27:10.801614+00:00
+51,Vision Crafters Member 4,palak.sonicse2024@indoreinstitute.com,team,559,2026-07-17T10:27:10.908933+00:00
+52,Vision Crafters Member 5,mayank.wanecse2024@indoreinstitute.com,team,559,2026-07-17T10:27:11.016311+00:00
+53,Pixel Pioneers Leader,sujaldeshmukh1112005@gmail.com,team,552,2026-07-17T10:32:55.520435+00:00
+54,Pixel Pioneers Member 1,divyabhawarkar2@gmail.com,team,552,2026-07-17T10:32:55.630210+00:00
+55,Pixel Pioneers Member 2,aarjoojhala30@gmail.com,team,552,2026-07-17T10:32:55.737804+00:00
+56,Pixel Pioneers Member 3,mohitchoudhary02005@gmail.com,team,552,2026-07-17T10:32:55.844560+00:00
+57,Pixel Pioneers Member 4,tanishchouhan561@gmail.com,team,552,2026-07-17T10:32:55.951820+00:00
+58,Pixel Pioneers Member 5,luckychouhan514@gmail.com,team,552,2026-07-17T10:32:56.059097+00:00
+59,Crisis Leader,nirmal.bafnacse2024@indoreinstitute.com,team,563,2026-07-17T10:32:59.102042+00:00
+60,Crisis Member 1,nikhil.kumawatcse2024@indoreinstitute.com,team,563,2026-07-17T10:32:59.211749+00:00
+61,Crisis Member 2,ayush.shrivastavcse2024@indoreinstitute.com,team,563,2026-07-17T10:32:59.318939+00:00
+62,Crisis Member 3,prachi.patidaraiml@indoreinstitute.com,team,563,2026-07-17T10:32:59.426465+00:00
+63,Crisis Member 4,aayush.verma@indoreinstitute.com,team,563,2026-07-17T10:32:59.534539+00:00
+64,AlgoHolics Leader,shresthsingh112233@gmail.com,team,549,2026-07-17T10:33:28.923549+00:00
+65,AlgoHolics Member 1,sumitnagar7069@gmail.com,team,549,2026-07-17T10:33:29.030976+00:00
+66,AlgoHolics Member 2,tanishqa.upadhyayaiml2025@indoreinstitute.com,team,549,2026-07-17T10:33:29.139861+00:00
+67,AlgoHolics Member 3,nisha.bamboriyacse2025@indoreinstitute.com,team,549,2026-07-17T10:33:29.247536+00:00
+68,QUANTUM CODERS Leader,mohammaduwaish51@gmail.com,team,561,2026-07-17T10:33:44.255823+00:00
+69,QUANTUM CODERS Member 1,raghukulayush1506@gmail.com,team,561,2026-07-17T10:33:44.362122+00:00
+70,QUANTUM CODERS Member 2,harsh.nariya01@gmail.com,team,561,2026-07-17T10:33:44.467979+00:00
+71,QUANTUM CODERS Member 3,bhavesh.nariya05@gmail.com,team,561,2026-07-17T10:33:44.574272+00:00
+72,QUANTUM CODERS Member 4,mayank.yadav10008@gmail.com,team,561,2026-07-17T10:33:44.685999+00:00
+73,QUANTUM CODERS Member 5,pt5412346@gmail.com,team,561,2026-07-17T10:33:44.800085+00:00
+74,Navsrijan Leader,swati.pundkarcse2024@indoreinstitute.com,team,553,2026-07-17T10:35:32.924729+00:00
+75,Navsrijan Member 1,twinkle.sonicse2024@indoreinstitute.com,team,553,2026-07-17T10:35:33.032970+00:00
+76,Navsrijan Member 2,sneha.yadavcse2024@indoreinstitute.com,team,553,2026-07-17T10:35:33.142959+00:00
+77,Navsrijan Member 3,disha.nighojkarcse2024@indoreinstitute.com,team,553,2026-07-17T10:35:33.251709+00:00
+78,Navsrijan Member 4,tanish.patidarcse2024@indoreinstitu4e.com,team,553,2026-07-17T10:35:33.360044+00:00
+79,Navsrijan Member 5,anurag.tamrakarcse2023@indoreinstitute.com,team,553,2026-07-17T10:35:33.468163+00:00
+80,NexGen Leader,yashdeshmukh845@gmail.com,team,555,2026-07-17T10:35:51.158384+00:00
+81,NexGen Member 1,yash.pathode5@gmail.com,team,555,2026-07-17T10:35:51.269559+00:00
+82,NexGen Member 2,samruddhi.sharma06@gmail.com,team,555,2026-07-17T10:35:51.381615+00:00
+83,NexGen Member 3,deepakshah909824@gmail.com,team,555,2026-07-17T10:35:51.491435+00:00
+84,NexGen Member 4,tanutanishakushwah@gmail.com,team,555,2026-07-17T10:35:51.601157+00:00
+85,NexGen Member 5,aditirathoreaiml2024@indoreinstitute.com,team,555,2026-07-17T10:35:51.718703+00:00
+86,TeamCoders Leader,rituraj.kumarcs2022@indoreinstitute.com,team,543,2026-07-17T10:36:09.569226+00:00
+87,TeamCoders Member 1,shashanknalkande1@gmail.com,team,543,2026-07-17T10:36:09.688027+00:00
+88,TeamCoders Member 2,shruti.sharmacse2024@indoreinstitute.com,team,543,2026-07-17T10:36:09.801945+00:00
+89,TeamCoders Member 3,sushmita.singhcse2024@indoreinstitute.com,team,543,2026-07-17T10:36:09.916442+00:00
+90,TeamCoders Member 4,harsh.solankirai2024@indoreinstitute.com,team,543,2026-07-17T10:36:10.029542+00:00
+91,TeamCoders Member 5,jitesh.chouhanrai2024@indoreinstitute.com,team,543,2026-07-17T10:36:10.151389+00:00
+92,VisionX Leader,suhanyadav797@gmail.com,team,551,2026-07-17T10:36:22.127356+00:00
+93,VisionX Member 1,ojasvaupadhyay@gmail.com,team,551,2026-07-17T10:36:22.233608+00:00
+94,VisionX Member 2,himanshusolanki400@gmail.com,team,551,2026-07-17T10:36:22.339773+00:00
+95,VisionX Member 3,pragatipanwar259@gmail.com,team,551,2026-07-17T10:36:22.446755+00:00
+96,VisionX Member 4,muskanmodi717@gmail.com,team,551,2026-07-17T10:36:22.553017+00:00
+97,VisionX Member 5,deepanshup495@gmail.com,team,551,2026-07-17T10:36:22.659605+00:00
+98,One Piece Leader,shraddhaa816@gmail.com,team,548,2026-07-17T10:36:30.584916+00:00
+99,One Piece Member 1,ashishprajapati0202@gmail.com,team,548,2026-07-17T10:36:30.692440+00:00
+100,One Piece Member 2,pratulsnghrajput17@gmail.com,team,548,2026-07-17T10:36:30.798588+00:00
+101,One Piece Member 3,parthsharma7809@gmail.com,team,548,2026-07-17T10:36:30.904416+00:00
+102,One Piece Member 4,sahunancy3029@gmail.com,team,548,2026-07-17T10:36:31.016310+00:00
+103,One Piece Member 5,bhaskarjain67@gmail.com,team,548,2026-07-17T10:36:31.123325+00:00
+104,FarmTech Leader,alankrita.purwadeds2025@indoreinstitute.com,team,617,2026-07-17T10:36:32.746479+00:00
+105,FarmTech Member 1,anshul.patidarcse2024@indoreinstitute.com,team,617,2026-07-17T10:36:32.852796+00:00
+106,FarmTech Member 2,bushra.syedds2025@indoreinstitute.com,team,617,2026-07-17T10:36:32.958587+00:00
+107,FarmTech Member 3,tanushree.khandelwalds2025@indoreinstitute.com,team,617,2026-07-17T10:36:33.065043+00:00
+108,FarmTech Member 4,pragya.kokreds2025@indoreinstitute.com,team,617,2026-07-17T10:36:33.171153+00:00
+109,FarmTech Member 5,krishna.modids2025@indoreinstitute.com,team,617,2026-07-17T10:36:33.277135+00:00
+110,TEAM AVYUKT Leader,somya.shrutirai2024@indoreinstitute.com,team,550,2026-07-17T10:36:39.975164+00:00
+111,TEAM AVYUKT Member 1,sarthk.rathoreit25@indoreinstitue.com,team,550,2026-07-17T10:36:40.081869+00:00
+112,TEAM AVYUKT Member 2,vibha.marskolece2024@indoreinstitute.com,team,550,2026-07-17T10:36:40.188467+00:00
+113,TEAM AVYUKT Member 3,payal.rajputrai2024@indoreinstitute.com,team,550,2026-07-17T10:36:40.294496+00:00
+114,TEAM AVYUKT Member 4,tanishq.shahit2025@indoreinstitute.com,team,550,2026-07-17T10:36:40.400364+00:00
+115,TEAM AVYUKT Member 5,bhakti.menghwaniit2025@indoreinstitute.com,team,550,2026-07-17T10:36:40.506002+00:00
+116,TENSOR TITANS Leader,kunal.sahuaiml2024@indoreinstitute.com,team,560,2026-07-17T10:37:58.673462+00:00
+117,TENSOR TITANS Member 1,pratik.bhawsaraiml2024@indoreinstitute.com,team,560,2026-07-17T10:37:58.780804+00:00
+118,TENSOR TITANS Member 2,parth.gautamaiml2024@indoreinstitute.com,team,560,2026-07-17T10:37:58.887694+00:00
+119,TENSOR TITANS Member 3,sourabh.padhycse2024@indoreinstitute.com,team,560,2026-07-17T10:37:58.994918+00:00
+120,TENSOR TITANS Member 4,sanju.bagaiml2024@indoreinstitute.com,team,560,2026-07-17T10:37:59.101491+00:00
+121,TENSOR TITANS Member 5,khushi.datiraiml2024@indoreinstitute.com,team,560,2026-07-17T10:37:59.224204+00:00
+122,User First Leader,anshika.puanseaiml2023@indoreinstitute.com,team,556,2026-07-17T10:39:14.956889+00:00
+123,User First Member 1,adeesh.jainaiml2023@indoreinstritute.com,team,556,2026-07-17T10:39:15.063762+00:00
+124,User First Member 2,bhumika.malakaraiml2023@indoreinstitute.com,team,556,2026-07-17T10:39:15.170698+00:00
+125,User First Member 3,sumit.singhaiml2023@indoreinstitute.com,team,556,2026-07-17T10:39:15.276964+00:00
+126,User First Member 4,kuldeep.soni2023@indoreinstitute.com,team,556,2026-07-17T10:39:15.383475+00:00
+127,User First Member 5,vasu.garg2024@indoreinstitute.com,team,556,2026-07-17T10:39:15.489942+00:00
+128,Team Alpha Leader,yadavayush00360@gmail.com,team,619,2026-07-17T10:39:50.794590+00:00
+129,Team Alpha Member 1,nrz20006@gmail.com,team,619,2026-07-17T10:39:50.908492+00:00
+130,Team Alpha Member 2,ashishk2746@gmail.com,team,619,2026-07-17T10:39:51.016456+00:00
+131,Team Alpha Member 3,aakashsiingh007@gmail.com,team,619,2026-07-17T10:39:51.132515+00:00
+132,Team Alpha Member 4,ashwini.pandey2006@gmail.com,team,619,2026-07-17T10:39:51.240410+00:00
+133,Team Alpha Member 5,deepika.patidarcse2025@indoreinstaitute.com,team,619,2026-07-17T10:39:51.358288+00:00
+134,MagniScan Leader,shivalverma888@gmail.com,team,547,2026-07-17T10:41:31.396199+00:00
+135,MagniScan Member 1,shivanshgour1999@gmail.com,team,547,2026-07-17T10:41:31.505423+00:00
+136,MagniScan Member 2,anuragsethia06@gmail.com,team,547,2026-07-17T10:41:31.613731+00:00
+137,MagniScan Member 3,anjalimaheshwari231980@gmail.com,team,547,2026-07-17T10:41:31.721429+00:00
+138,MagniScan Member 4,sagarptl30303030@gmail.com,team,547,2026-07-17T10:41:31.829797+00:00
+139,MagniScan Member 5,prayanshpatel44@gmail.com,team,547,2026-07-17T10:41:31.938236+00:00
+140,Saksham Leader,aditya.choukseyaiml2023@indoreinstitute.com,team,616,2026-07-17T10:44:45.348041+00:00
+141,Saksham Member 1,prachi.patidaraiml2025@indoreinstitute.com,team,616,2026-07-17T10:44:45.456810+00:00
+142,Saksham Member 2,darpan.naganpuriyaaiml2023@indoreinstitute.com,team,616,2026-07-17T10:44:45.570999+00:00
+143,Saksham Member 3,krishna.kavishwaraiml2023@indoreinstitute.com,team,616,2026-07-17T10:44:45.682539+00:00
+144,Saksham Member 4,sikha.somanicse2023@indoreinstitute.com,team,616,2026-07-17T10:44:45.789216+00:00
+145,Saksham Member 5,barkha.rathime2024@indoreinstitute.com,team,616,2026-07-17T10:44:45.896567+00:00
+148,TARKIK Leader,nikhilyadav73642@gmail.com,team,562,2026-07-17T10:44:52.919770+00:00
+149,TARKIK Member 1,pateldheeraj8345@gmail.com,team,562,2026-07-17T10:44:53.035884+00:00
+150,TARKIK Member 2,sisodiyamadhvi5@gmail.com,team,562,2026-07-17T10:44:53.142452+00:00
+151,TARKIK Member 3,minecraftyash17@gmail.com,team,562,2026-07-17T10:44:53.253756+00:00
+152,TARKIK Member 4,bhavyajain.16112004@gmail.com,team,562,2026-07-17T10:44:53.359655+00:00
+153,TARKIK Member 5,workforsourabhme@gmail.com,team,562,2026-07-17T10:44:53.466293+00:00
+154,AGRIEYE Leader,indravath.kirancse2024@indoreinstitute.com,team,623,2026-07-17T10:47:42.705406+00:00
+155,AGRIEYE Member 1,bhumi.mahajancse2024@indoreinstitute.com,team,623,2026-07-17T10:47:42.831146+00:00
+156,AGRIEYE Member 2,anuj.sharmaec2024@indoreinstitute.com,team,623,2026-07-17T10:47:42.964174+00:00
+157,AGRIEYE Member 3,adarsh.tiwariec2024@indoreinstitute.com,team,623,2026-07-17T10:47:43.088942+00:00
+158,AGRIEYE Member 4,alok.kumarec2024@indoreinstitute.com,team,623,2026-07-17T10:47:43.212271+00:00
+159,AGRIEYE Member 5,aditya.palasiyaec2024@indoreinstite.com,team,623,2026-07-17T10:47:43.344017+00:00
+160,Jeevanta Leader,shambhavi.-cse2024@indoreinstitute.com,team,546,2026-07-17T10:49:48.524670+00:00
+161,Jeevanta Member 1,premwadhwani114@gmail.com,team,546,2026-07-17T10:49:48.632354+00:00
+162,Jeevanta Member 2,sakshi.jedhecse2024@indoreinstitute.com,team,546,2026-07-17T10:49:48.744002+00:00
+163,Jeevanta Member 3,shrivastavasamarth80@gmail.com,team,546,2026-07-17T10:49:48.853617+00:00
+164,Jeevanta Member 4,shantanu.joshicse2024@indoreinstitute.com,team,546,2026-07-17T10:49:48.962633+00:00
+165,Jeevanta Member 5,deepanshipatidar19@gmail.com,team,546,2026-07-17T10:49:49.075094+00:00
+166,Apex Nova Leader,aryanpra2006@gmail.com,team,618,2026-07-17T10:51:03.607421+00:00
+167,Apex Nova Member 1,ayushsahu322006@gmail.com,team,618,2026-07-17T10:51:03.733262+00:00
+168,Apex Nova Member 2,chanchalmeena503@gmail.com,team,618,2026-07-17T10:51:03.865575+00:00
+169,Apex Nova Member 3,bahrepriyaji70@gmail.com,team,618,2026-07-17T10:51:03.991304+00:00
+170,Apex Nova Member 4,kushwahaankit6334@gmail.com,team,618,2026-07-17T10:51:04.125710+00:00
+171,Apex Nova Member 5,mr.ankushji.708@gmail.com,team,618,2026-07-17T10:51:04.252570+00:00
+172,console.log Leader,arvind.kumarcse2024@indoreinstitute.com,team,557,2026-07-17T11:17:04.026147+00:00
+173,console.log Member 1,aditya.guptacse2025@indoreinstitute.com,team,557,2026-07-17T11:17:04.147986+00:00
+174,console.log Member 2,saloni.patelcse2025@indoreinstitue.com,team,557,2026-07-17T11:17:04.282894+00:00
+175,console.log Member 3,aastha.choyalcse2024@indoreinstitute.com,team,557,2026-07-17T11:17:04.409994+00:00
+176,console.log Member 4,aditya.kumarcse2024@indoreinstitute.com,team,557,2026-07-17T11:17:04.539249+00:00
+177,console.log Member 5,sanskar.guptaaiml2024@indoreinstitute.com,team,557,2026-07-17T11:17:04.664566+00:00
+178,SecureTrace Leader,dhanrajsapkale22@gmail.com,team,571,2026-07-17T12:58:01.113559+00:00
+179,SecureTrace Member 1,vriya011@gmail.com,team,571,2026-07-17T12:58:01.235478+00:00
+180,SecureTrace Member 2,soumyapatanaik8@gmail.com,team,571,2026-07-17T12:58:01.363847+00:00
+181,SecureTrace Member 3,patilyugal194@gmail.com,team,571,2026-07-17T12:58:01.484810+00:00
+182,SecureTrace Member 4,smrutibhol2003@gmail.com,team,571,2026-07-17T12:58:01.606238+00:00
+183,SecureTrace Member 5,aadrikaj242@gmail.com,team,571,2026-07-17T12:58:01.728188+00:00
+184,Hackett Leader,udita.rathoreds2023@indoreinstitute.com,team,599,2026-07-17T12:58:10.534344+00:00
+185,Hackett Member 1,tanyasoni343@gmail.com,team,599,2026-07-17T12:58:10.663040+00:00
+186,Hackett Member 2,deepanshu.yadavds2023@indoreinstitute.com,team,599,2026-07-17T12:58:10.784454+00:00
+187,Hackett Member 3,shreyanshborliya.0820@gmail.com,team,599,2026-07-17T12:58:10.905560+00:00
+188,Hackett Member 4,om.mahajanaiml2025@indoreinstitute.com,team,599,2026-07-17T12:58:11.025967+00:00
+189,Team Flashback Leader,jayesh.kashyapds2023@indoreinstitute.com,team,614,2026-07-17T12:58:12.951438+00:00
+190,Team Flashback Member 1,arpita.pancholids2023@indoreinstitute.com,team,614,2026-07-17T12:58:13.075025+00:00
+191,Team Flashback Member 2,krish.dasds2023@indoreinstitute.com,team,614,2026-07-17T12:58:13.202890+00:00
+192,Team Flashback Member 3,aarya.bhandds2023@indoreinstitute.com,team,614,2026-07-17T12:58:13.322844+00:00
+193,Team Flashback Member 4,harsh.sharmads2023@indoreinstitute.com,team,614,2026-07-17T12:58:13.442849+00:00
+194,Team Flashback Member 5,krishna.jagwanids2023@indoreinstitute.com,team,614,2026-07-17T12:58:13.564961+00:00
+195,ResolveX Leader,patidarkartik1422@gmail.com,team,590,2026-07-17T12:58:52.568056+00:00
+196,ResolveX Member 1,pradumn.patidarcse2023@indoreinstitute.com,team,590,2026-07-17T12:58:52.679476+00:00
+197,ResolveX Member 2,nayan.gurjarcse2023@indoreinstitute.com,team,590,2026-07-17T12:58:52.791457+00:00
+198,ResolveX Member 3,palak.baraskarcse2023@indoreinstitute.com,team,590,2026-07-17T12:58:52.914515+00:00
+199,ResolveX Member 4,pritee.singhcse2023@indoreinstitute.com,team,590,2026-07-17T12:58:53.031426+00:00
+200,ResolveX Member 5,tanisha.porwalaiml2024@indoreinstitute.com,team,590,2026-07-17T12:58:53.147333+00:00
+201,404_ERROR Leader,charannirmala1903@gmail.com,team,578,2026-07-17T12:59:15.726224+00:00
+202,404_ERROR Member 1,sum74pr@gmail.com,team,578,2026-07-17T12:59:15.967757+00:00
+203,404_ERROR Member 2,deciple055@gmail.com,team,578,2026-07-17T12:59:16.132426+00:00
+204,404_ERROR Member 3,shraddhagehlot966@gmail.com,team,578,2026-07-17T12:59:16.266540+00:00
+205,404_ERROR Member 4,mahendrabb567@gmail.com,team,578,2026-07-17T12:59:16.393985+00:00
+206,404_ERROR Member 5,divyanshgupta1590@gmail.com,team,578,2026-07-17T12:59:16.527253+00:00
+207,BugSlayers Leader,ps.1sikarwar@gmail.com,team,534,2026-07-17T12:59:35.910300+00:00
+208,BugSlayers Member 1,krishnapurohit14256@gmail.com,team,534,2026-07-17T12:59:36.030280+00:00
+209,BugSlayers Member 2,deshmukhrashmi08@gmail.com,team,534,2026-07-17T12:59:36.149863+00:00
+210,BugSlayers Member 3,trishabhawsar1@gmail.com,team,534,2026-07-17T12:59:36.269146+00:00
+211,BugSlayers Member 4,nandanisen2006@gmail.com,team,534,2026-07-17T12:59:36.391823+00:00
+212,BugSlayers Member 5,udiyaavni@gmail.com,team,534,2026-07-17T12:59:36.526640+00:00
+213,Quantum-Maniacs Leader,lakshya.kushwahaaiml2023@indoreinstitute.com,team,527,2026-07-17T13:00:00.812823+00:00
+214,Quantum-Maniacs Member 1,ishant.rajputaiml2023@indoreinstitute.com,team,527,2026-07-17T13:00:00.924956+00:00
+215,Quantum-Maniacs Member 2,monty.kushwahaaiml2023@indoreinstitute.com,team,527,2026-07-17T13:00:01.037909+00:00
+216,Quantum-Maniacs Member 3,radhika.ankolnerkarcse2023@indoreinstitute.com,team,527,2026-07-17T13:00:01.149475+00:00
+217,Quantum-Maniacs Member 4,neeti.pathrodcse2023@indoreinstitute.com,team,527,2026-07-17T13:00:01.261247+00:00
+218,Quantum-Maniacs Member 5,rani.balpandecse2023@indoreinstitute.com,team,527,2026-07-17T13:00:01.371305+00:00
+219,Ezy Coders Leader,keshavverma383@gmail.com,team,575,2026-07-17T13:00:12.366264+00:00
+220,Ezy Coders Member 1,chinmayagrawal81@gmail.com,team,575,2026-07-17T13:00:12.506455+00:00
+221,Ezy Coders Member 2,gunjansisodiya5140@gmail.com,team,575,2026-07-17T13:00:12.662288+00:00
+222,Ezy Coders Member 3,bhayalharshita25@gmail.con,team,575,2026-07-17T13:00:12.809814+00:00
+223,Ezy Coders Member 4,rajatv2519@gmail.com,team,575,2026-07-17T13:00:12.945822+00:00
+224,Terra Vigil Leader,vijay.rathorecse2024@indoreinstitute.com,team,595,2026-07-17T13:00:31.606447+00:00
+225,Terra Vigil Member 1,vaibhav.godalecse2024@indoreinstitute.com,team,595,2026-07-17T13:00:31.726083+00:00
+226,Terra Vigil Member 2,priyanka.patelaiml2024@indoreinstitute.com,team,595,2026-07-17T13:00:31.846688+00:00
+227,Terra Vigil Member 3,nidhi.choudharyaiml2024@indoreinstitute.com,team,595,2026-07-17T13:00:31.966210+00:00
+228,Terra Vigil Member 4,yash.kolhecse2024@indoreinstitute.com,team,595,2026-07-17T13:00:32.103849+00:00
+229,Revengers Leader,sandeep.singhaiml2022@indoreinstitute.com,team,538,2026-07-17T13:01:21.338357+00:00
+230,Revengers Member 1,keshav.tejracse2023@indoreinstitute.com,team,538,2026-07-17T13:01:21.447411+00:00
+231,Revengers Member 2,harsh.chouhanec2023@indoreinstitute.com,team,538,2026-07-17T13:01:21.555758+00:00
+232,Revengers Member 3,ujjwal.kumarcse2023@indoreinstitute.com,team,538,2026-07-17T13:01:21.666635+00:00
+233,Revengers Member 4,tanisha.mandloicse2023@indoreinstitute.com,team,538,2026-07-17T13:01:21.774290+00:00
+234,Revengers Member 5,kashish.vishnoicse2023@indoreinstitute.com,team,538,2026-07-17T13:01:21.891381+00:00
+235,TheBits Leader,divyanshug2010@gmail.com,team,598,2026-07-17T13:03:05.243130+00:00
+236,TheBits Member 1,dhruv.verma305@gmail.com,team,598,2026-07-17T13:03:05.352159+00:00
+237,TheBits Member 2,pal263307@gmail.com,team,598,2026-07-17T13:03:05.463523+00:00
+238,TheBits Member 3,makasharebhupesh@gmail.com,team,598,2026-07-17T13:03:05.573056+00:00
+239,TheBits Member 4,aartiprajapati2712@gmail.com,team,598,2026-07-17T13:03:05.683091+00:00
+240,TheBits Member 5,dipeshsengar2006@gmail.com,team,598,2026-07-17T13:03:05.801764+00:00
+241,OffByOne Leader,riya.maityit2023@indoreinstitute.com,team,585,2026-07-17T13:03:10.477671+00:00
+242,OffByOne Member 1,tanyarani760@gmail.com,team,585,2026-07-17T13:03:10.591596+00:00
+243,OffByOne Member 2,vinayakdhanotiya2411@gmail.com,team,585,2026-07-17T13:03:10.701518+00:00
+244,OffByOne Member 3,vedikapal1@gmail.com,team,585,2026-07-17T13:03:10.811254+00:00
+245,OffByOne Member 4,aadi.singhaiit2023@indoreinstitute.com,team,585,2026-07-17T13:03:10.920456+00:00
+246,OffByOne Member 5,vaibhavrudrawal@gmail.com,team,585,2026-07-17T13:03:11.029235+00:00
+247,Incognex Leader,mayankrajpanwar1974@gmail.com,team,528,2026-07-17T13:03:35.673321+00:00
+248,Incognex Member 1,nehaljain848@gmail.com,team,528,2026-07-17T13:03:35.781931+00:00
+249,Incognex Member 2,purvijain.210@gmail.com,team,528,2026-07-17T13:03:35.890233+00:00
+250,Incognex Member 3,amanspatel2006@gmail.com,team,528,2026-07-17T13:03:36.002349+00:00
+251,Incognex Member 4,kartiksharmaofficial29@gmail.com,team,528,2026-07-17T13:03:36.109748+00:00
+252,Incognex Member 5,jitendraprusty57@gmail.com,team,528,2026-07-17T13:03:36.219386+00:00
+253,XANANTA Leader,palak.sharmaaiml2023@indoreinstitute.com,team,580,2026-07-17T13:04:04.672170+00:00
+254,XANANTA Member 1,hariom.kheteaiml2023@indoreinstitute.com,team,580,2026-07-17T13:04:04.780680+00:00
+255,XANANTA Member 2,rishabh.sahuaiml2025@indoreinstitute.com,team,580,2026-07-17T13:04:04.890381+00:00
+256,XANANTA Member 3,ankit.yadavcse2025@indoreinstitute.com,team,580,2026-07-17T13:04:05.000440+00:00
+257,XANANTA Member 4,sharvari.shambharkaraiml2023@gmail.com,team,580,2026-07-17T13:04:05.109302+00:00
+258,XANANTA Member 5,akshat.muzumbaraiml2023@indoreinstitute.com,team,580,2026-07-17T13:04:05.223360+00:00
+259,Alpha Arc Leader,rishika.joshicse2024@indoreinstitute.com,team,542,2026-07-17T13:04:48.477412+00:00
+260,Alpha Arc Member 1,rishikajoshi854@gmail.com,team,542,2026-07-17T13:04:48.584526+00:00
+261,Alpha Arc Member 2,gp8111964@gmail.com,team,542,2026-07-17T13:04:48.691802+00:00
+262,Alpha Arc Member 3,kinshuholkar22@gmail.com,team,542,2026-07-17T13:04:48.800462+00:00
+263,Alpha Arc Member 4,shivansh.sahucse@indoreinstitute.com,team,542,2026-07-17T13:04:48.931012+00:00
+264,Alpha Arc Member 5,jatavhimalay06@gmail.com,team,542,2026-07-17T13:04:49.047214+00:00
+265,Smooth Operators Leader,priyanshi.rajputcse2024@indoreinstitute.com,team,533,2026-07-17T13:05:00.283123+00:00
+266,Smooth Operators Member 1,sakshi.pawarcse2024@indoreinstitute.com,team,533,2026-07-17T13:05:00.394449+00:00
+267,Smooth Operators Member 2,shivendrasingh111s@gmail.com,team,533,2026-07-17T13:05:00.505667+00:00
+268,Smooth Operators Member 3,princepatelmail@gmail.com,team,533,2026-07-17T13:05:00.615680+00:00
+269,Smooth Operators Member 4,mathanerishabh18@gmail.com,team,533,2026-07-17T13:05:00.726520+00:00
+270,Heisenbugs Leader,kunalsperspective@gmail.com,team,591,2026-07-17T13:06:09.117495+00:00
+271,Heisenbugs Member 1,lokesh.deshmukhcse2025@indoreinstitute.com,team,591,2026-07-17T13:06:09.232291+00:00
+272,Heisenbugs Member 2,adarsh72342@gmail.com,team,591,2026-07-17T13:06:09.344099+00:00
+273,Heisenbugs Member 3,kp2024698@gmail.com,team,591,2026-07-17T13:06:09.457214+00:00
+274,The crafters Leader,ambika.rathorecse2023@indoreinstitute.com,team,586,2026-07-17T13:07:36.863870+00:00
+275,The crafters Member 1,deepika.bamniyacse2023@indoreinstitute.com,team,586,2026-07-17T13:07:36.971740+00:00
+276,The crafters Member 2,hardik.derashricse2023@indoreinstitute.com,team,586,2026-07-17T13:07:37.079327+00:00
+277,The crafters Member 3,prathmeshgawade41@gmail.com,team,586,2026-07-17T13:07:37.189632+00:00
+278,The crafters Member 4,abizer.pithewancse2023@indoreinstitute.com,team,586,2026-07-17T13:07:37.298154+00:00
+279,The crafters Member 5,falguni.kalbhutcse2023@indoreinstitute.com,team,586,2026-07-17T13:07:37.405700+00:00
+280,Hack_Me_Not Leader,aakansha.soniit2024@indoreinstitute.con,team,566,2026-07-17T13:08:20.957146+00:00
+281,Hack_Me_Not Member 1,bhupendra.modiit2024@indoreinstitute.com,team,566,2026-07-17T13:08:21.064750+00:00
+282,Hack_Me_Not Member 2,dewansh.gokheme2024@indoreinstitute.com,team,566,2026-07-17T13:08:21.171832+00:00
+283,Hack_Me_Not Member 3,aahana.shuklacse2024@indoreinstitute.com,team,566,2026-07-17T13:08:21.278748+00:00
+284,Hack_Me_Not Member 4,aayush.sawnercse2024@indoreinstitute.com,team,566,2026-07-17T13:08:21.387152+00:00
+285,Hack_Me_Not Member 5,vishal.khandagreit2024@indoreinstitute.com,team,566,2026-07-17T13:08:21.495116+00:00
+286,TEAM LUNAR Leader,utkrishttiwari67@gmail.com,team,594,2026-07-17T13:10:10.163554+00:00
+287,TEAM LUNAR Member 1,prachipathak0407@gmail.com,team,594,2026-07-17T13:10:10.273592+00:00
+288,TEAM LUNAR Member 2,kd700021262@gmail.com,team,594,2026-07-17T13:10:10.393889+00:00
+289,TEAM LUNAR Member 3,stanishq078@gmail.com,team,594,2026-07-17T13:10:10.505326+00:00
+290,TEAM LUNAR Member 4,keshavgurjarx3377@gmail.com,team,594,2026-07-17T13:10:10.623209+00:00
+291,TEAM LUNAR Member 5,jatinvmsd13@gmail.com,team,594,2026-07-17T13:10:10.732533+00:00
+292,Code cortex Leader,abhay.singhcse2023@indoreinstitute.com,team,572,2026-07-17T13:13:31.810237+00:00
+293,Code cortex Member 1,anshika.sharmacse2023@indoreinstitute.com,team,572,2026-07-17T13:13:31.918858+00:00
+294,Code cortex Member 2,gauri.neemacse2023@indoreinstitute.com,team,572,2026-07-17T13:13:32.028142+00:00
+295,Code cortex Member 3,geetika.pathakcse2023@indoreinstitute.com,team,572,2026-07-17T13:13:32.135805+00:00
+296,Code cortex Member 4,atharv.rathorecse2023@indoreinstitute.com,team,572,2026-07-17T13:13:32.243926+00:00
+297,INSIDERS Leader,parv.sakalleycse2024@indoreinstitute.com,team,602,2026-07-17T13:13:36.942635+00:00
+298,INSIDERS Member 1,payal.patidarcse2024@indoreinstitute.com,team,602,2026-07-17T13:13:37.051213+00:00
+299,INSIDERS Member 2,khushi.sabrecse2024@indoreinstitute.com,team,602,2026-07-17T13:13:37.164958+00:00
+300,INSIDERS Member 3,naman.sharmacse2024@indoreinstitute.com,team,602,2026-07-17T13:13:37.273809+00:00
+301,INSIDERS Member 4,naitik.sethcse2024@indoreinstitute.com,team,602,2026-07-17T13:13:37.380898+00:00
+302,INSIDERS Member 5,kunika.vermacse@indoreinstitute.com,team,602,2026-07-17T13:13:37.488238+00:00
+303,MLOCK Leader,nitin.dubeyec2023@indoreinstitute.com,team,579,2026-07-17T13:14:13.206161+00:00
+304,MLOCK Member 1,khyati.khareec2023@indoreinstitute.com,team,579,2026-07-17T13:14:13.314556+00:00
+305,MLOCK Member 2,khushi.khareec2023@indoreinstitute.com,team,579,2026-07-17T13:14:13.422783+00:00
+306,MLOCK Member 3,palak.singhec2023@indoreinstitute.com,team,579,2026-07-17T13:14:13.530693+00:00
+307,MLOCK Member 4,aaditya.bhartiec2023@indoreinstitute.com,team,579,2026-07-17T13:14:13.639497+00:00
+308,MLOCK Member 5,aditya.bhadoriyaec2023@indoreinstitute.com,team,579,2026-07-17T13:14:13.747606+00:00
+309,Trishul Leader,siddharth.rathourcse2024@indoreinstitute.com,team,539,2026-07-17T13:15:24.231071+00:00
+310,Trishul Member 1,shrijal.shuklacse2024@indoreinstitute.com,team,539,2026-07-17T13:15:24.342075+00:00
+311,Trishul Member 2,sirjan.gourcse2024@indoreinstitute.com,team,539,2026-07-17T13:15:24.454581+00:00
+312,Trishul Member 3,vanshika.patidarcse2025@indoreinstitute.com,team,539,2026-07-17T13:15:24.565948+00:00
+313,Trishul Member 4,tanishq.patidarcse2025@indoreinstitute.com,team,539,2026-07-17T13:15:24.675964+00:00
+314,Trishul Member 5,saloni.pariharec2023@indoreinstitute.com,team,539,2026-07-17T13:15:24.785492+00:00
+315,Imperium Leader,arpanwhora@gmail.com,team,567,2026-07-17T13:15:54.724045+00:00
+316,Imperium Member 1,anishyadav21082005@gmail.com,team,567,2026-07-17T13:15:54.835945+00:00
+317,Imperium Member 2,mitishajain19@gmail.com,team,567,2026-07-17T13:15:54.945189+00:00
+318,Imperium Member 3,mustafapattiwala55@gmail.com,team,567,2026-07-17T13:15:55.054192+00:00
+319,Imperium Member 4,zainabsabunwala41@gmail.com,team,567,2026-07-17T13:15:55.163814+00:00
+320,Imperium Member 5,anmolpathak1522@gmail.com,team,567,2026-07-17T13:15:55.273834+00:00
+321,Diligent innovators Leader,sagar.dixitcse2024@indoreinstitute.com,team,609,2026-07-17T13:16:14.123716+00:00
+322,Diligent innovators Member 1,rudradeep.neemacse2024@indireinstitute.com,team,609,2026-07-17T13:16:14.235957+00:00
+323,Diligent innovators Member 2,pratyaksh.patelcse2024@indoreinstitute.com,team,609,2026-07-17T13:16:14.343946+00:00
+324,Diligent innovators Member 3,rajat.thakurcse2024@indoreinstitute.com,team,609,2026-07-17T13:16:14.451476+00:00
+325,Diligent innovators Member 4,sakshi.ahercse2024@indoreinstitute.com,team,609,2026-07-17T13:16:14.559154+00:00
+326,Diligent innovators Member 5,priya.sanjanacse2024@indoreinstitute.com,team,609,2026-07-17T13:16:14.666612+00:00
+327,Diamond Leader,keshavparashar834@gmail.com,team,574,2026-07-17T13:17:56.405362+00:00
+328,Diamond Member 1,jaisdaksh2@gmail.com,team,574,2026-07-17T13:17:56.513831+00:00
+329,Diamond Member 2,priya.sharmaecs2024@indoreinstitute.com,team,574,2026-07-17T13:17:56.621924+00:00
+330,Diamond Member 3,muskannavrange21@gmail.com,team,574,2026-07-17T13:17:56.731723+00:00
+331,Diamond Member 4,manthanpawar061@gmail.com,team,574,2026-07-17T13:17:56.840732+00:00
+332,Diamond Member 5,anshulchouban@gmail.com,team,574,2026-07-17T13:17:56.953896+00:00
+333,Team_Cipher Leader,chouhanashvin600@gmail.com,team,570,2026-07-17T13:18:15.049840+00:00
+334,Team_Cipher Member 1,sumit.tawariot2023@indoreinstitute.com,team,570,2026-07-17T13:18:15.159047+00:00
+335,Team_Cipher Member 2,devyansh.karmaiot2023@indoreinstitute.com,team,570,2026-07-17T13:18:15.268033+00:00
+336,Team_Cipher Member 3,rahul.patelcse2024@indoreinstitute.com,team,570,2026-07-17T13:18:15.376574+00:00
+337,Team_Cipher Member 4,samriddhi.negicse2025@indoreinstitute.com,team,570,2026-07-17T13:18:15.484150+00:00
+338,Code Mania-pro Leader,aman.roselerai2024@indoreinstitute.com,team,516,2026-07-17T13:18:21.257302+00:00
+339,Code Mania-pro Member 1,tinita.guptarai2024@indoreinstitute.com,team,516,2026-07-17T13:18:21.368224+00:00
+340,Code Mania-pro Member 2,ranu.sharmarai2024@indoreinstitute.com,team,516,2026-07-17T13:18:21.478829+00:00
+341,Code Mania-pro Member 3,varnika.sharmacs2025@indoreinstitute.com,team,516,2026-07-17T13:18:21.589863+00:00
+342,CheatCodes Leader,krishnamakodiya22@gmail.com,team,524,2026-07-17T13:19:45.630023+00:00
+343,CheatCodes Member 1,mishralalitansh.study@gmail.com,team,524,2026-07-17T13:19:45.737367+00:00
+344,CheatCodes Member 2,khushipatidar8516@gmail.com,team,524,2026-07-17T13:19:45.844020+00:00
+345,CheatCodes Member 3,sunny.shahcse2023@indoreinstitute.com,team,524,2026-07-17T13:19:45.950932+00:00
+346,CheatCodes Member 4,paapiikarma@gmail.com,team,524,2026-07-17T13:19:46.057903+00:00
+347,CheatCodes Member 5,garimajain03102004@gmail.com,team,524,2026-07-17T13:19:46.164653+00:00
+348,Nova Synapse Leader,mahiartiraghuvanshi09@gmail.com,team,577,2026-07-17T13:20:24.110567+00:00
+349,Nova Synapse Member 1,vedantpandey067@gmail.com,team,577,2026-07-17T13:20:24.220147+00:00
+350,Nova Synapse Member 2,traptirathore00@gmail.com,team,577,2026-07-17T13:20:24.330035+00:00
+351,Nova Synapse Member 3,vikasgurjar903@gmail.com,team,577,2026-07-17T13:20:24.439640+00:00
+352,Nova Synapse Member 4,gyananshtandon@gmail.com,team,577,2026-07-17T13:20:24.549927+00:00
+353,Nova Synapse Member 5,priyalsharma.indore@gmail.com,team,577,2026-07-17T13:20:24.659358+00:00
+354,Cyber Sentinels Leader,jayeshjangle50@gmail.com,team,573,2026-07-17T13:22:15.239573+00:00
+355,The Tech Ninjas Leader,ronakmukati73@gmail.com,team,608,2026-07-17T13:23:40.574915+00:00
+356,The Tech Ninjas Member 1,teenagayakwad281@gmail.com,team,608,2026-07-17T13:23:40.683318+00:00
+357,The Tech Ninjas Member 2,kn25.yukti@gmail.com,team,608,2026-07-17T13:23:40.809248+00:00
+358,The Tech Ninjas Member 3,trishalikhitkar2007@gmail.com,team,608,2026-07-17T13:23:40.917302+00:00
+359,The Tech Ninjas Member 4,sanchitachoudhary907@gmail.com,team,608,2026-07-17T13:23:41.031445+00:00
+360,The Tech Ninjas Member 5,gaykwadshrajal@gmail.com,team,608,2026-07-17T13:23:41.153044+00:00
+361,SOS Leader,yadavsalony14j@gmail.com,team,605,2026-07-17T13:24:56.291589+00:00
+362,SOS Member 1,sneharanim7@gmail.com,team,605,2026-07-17T13:24:56.400194+00:00
+363,SOS Member 2,mohitsisodiya6002@gmail.com,team,605,2026-07-17T13:24:56.517383+00:00
+364,SOS Member 3,ss1316563@gmail.com,team,605,2026-07-17T13:24:56.628037+00:00
+365,SOS Member 4,sahilvarathe36@gmail.com,team,605,2026-07-17T13:24:56.736993+00:00
+366,SOS Member 5,vikasthakre980@gmail.com,team,605,2026-07-17T13:24:56.846113+00:00
+367,Byte Brigade Leader,chetnabarmase3@gmail.com,team,589,2026-07-17T13:30:07.055636+00:00
+368,Byte Brigade Member 1,bhumika.cse2024@indoreinstitute.com,team,589,2026-07-17T13:30:07.163865+00:00
+369,Byte Brigade Member 2,adeeba.sheikhcse2024@indoreinstitute.com,team,589,2026-07-17T13:30:07.272441+00:00
+370,Byte Brigade Member 3,hemangi.gadewalcse2024@indoreinstitute.com,team,589,2026-07-17T13:30:07.380442+00:00
+371,Byte Brigade Member 4,jayant.jaiswalcse2024@indoreinstitute.com,team,589,2026-07-17T13:30:07.493650+00:00
+372,Byte Brigade Member 5,jatin.chourasiyacse2024@indoreinstitute.com,team,589,2026-07-17T13:30:07.602432+00:00
+373,404 Team Not Found Leader,raja07sharma2005@gmail.com,team,584,2026-07-17T13:30:29.989693+00:00
+374,404 Team Not Found Member 1,neerajyadav10676@gmail.com,team,584,2026-07-17T13:30:30.098382+00:00
+375,404 Team Not Found Member 2,kaushivank@gmail.com,team,584,2026-07-17T13:30:30.206920+00:00
+376,404 Team Not Found Member 3,kapilprajapat685@gmail.com,team,584,2026-07-17T13:30:30.315251+00:00
+377,404 Team Not Found Member 4,aditipandey20122005@gmail.com,team,584,2026-07-17T13:30:30.424737+00:00
+378,404 Team Not Found Member 5,piyushsatnami851@gamil.com,team,584,2026-07-17T13:30:30.533021+00:00
+379,Trojan Trackers Leader,parv.joshids2023@indoreinstitute.com,team,581,2026-07-17T13:32:17.821915+00:00
+380,Trojan Trackers Member 1,niranjan.panwards2023@indoreinstitute.com,team,581,2026-07-17T13:32:17.929536+00:00
+381,Trojan Trackers Member 2,kanishka.didwaniads2023@indoreinstitute.com,team,581,2026-07-17T13:32:18.037794+00:00
+382,Trojan Trackers Member 3,palak.kushwahds2023@indoreinstitute.com,team,581,2026-07-17T13:32:18.150216+00:00
+383,Trojan Trackers Member 4,aryan.tomards2023@indoreinstitute.com,team,581,2026-07-17T13:32:18.257919+00:00
+384,Trojan Trackers Member 5,mayank.waikerds2023@indoreinstitute.com,team,581,2026-07-17T13:32:18.365776+00:00
+385,VA-HYPE Leader,pranaybhawsar06@gmail.com,team,604,2026-07-17T13:32:34.403544+00:00
+386,VA-HYPE Member 1,vikashtr75666@gmail.com,team,604,2026-07-17T13:32:34.510380+00:00
+387,VA-HYPE Member 2,piyushsen9009@gmail.com,team,604,2026-07-17T13:32:34.622230+00:00
+388,VA-HYPE Member 3,anchallcharpe2007@gmail.com,team,604,2026-07-17T13:32:34.729436+00:00
+389,VA-HYPE Member 4,h21dhote@gmail.com,team,604,2026-07-17T13:32:34.836824+00:00
+390,VA-HYPE Member 5,shrivastavaeashan@gmail.com,team,604,2026-07-17T13:32:34.944486+00:00
+391,Codong Titans Leader,rahulpahuja101@gmail.com,team,536,2026-07-17T13:33:33.690453+00:00
+392,Codong Titans Member 1,krishpahuja12@gmail.com,team,536,2026-07-17T13:33:33.798509+00:00
+393,Codong Titans Member 2,shivamprajapat212@gmail.com,team,536,2026-07-17T13:33:33.906030+00:00
+394,Codong Titans Member 3,ramlalitkevat4@gmail.com,team,536,2026-07-17T13:33:34.013958+00:00
+395,Codong Titans Member 4,yashikasharma1975@gmail.com,team,536,2026-07-17T13:33:34.121649+00:00
+396,Codong Titans Member 5,shubhikaushal878@gmail.com,team,536,2026-07-17T13:33:34.229459+00:00
+397,AlgoX Ai Leader,theravindramlv@gmail.com,team,529,2026-07-17T13:34:39.848096+00:00
+398,AlgoX Ai Member 1,meenakshii0021@gmail.com,team,529,2026-07-17T13:34:39.960091+00:00
+399,AlgoX Ai Member 2,sahilshrikhande07@gmail.com,team,529,2026-07-17T13:34:40.069895+00:00
+400,AlgoX Ai Member 3,kamalshukla47607@gmail.com,team,529,2026-07-17T13:34:40.177669+00:00
+401,AlgoX Ai Member 4,pranaykanojiya14@gmail.com,team,529,2026-07-17T13:34:40.284738+00:00
+402,AlgoX Ai Member 5,salirishikesh85@gmail.com,team,529,2026-07-17T13:34:40.391908+00:00
+403,The connected crew Leader,sumitmaheshwari812@gmail.com,team,601,2026-07-17T13:36:12.363457+00:00
+404,ANVESHANAA Leader,kamaksshii30@gmail.com,team,523,2026-07-17T13:36:26.571128+00:00
+405,ANVESHANAA Member 1,pranjalbafna27@gmail.com,team,523,2026-07-17T13:36:26.680134+00:00
+406,ANVESHANAA Member 2,khushverma6266@gmail.com,team,523,2026-07-17T13:36:26.788219+00:00
+407,ANVESHANAA Member 3,pratikkunjar@gmail.com,team,523,2026-07-17T13:36:26.896563+00:00
+408,ANVESHANAA Member 4,manyatanwar11@gmail.com,team,523,2026-07-17T13:36:27.003805+00:00
+409,ANVESHANAA Member 5,kanak.98931@gmail.com,team,523,2026-07-17T13:36:27.112424+00:00
+410,Code Mantra Leader,ragnisingh9685@gmail.com,team,535,2026-07-17T13:37:44.293525+00:00
+411,Code Mantra Member 1,divyanshotakuop@gmail.com,team,535,2026-07-17T13:37:44.407320+00:00
+412,Code Mantra Member 2,singhyashika449308@gmail.com,team,535,2026-07-17T13:37:44.518097+00:00
+413,Code Mantra Member 3,babuaditya097@gmail.com,team,535,2026-07-17T13:37:44.626630+00:00
+414,Code Mantra Member 4,utkarshatulkar@gmail.com,team,535,2026-07-17T13:37:44.735794+00:00
+415,Code Mantra Member 5,harshit.choudharycse2025@indoreinstitute.com,team,535,2026-07-17T13:37:44.866797+00:00
+416,Tech care Leader,payal.disc@gmail.com,team,532,2026-07-17T13:39:46.424496+00:00
+417,Tech care Member 1,vijayypatel27@gmail.com,team,532,2026-07-17T13:39:46.533707+00:00
+418,Tech care Member 2,mynkkkchhalotre.01@gmail.com,team,532,2026-07-17T13:39:46.642283+00:00
+419,Tech care Member 3,nikhilnigam912@gmail.com,team,532,2026-07-17T13:39:46.753029+00:00
+420,Visionx Leader,muditpatidar7@gmail.com,team,530,2026-07-17T13:41:01.511929+00:00
+421,Visionx Member 1,asmyt208@gmail.com,team,530,2026-07-17T13:41:01.620472+00:00
+422,Visionx Member 2,nehakaushal22007@gmail.com,team,530,2026-07-17T13:41:01.727919+00:00
+423,Visionx Member 3,muskanshrivastava.collab@gmail.com,team,530,2026-07-17T13:41:01.843438+00:00
+424,Visionx Member 4,arshchhetri70@gmail.com,team,530,2026-07-17T13:41:01.961709+00:00
+425,Visionx Member 5,mradulpatel39@gmail.com,team,530,2026-07-17T13:41:02.071482+00:00
+426,*CodeComets Leader,neveyashika05@gmail.com,team,540,2026-07-17T13:42:32.867339+00:00
+427,*CodeComets Member 1,rishabhbaraskar123@gmail.com,team,540,2026-07-17T13:42:32.976937+00:00
+428,*CodeComets Member 2,aquavinayak334@gmail.com,team,540,2026-07-17T13:42:33.086993+00:00
+429,*CodeComets Member 3,vartikarajput1201@gmail.com,team,540,2026-07-17T13:42:33.204163+00:00
+430,GuradianX Leader,patidaraditya826@gmail.com,team,514,2026-07-17T13:43:29.515428+00:00
+431,GuradianX Member 1,gyanesg43@gmail.com,team,514,2026-07-17T13:43:29.625544+00:00
+432,GuradianX Member 2,preranakushwah38@gmail.com,team,514,2026-07-17T13:43:29.736757+00:00
+433,GuradianX Member 3,aryan0patil15@gmail.com,team,514,2026-07-17T13:43:29.849217+00:00
+434,GuradianX Member 4,gourankita650@gmail.com,team,514,2026-07-17T13:43:29.975093+00:00
+435,GuradianX Member 5,sneha.kulkarniecs2025@indoreinstitute.com,team,514,2026-07-17T13:43:30.188545+00:00
+436,Null Pointers United Leader,ananya.parecse2023@indoreinstitute.com,team,517,2026-07-17T13:43:50.029557+00:00
+437,Null Pointers United Member 1,aarushi.vermacse2023@indoreinstitute.com,team,517,2026-07-17T13:43:50.142907+00:00
+438,Null Pointers United Member 2,aaryash.choudharycse2023@indoreinstitute.com,team,517,2026-07-17T13:43:50.257336+00:00
+439,Null Pointers United Member 3,amitabh.jaincse2023@indoreinstitute.com,team,517,2026-07-17T13:43:50.371872+00:00
+440,Null Pointers United Member 4,ritika.sawnercse2024@indoreinstitute.com,team,517,2026-07-17T13:43:50.483647+00:00
+441,Null Pointers United Member 5,vivek.moyacse2025@indoreinstitute.com,team,517,2026-07-17T13:43:50.596062+00:00
+442,Bhumi Labs Leader,rahulchouhan10101@gmail.com,team,607,2026-07-17T13:43:53.466336+00:00
+443,Bhumi Labs Member 1,kishanojha416@gmail.com,team,607,2026-07-17T13:43:53.579044+00:00
+444,Bhumi Labs Member 2,prabhat.pandeyec2024@indoreinstitute.com,team,607,2026-07-17T13:43:53.690441+00:00
+445,Bhumi Labs Member 3,suhani.sharmaec2023@indoreinstitute.com,team,607,2026-07-17T13:43:53.801945+00:00
+446,Bhumi Labs Member 4,siddhijha332@gmail.com,team,607,2026-07-17T13:43:53.912377+00:00
+447,Bhumi Labs Member 5,vedant.upadhyayec2024@indoreinstitute.com,team,607,2026-07-17T13:43:54.020799+00:00
+448,ResQTech Leader,darwaiashwini@gmail.com,team,597,2026-07-17T13:44:36.962491+00:00
+449,ResQTech Member 1,garimagupta9752@gmail.com,team,597,2026-07-17T13:44:37.072620+00:00
+450,ResQTech Member 2,hp484709@gmail.com,team,597,2026-07-17T13:44:37.183258+00:00
+451,ResQTech Member 3,khushchouhan145@gmail.com,team,597,2026-07-17T13:44:37.292350+00:00
+452,ResQTech Member 4,shuklakumkum453@gmail.com,team,597,2026-07-17T13:44:37.402224+00:00
+453,ResQTech Member 5,ankitdone629@gmail.com,team,597,2026-07-17T13:44:37.511696+00:00
+454,CureX Leader,garima.singhit2024@indoreinstitute.com,team,521,2026-07-17T13:44:38.564920+00:00
+455,CureX Member 1,samarth.chawlacse2024@indoreinstitute.com,team,521,2026-07-17T13:44:38.673580+00:00
+456,CureX Member 2,pratham.upasanicse2024@indoreinstitute.com,team,521,2026-07-17T13:44:38.781671+00:00
+457,CureX Member 3,mahi.gautamcse2024@indoreinstitute.com,team,521,2026-07-17T13:44:38.889744+00:00
+458,CureX Member 4,piyush.dubeycse2024@indoreinstitute.com,team,521,2026-07-17T13:44:39.008540+00:00
+459,CureX Member 5,nikhil.jhacse2024@indoreinstitute.com,team,521,2026-07-17T13:44:39.147510+00:00
+460,InnoVentures Leader,mayank2980tripathi@gmail.com,team,592,2026-07-17T13:45:06.127441+00:00
+461,InnoVentures Member 1,bhatiwadalochan@gmail.com,team,592,2026-07-17T13:45:06.242970+00:00
+462,InnoVentures Member 2,baldevamadhuram@gmail.com,team,592,2026-07-17T13:45:06.352521+00:00
+463,InnoVentures Member 3,baraskarlucky1@gma8l.com,team,592,2026-07-17T13:45:06.462412+00:00
+464,InnoVentures Member 4,meetrohida15@gmail.com,team,592,2026-07-17T13:45:06.581570+00:00
+465,InnoVentures Member 5,khushi.jaiswalaiml2025@indoreinstitute.com,team,592,2026-07-17T13:45:06.691213+00:00
+466,Hack 4 Health Leader,anushka.kushwahit2024@indoreinstitute.com,team,518,2026-07-17T13:45:40.540620+00:00
+467,Hack 4 Health Member 1,yashraj.rathorecse2024@indoreinstitute.com,team,518,2026-07-17T13:45:40.651700+00:00
+468,Hack 4 Health Member 2,janvi.chauhanit2024@indoreinstitute.com,team,518,2026-07-17T13:45:40.769916+00:00
+469,Hack 4 Health Member 3,sanskrati.midhotiyait2024@indoreinstitute.com,team,518,2026-07-17T13:45:40.893776+00:00
+470,Hack 4 Health Member 4,vedant.kalankicse2024@indoreinstitute.com,team,518,2026-07-17T13:45:41.009428+00:00
+471,Hack 4 Health Member 5,tanay.waghecse2024@indoreinstitute.com,team,518,2026-07-17T13:45:41.141071+00:00
+472,TechBeast Leader,masterpraharroy@gmail.com,team,603,2026-07-17T13:46:40.923069+00:00
+473,TechBeast Member 1,gouravkhandegar07@gmail.com,team,603,2026-07-17T13:46:41.030928+00:00
+474,TechBeast Member 2,shivampandeyy2411@gmaio.com,team,603,2026-07-17T13:46:41.139254+00:00
+475,TechBeast Member 3,anushkasisodiya111@gmail.com,team,603,2026-07-17T13:46:41.247216+00:00
+476,TechBeast Member 4,rautpriyanshu61@gmail.com,team,603,2026-07-17T13:46:41.354412+00:00
+477,TechBeast Member 5,shivampatel78163@gmail.com,team,603,2026-07-17T13:46:41.462282+00:00
+478,FOUR DIRECTION Leader,virendra.patlawdiyacse2024@indoreinstitute.com,team,612,2026-07-17T13:47:18.638570+00:00
+479,FOUR DIRECTION Member 1,upendra.singhcse2024@indoreinstitute.com,team,612,2026-07-17T13:47:18.751937+00:00
+480,FOUR DIRECTION Member 2,ujjwal.nagarcse2024@indoreinstitute.com,team,612,2026-07-17T13:47:18.870422+00:00
+481,FOUR DIRECTION Member 3,yogesh.yadavcse2024@indoreinstitute.com,team,612,2026-07-17T13:47:18.983494+00:00
+482,FOUR DIRECTION Member 4,mahi.yadavcse2025@indoreinstitute.com,team,612,2026-07-17T13:47:19.096456+00:00
+483,FOUR DIRECTION Member 5,mansi.junwalcse2025@indoreinstitute.com,team,612,2026-07-17T13:47:19.208190+00:00
+484,Hack_Me_Not Leader,aakanshasoni828@gmail.com,team,625,2026-07-17T13:50:15.604476+00:00
+485,Sanjivani Leader,deshmukhr2007@gmail.com,team,544,2026-07-17T13:52:48.253589+00:00
+486,Sanjivani Member 1,aadarshprajapati253@gmail.com,team,544,2026-07-17T13:52:48.371141+00:00
+487,Sanjivani Member 2,jiyamandole@gmail.com,team,544,2026-07-17T13:52:48.483571+00:00
+488,Sanjivani Member 3,lakshyarane31@gmail.com,team,544,2026-07-17T13:52:48.596231+00:00
+489,Sanjivani Member 4,ssaurabhpatel378@gmail.com,team,544,2026-07-17T13:52:48.707868+00:00
+490,Sanjivani Member 5,rajattiwari898280@gmail.com,team,544,2026-07-17T13:52:48.819098+00:00
+491,Code Mavericks Leader,yashay158@gmail.com,team,541,2026-07-17T13:52:53.273571+00:00
+492,Code Mavericks Member 1,samarth.dubeyaiml2024@indoreinstitute.com,team,541,2026-07-17T13:52:53.383039+00:00
+493,Code Mavericks Member 2,arihantprasad45@gmail.com,team,541,2026-07-17T13:52:53.493308+00:00
+494,Code Mavericks Member 3,shivampatidar749@gmail.com,team,541,2026-07-17T13:52:53.604064+00:00
+495,Code Mavericks Member 4,yashwin941870@gmail.com,team,541,2026-07-17T13:52:53.714789+00:00
+496,Code Mavericks Member 5,varshitajain2@gmail.com,team,541,2026-07-17T13:52:53.824371+00:00
+497,Codex Prime Leader,dipeshshindeaiml2024@indoreinstitute.com,team,520,2026-07-17T13:55:08.865273+00:00
+498,Codex Prime Member 1,darshanlikharaiml2024@indoreinstitute.com,team,520,2026-07-17T13:55:08.987794+00:00
+499,Codex Prime Member 2,aryamansharmaaiml2024@indoreinstitute.com,team,520,2026-07-17T13:55:09.101400+00:00
+500,Codex Prime Member 3,rani.junwalcse@2024indoreinstitute.com,team,520,2026-07-17T13:55:09.232621+00:00
+501,Codex Prime Member 4,arpitsuneraiml2024@indoreinstitute.com,team,520,2026-07-17T13:55:09.358346+00:00
+502,Codex Prime Member 5,vedika.shahcse2024@indoreinstitute.com,team,520,2026-07-17T13:55:09.474204+00:00
+503,Hacktivate Leader,krishnapal.panwarcse2024@indoreinstitute.com,team,525,2026-07-17T13:59:56.037980+00:00
+504,Hacktivate Member 1,kushagra.mahantcse2024@indoreinstitute.com,team,525,2026-07-17T13:59:56.156791+00:00
+505,Hacktivate Member 2,prakash.raycse2024@indoreinstitute.com,team,525,2026-07-17T13:59:56.270229+00:00
+506,Hacktivate Member 3,yashika.gothwalcse2024@indoreinstitute.com,team,525,2026-07-17T13:59:56.381100+00:00
+507,Hacktivate Member 4,unnati.bairagiit2024@indoreinstitute.com,team,525,2026-07-17T13:59:56.491882+00:00
+508,Code_Riders Leader,sahilkesharwani270@gmail.com,team,545,2026-07-17T14:04:30.931528+00:00
+509,Code_Riders Member 1,siddh.sharma.247@gmail.com,team,545,2026-07-17T14:04:31.042356+00:00
+510,Code_Riders Member 2,karthikkb0580@gmail.com,team,545,2026-07-17T14:04:31.153341+00:00
+511,Code_Riders Member 3,shreyastiwari58@gmail.com,team,545,2026-07-17T14:04:31.262615+00:00
+512,Code_Riders Member 4,realhimani22@gmail.com,team,545,2026-07-17T14:04:31.374983+00:00
+513,TEAM KAIROS Leader,kunjita.kuntecse2023@indoreinstitute.com,team,526,2026-07-17T14:09:17.222704+00:00
+514,TEAM KAIROS Member 1,ishan.pamnanicse2023@indoreinstitute.com,team,526,2026-07-17T14:09:17.349186+00:00
+515,TEAM KAIROS Member 2,kaivalya.vyascse2025@indoreinstitute.com,team,526,2026-07-17T14:09:17.459508+00:00
+516,TEAM KAIROS Member 3,lakshya.shaileewalcse2023@indoreinstitute.com,team,526,2026-07-17T14:09:17.568975+00:00
+517,TEAM KAIROS Member 4,mayur.kosecse2023@indoreinstitute.com,team,526,2026-07-17T14:09:17.678013+00:00
+518,TEAM KAIROS Member 5,himanshu.dhotecse2023@indoreinstitute.com,team,526,2026-07-17T14:09:17.791700+00:00
